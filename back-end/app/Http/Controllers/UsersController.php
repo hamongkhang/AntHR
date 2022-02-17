@@ -464,82 +464,82 @@ class UsersController extends Controller
         return response()->json(auth()->user());
     }
 
-//      /**
-//      * @SWG\POST(
-//      *     path="api/users/changePassword/",
-//      *     description="Return a user's information",
-//      *     @SWG\Parameter(
-//      *         name="old_password",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your old password(length=8)",
-//      *         required=true,
-//      *     ),
-//      *  @SWG\Parameter(
-//      *         name="new_password",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your new password(length=8)",
-//      *         required=true,
-//      *     ),
-//      *  @SWG\Parameter(
-//      *         name="new_password_confirmed",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your new password confirmed(length=8)",
-//      *         required=true,
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=200,
-//      *         description="Successfully",
-//      *         @SWG\Schema(
-//      *             @SWG\Property(property="message", type="string"),
-//      *             @SWG\Property(property="user", type="integer"),
-//      *            )
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=422,
-//      *         description="Missing Data"
-//      *     ),
-//      * security={
-//      *           {"api_key_security_example": {}}
-//      *       }
-//      * )
-//      */
-//     public function changePassword(Request $request) {
-//         $validator = Validator::make($request->all(), [
-//             'old_password' => 'required|string|min:8',
-//             'new_password' => 'required|string|min:8',
-//             'new_password_confirmed' => 'required|string|same:new_password|min:8',
-//         ]);
+     /**
+     * @SWG\POST(
+     *     path="api/users/changePassword/",
+     *     description="Return a user's information",
+     *     @SWG\Parameter(
+     *         name="current_password",
+     *         in="query",
+     *         type="string",
+     *         description="Your old current password(length=8)",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="new_password",
+     *         in="query",
+     *         type="string",
+     *         description="Your new password(length=8)",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="new_password_confirmed",
+     *         in="query",
+     *         type="string",
+     *         description="Your new password confirmed(length=8)",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="User successfully changed password",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="message", type="string"),
+     *             @SWG\Property(property="user", type="integer"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Missing Data"
+     *     ),
+     * security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function changePassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|string|min:8',
+            'new_password' => 'required|string|min:8',
+            'new_password_confirmed' => 'required|string|same:new_password|min:8',
+        ]);
 
-//         if($validator->fails()){
-//             return response()->json($validator->errors()->toJson(), 400);
-//         }
-//         if($request->old_password===$request->new_password){
-//             return response()->json(['Old password is same new password'=>$validator->errors()], 401);     
-//         }
-//         $hashedPassword = auth()->user()->password;
-//         if (!Hash::check($request->old_password , $hashedPassword)) {
-//             return response()->json(['Old password is not correct'=>$validator->errors()], 401);     
-//         }
-//         $userId = auth()->user()->id;
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
+        }
+        if($request->current_password===$request->new_password){
+            return response()->json(['Old password is same new password'=>$validator->errors()], 401);     
+        }
+        $hashedPassword = auth()->user()->password;
+        if (!Hash::check($request->current_password , $hashedPassword)) {
+            return response()->json(['Current password is not correct'=>$validator->errors()], 401);     
+        }
+        $userId = auth()->user()->id;
 
-//         $user = User::where('id',$userId)->update(
-//                     ['password' => bcrypt($request->new_password)]
-//                 );
-//         // Mail notification about change password success
-//          $dataSendMail = [
-//             'description'=>'notiChangePasswordSuccess',
-//             'title' => 'Cập nhật mật khẩu thành công',
-//             'content'=>'Đổi mật khẩu thành công'
-//         ];
-//          SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
-//         return response()->json([
-//             'message' => 'User successfully changed password',
-//             'user' => $user
-//         ], 201);
-//     }       
+        $user = User::where('id',$userId)->update(
+                    ['password' => bcrypt($request->new_password)]
+                );
+        // Mail notification about change password success
+        //  $dataSendMail = [
+        //     'description'=>'notiChangePasswordSuccess',
+        //     'title' => 'Cập nhật mật khẩu thành công',
+        //     'content'=>'Đổi mật khẩu thành công'
+        // ];
+        //  SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
+        return response()->json([
+            'message' => 'User successfully changed password',
+            'user' => $user
+        ], 201);
+    }       
 
 //      /**
 //      * @SWG\POST(

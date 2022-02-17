@@ -350,6 +350,57 @@
                     }
                 ]
             }
+        },
+        "api/users/changePassword/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "current_password",
+                        "in": "query",
+                        "description": "Your old current password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "query",
+                        "description": "Your new password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password_confirmed",
+                        "in": "query",
+                        "description": "Your new password confirmed(length=8)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully changed password",
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
         }
     },
     "definitions": {}
