@@ -134,6 +134,55 @@
                 ]
             }
         },
+        "api/users/refresh/": {
+            "post": {
+                "description": "Return a user's information",
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "access_token": {
+                                    "type": "string"
+                                },
+                                "token_type": {
+                                    "type": "string"
+                                },
+                                "expires_in": {
+                                    "type": "integer"
+                                },
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "email_verified_at": {
+                                    "type": "datetime"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
         "api/users/register/": {
             "post": {
                 "description": "Return a account's information",

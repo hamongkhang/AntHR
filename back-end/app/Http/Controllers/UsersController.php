@@ -174,46 +174,37 @@ class UsersController extends Controller
         return response()->json(['message' => 'User successfully signed out']);
     }
 
-    //  /**
-    //  * @SWG\POST(
-    //  *     path="api/users/refresh/",
-    //  *     description="Return a user's information",
-    //  *     @SWG\Response(
-    //  *         response=200,
-    //  *         description="Successfully",
-    //  *         @SWG\Schema(
-    //  *             @SWG\Property(property="access_token", type="string"),
-    //  *             @SWG\Property(property="token_type", type="string"),
-    //  *             @SWG\Property(property="expires_in", type="integer"),
-    //  *             @SWG\Property(property="user", type="object"),
-    //  *             @SWG\Property(property="id", type="integer"),
-    //  *             @SWG\Property(property="fullName", type="string"),
-    //  *             @SWG\Property(property="email", type="string"),
-    //  *             @SWG\Property(property="email_verified_at", type="datetime"),
-    //  *             @SWG\Property(property="created_at", type="timestamp"),
-    //  *             @SWG\Property(property="updated_at", type="timestamp"),
-    //  *             @SWG\Property(property="avatar", type="string"),
-    //  *             @SWG\Property(property="nameAccount", type="string"),
-    //  *             @SWG\Property(property="linkFB", type="string"),
-    //  *             @SWG\Property(property="phone", type="string"),
-    //  *             @SWG\Property(property="address", type="string"),
-    //  *             @SWG\Property(property="birthday", type="datetime"),
-    //  *             @SWG\Property(property="sex", type="string"),
-    //  *             @SWG\Property(property="status", type="string"),
-    //  *            )
-    //  *     ),
-    //  *     @SWG\Response(
-    //  *         response=401,
-    //  *         description="Unauthorized!"
-    //  *     ),
-    //  * security={
-    //  *           {"api_key_security_example": {}}
-    //  *       }
-    //  * )
-    //  */
-    // public function refresh() {
-    //     return $this->createNewToken(auth()->refresh());
-    // }
+     /**
+     * @SWG\POST(
+     *     path="api/users/refresh/",
+     *     description="Return a user's information",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successfully",
+     *         @SWG\Schema(
+     *              @SWG\Property(property="access_token", type="string"),
+     *             @SWG\Property(property="token_type", type="string"),
+     *             @SWG\Property(property="expires_in", type="integer"),
+     *             @SWG\Property(property="id", type="integer"),
+     *             @SWG\Property(property="email", type="string"),
+     *             @SWG\Property(property="email_verified_at", type="datetime"),
+     *             @SWG\Property(property="status", type="string"),
+     *             @SWG\Property(property="created_at", type="timestamp"),
+     *             @SWG\Property(property="updated_at", type="timestamp"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized!"
+     *     ),
+     * security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function refresh() {
+        return $this->createNewToken(auth()->refresh());
+    }
      /**
      * @SWG\POST(
      *     path="api/users/register/",

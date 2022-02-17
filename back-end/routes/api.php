@@ -38,3 +38,4 @@ Route::post('/user/register', [App\Http\Controllers\UsersController::class, 'onR
 Route::post('/user/checkDomain', [App\Http\Controllers\UsersController::class, 'checkDomain'])->name('user.checkDomain');
 Route::post('/user/login', [App\Http\Controllers\UsersController::class, 'onLogin'])->name('user.login');
 Route::post('/user/logout', [App\Http\Controllers\UsersController::class, 'onLogout'])->name('user.logout');
+Route::post('/user/refresh', [App\Http\Controllers\UsersController::class, 'refresh'])->name('user.refresh');
