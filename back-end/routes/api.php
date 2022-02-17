@@ -47,5 +47,6 @@ Route::post('/user/changePasswordForgot', [App\Http\Controllers\UsersController:
 
 /////////////////////////////////////// Employee APIs //////////////////////////////////////////////////////////////////////////////
 
-Route::post('/employee/createEmployee', [App\Http\Controllers\EmployeeController::class, 'createEmployee'])->name('user.createEmployee');
+Route::post('/employee/createEmployee', [App\Http\Controllers\EmployeeController::class, 'createEmployee'])->name('employee.createEmployee');
+Route::post('/employee/createAccount', [App\Http\Controllers\EmployeeController::class, 'createAccount'])->name('employee.createAccount');
 

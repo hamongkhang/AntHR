@@ -15,6 +15,70 @@
         "http"
     ],
     "paths": {
+        "api/employee/createAccount/": {
+            "post": {
+                "description": "Return a account's information",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "> 8 char ",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "confirm_password",
+                        "in": "query",
+                        "description": "> 8 char and same password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Account's email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "send_mail",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one account!"
+                    }
+                }
+            }
+        },
         "api/users/login/": {
             "post": {
                 "description": "Return a user's information",
@@ -400,6 +464,78 @@
                         "api_key_security_example": []
                     }
                 ]
+            }
+        },
+        "api/users/getCodeForgotPassword/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Your email",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                }
+            }
+        },
+        "api/users/changePasswordForgot/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "Your code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "query",
+                        "description": "Your new password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password_confirmed",
+                        "in": "query",
+                        "description": "Your new password confirmed(length=8)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully changed password",
+                        "schema": {
+                            "properties": {
+                                "user": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                }
             }
         }
     },

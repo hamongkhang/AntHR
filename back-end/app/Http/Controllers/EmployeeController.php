@@ -26,7 +26,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['createAccount']]);
     }
 
          /**
@@ -128,5 +128,82 @@ class EmployeeController extends Controller
                 'description'=>'account login is not admin',
             ], 401);
         }
+    }
+
+    
+         /**
+     * @SWG\POST(
+     *     path="api/employee/createAccount/",
+     *     description="Return a account's information",
+     *     @SWG\Parameter(
+     *         name="password",
+     *         in="query",
+     *         type="string",
+     *         description="> 8 char ",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="confirm_password",
+     *         in="query",
+     *         type="string",
+     *         description="> 8 char and same password",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="email",
+     *         in="query",
+     *         type="string",
+     *         description="Account's email",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="send_mail",
+     *         in="query",
+     *         type="integer",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Create account successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="email", type="string"),
+     *             @SWG\Property(property="role", type="integer"),
+     *             @SWG\Property(property="password", type="string"),
+     *             @SWG\Property(property="status", type="string"),
+     *             @SWG\Property(property="created_at", type="datetime"),
+     *             @SWG\Property(property="updated_at", type="datetime"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="No one account!"
+     *     )
+     * )
+     */
+    public function createAccount(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+           'email'=>'required|string|email',
+           'password' => 'required|string|min:8',
+           'confirm_password' => 'required|string|min:8|same:password',
+       ]);
+       if ($validator->fails()) {
+           return response()->json(['error'=>$validator->errors()], 401);     
+       }
+       $accountFind = DB::table('users')->where('email', $request->email)->first();
+       if($accountFind){
+        $account = User::find($accountFind->id);
+        $account->password = Hash::make($request->password);
+        $account->save();
+        return response()->json([
+            'message' => 'Create account successfully',
+            'user' => $account
+            ], 201);
+       }else{
+        return response()->json([
+            'error'=>1,
+            'description'=>'No one account',
+        ], 401);
+       }
     }
 }
