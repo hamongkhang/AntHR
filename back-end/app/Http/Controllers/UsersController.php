@@ -147,32 +147,32 @@ class UsersController extends Controller
         ]);
     }
  
-    // /**
-    //  * Log the user out (Invalidate the token).
-    //  *
-    //  * @return \Illuminate\Http\JsonResponse
-    //  */
-    // /**
-    //  * @SWG\POST(
-    //  *     path="api/users/logout/",
-    //  *     description="Return a user's information",
-    //  *     @SWG\Response(
-    //  *         response=200,
-    //  *         description="User successfully signed out",
-    //  *     ),
-    //  *     @SWG\Response(
-    //  *         response=401,
-    //  *         description="No one login!"
-    //  *     ),
-    //  *  security={
-    //  *           {"api_key_security_example": {}}
-    //  *       }
-    //  * )
-    //  */
-    // public function logout() {
-    //     auth()->logout();
-    //     return response()->json(['message' => 'User successfully signed out']);
-    // }
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    /**
+     * @SWG\POST(
+     *     path="api/users/logout/",
+     *     description="Return a user's information",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="User successfully signed out",
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="No one login!"
+     *     ),
+     *  security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function onLogout() {
+        auth()->logout();
+        return response()->json(['message' => 'User successfully signed out']);
+    }
 
     //  /**
     //  * @SWG\POST(
@@ -298,6 +298,7 @@ class UsersController extends Controller
      /**
      * @SWG\POST(
      *     path="api/users/getCode/",
+     * 
      *     description="Return a user's information",
      *     @SWG\Parameter(
      *         name="first_name",

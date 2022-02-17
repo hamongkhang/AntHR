@@ -116,6 +116,24 @@
                 }
             }
         },
+        "api/users/logout/": {
+            "post": {
+                "description": "Return a user's information",
+                "responses": {
+                    "200": {
+                        "description": "User successfully signed out"
+                    },
+                    "401": {
+                        "description": "No one login!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
         "api/users/register/": {
             "post": {
                 "description": "Return a account's information",
