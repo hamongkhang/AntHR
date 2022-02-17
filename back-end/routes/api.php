@@ -39,3 +39,4 @@ Route::post('/user/checkDomain', [App\Http\Controllers\UsersController::class, '
 Route::post('/user/login', [App\Http\Controllers\UsersController::class, 'onLogin'])->name('user.login');
 Route::post('/user/logout', [App\Http\Controllers\UsersController::class, 'onLogout'])->name('user.logout');
 Route::post('/user/refresh', [App\Http\Controllers\UsersController::class, 'refresh'])->name('user.refresh');
+Route::post('/user/profile', [App\Http\Controllers\UsersController::class, 'userProfile'])->name('user.profile');
