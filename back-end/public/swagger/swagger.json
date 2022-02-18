@@ -15,7 +15,7 @@
         "http"
     ],
     "paths": {
-        "api/employee/createAccount/": {
+        "/api/employee/createAccount/": {
             "post": {
                 "description": "Return a account's information",
                 "parameters": [
@@ -75,6 +75,76 @@
                     },
                     "401": {
                         "description": "No one account!"
+                    }
+                }
+            }
+        },
+        "/api/employee/getOneEmployee/{id}": {
+            "get": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Get employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one!"
+                    }
+                }
+            }
+        },
+        "/api/employee/getAllEmployee/": {
+            "get": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Get employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one!"
                     }
                 }
             }

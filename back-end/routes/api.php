@@ -49,4 +49,6 @@ Route::post('/user/changePasswordForgot', [App\Http\Controllers\UsersController:
 
 Route::post('/employee/createEmployee', [App\Http\Controllers\EmployeeController::class, 'createEmployee'])->name('employee.createEmployee');
 Route::post('/employee/createAccount', [App\Http\Controllers\EmployeeController::class, 'createAccount'])->name('employee.createAccount');
+Route::get('/employee/getAllEmployee', [App\Http\Controllers\EmployeeController::class, 'getAllEmployee'])->name('employee.getAllEmployee');
+Route::get('/employee/getOneEmployee/{id}', [App\Http\Controllers\EmployeeController::class, 'getOneEmployee'])->name('employee.getOneEmployee');
 
