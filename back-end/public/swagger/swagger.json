@@ -149,6 +149,41 @@
                 }
             }
         },
+        "/api/employee/destroyEmployee/{id}": {
+            "delete": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Delete failed!"
+                    }
+                }
+            }
+        },
         "api/users/login/": {
             "post": {
                 "description": "Return a user's information",
