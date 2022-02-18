@@ -15,6 +15,41 @@
         "http"
     ],
     "paths": {
+        "/api/account/blockAccount/{id}": {
+            "get": {
+                "description": "Return a account's information",
+                "responses": {
+                    "200": {
+                        "description": "Block or Active account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Failed!"
+                    }
+                }
+            }
+        },
         "/api/employee/createAccount/": {
             "post": {
                 "description": "Return a account's information",
