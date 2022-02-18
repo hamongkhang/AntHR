@@ -41,3 +41,5 @@ Route::post('/user/logout', [App\Http\Controllers\UsersController::class, 'onLog
 Route::post('/user/refresh', [App\Http\Controllers\UsersController::class, 'refresh'])->name('user.refresh');
 Route::post('/user/profile', [App\Http\Controllers\UsersController::class, 'userProfile'])->name('user.profile');
 Route::post('/user/changePassword', [App\Http\Controllers\UsersController::class, 'changePassword'])->name('user.changePassword');
+Route::post('/user/getCodeForgotPassword', [App\Http\Controllers\UsersController::class, 'getCodeForgotPassword'])->name('user.getCodeForgotPassword');
+Route::post('/user/changePasswordForgot', [App\Http\Controllers\UsersController::class, 'changePasswordForgot'])->name('user.changePasswordForgot');

@@ -16,6 +16,7 @@ use App\Models\Employee;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\RegisterCode;
+use App\Models\ForgotCode;
 
 
 
@@ -541,164 +542,164 @@ class UsersController extends Controller
         ], 201);
     }       
 
-//      /**
-//      * @SWG\POST(
-//      *     path="api/users/getCodeForgotPassword/",
-//      *     description="Return a user's information",
-//      *     @SWG\Parameter(
-//      *         name="email",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your email",
-//      *         required=true,
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=200,
-//      *         description="Successfully",
-//      *         @SWG\Schema(
-//      *             @SWG\Property(property="code", type="string"),
-//      *            )
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=422,
-//      *         description="Missing Data"
-//      *     )
-//      * )
-//      */
-//     public function getCodeForgotPassword(Request $request) {
-//         $validator = Validator::make($request->all(), [
-//             'email' => 'required|string|email',
-//         ]);
+     /**
+     * @SWG\POST(
+     *     path="api/users/getCodeForgotPassword/",
+     *     description="Return a user's information",
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="query",
+     *         type="string",
+     *         description="Your email",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="code", type="string"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Missing Data"
+     *     )
+     * )
+     */
+    public function getCodeForgotPassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+        ]);
 
-//         if($validator->fails()){
-//             return response()->json($validator->errors()->toJson(), 400);
-//         }
-//         $code=$random = Str::random(6);
-//         $data = DB::table('users')->where('email', $request->email)->first();
-//         if($data){
-//             if($data->status!="block"){
-//                 $usercheck = DB::table('forgot_code')->where('email', $request->email)->first();
-//                 if($usercheck){
-//                     $user = ForgotCode::find($usercheck->id);
-//                     $user->email = $request->email;
-//                     $user->created_at = Carbon::now('Asia/Ho_Chi_Minh');
-//                     $user->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
-//                     $user->code = $code;
-//                     $user->save();
-//                     // Mail send code for account forgot password
-//                     $dataSendMail = [
-//                         'description'=>'getCodeForgot',
-//                         'title' => 'Xác nhận thay đổi mật khẩu',
-//                         'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-//                         'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-//                         'code'=>$code
-//                     ];
-//                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
-//                     return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email ));    
-//                 }else{
-//                     $postArrayRes = [
-//                         'email'     => $request->email,
-//                         'code'  => $code,
-//                         'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
-//                         'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
-//                     ];
-//                      $user = ForgotCode::create($postArrayRes);
-//                     // Mail send code for account forgot password
-//                      $dataSendMail = [
-//                         'description'=>'getCodeForgot',
-//                         'title' => 'Xác nhận thay đổi mật khẩu',
-//                         'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-//                         'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-//                         'code'=>$code
-//                     ];
-//                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
-//                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email ));
-//                 }
-//         }else{
-//             return response()->json([
-//                 'error' => 'blocked',
-//             ], 401);
-//         }
-//         }
-//         return response()->json([
-//             'error' => 'No email',
-//         ], 401);
-//     }      
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $code=$random = Str::random(6);
+        $data = DB::table('users')->where('email', $request->email)->first();
+        if($data){
+            if($data->status!="block"){
+                $usercheck = DB::table('forgot_code')->where('email', $request->email)->first();
+                if($usercheck){
+                    $user = ForgotCode::find($usercheck->id);
+                    $user->email = $request->email;
+                    $user->created_at = Carbon::now('Asia/Ho_Chi_Minh');
+                    $user->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+                    $user->code = $code;
+                    $user->save();
+                    // Mail send code for account forgot password
+                    // $dataSendMail = [
+                    //     'description'=>'getCodeForgot',
+                    //     'title' => 'Xác nhận thay đổi mật khẩu',
+                    //     'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+                    //     'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
+                    //     'code'=>$code
+                    // ];
+                    // SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email ));    
+                }else{
+                    $postArrayRes = [
+                        'email'     => $request->email,
+                        'code'  => $code,
+                        'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                        'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                    ];
+                     $user = ForgotCode::create($postArrayRes);
+                    // Mail send code for account forgot password
+                    //  $dataSendMail = [
+                    //     'description'=>'getCodeForgot',
+                    //     'title' => 'Xác nhận thay đổi mật khẩu',
+                    //     'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+                    //     'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
+                    //     'code'=>$code
+                    // ];
+                    // SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+                   return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email ));
+                }
+        }else{
+            return response()->json([
+                'error' => 'blocked',
+            ], 401);
+        }
+        }
+        return response()->json([
+            'error' => 'No email',
+        ], 401);
+    }      
     
-//      /**
-//      * @SWG\POST(
-//      *     path="api/users/changePasswordForgot/",
-//      *     description="Return a user's information",
-//      *     @SWG\Parameter(
-//      *         name="code",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your code",
-//      *         required=true,
-//      *     ),
-//      *   @SWG\Parameter(
-//      *         name="new_password",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your new password(length=8)",
-//      *         required=true,
-//      *     ),
-//      *  @SWG\Parameter(
-//      *         name="new_password_confirmed",
-//      *         in="query",
-//      *         type="string",
-//      *         description="Your new password confirmed(length=8)",
-//      *         required=true,
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=200,
-//      *         description="User successfully changed password",
-//      *         @SWG\Schema(
-//      *             @SWG\Property(property="user", type="integer"),
-//      *            )
-//      *     ),
-//      *     @SWG\Response(
-//      *         response=422,
-//      *         description="Missing Data"
-//      *     )
-//      * )
-//      */
-//     public function changePasswordForgot(Request $request) {
-//         $validator = Validator::make($request->all(), [
-//             'code' => 'required|string|min:6',
-//             'new_password' => 'required|string|min:8',
-//             'new_password_confirmed' => 'required|string|same:new_password|min:8',
-//         ]);
+     /**
+     * @SWG\POST(
+     *     path="api/users/changePasswordForgot/",
+     *     description="Return a user's information",
+     *     @SWG\Parameter(
+     *         name="code",
+     *         in="query",
+     *         type="string",
+     *         description="Your code",
+     *         required=true,
+     *     ),
+     *   @SWG\Parameter(
+     *         name="new_password",
+     *         in="query",
+     *         type="string",
+     *         description="Your new password(length=8)",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="new_password_confirmed",
+     *         in="query",
+     *         type="string",
+     *         description="Your new password confirmed(length=8)",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="User successfully changed password",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="user", type="integer"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=422,
+     *         description="Missing Data"
+     *     )
+     * )
+     */
+    public function changePasswordForgot(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string|min:6',
+            'new_password' => 'required|string|min:8',
+            'new_password_confirmed' => 'required|string|same:new_password|min:8',
+        ]);
 
-//         if($validator->fails()){
-//             return response()->json($validator->errors()->toJson(), 400);
-//         }
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
 
-//         $data = DB::table('forgot_code')->where('code', $request->code)->first();
-//         if($data){
-//             $userEmail = $data->email;
-//             $userFind = DB::table('users')->where('email', $userEmail)->first();
+        $data = DB::table('forgot_code')->where('code', $request->code)->first();
+        if($data){
+            $userEmail = $data->email;
+            $userFind = DB::table('users')->where('email', $userEmail)->first();
 
-//             $user = User::where('id',$userFind->id)->update(
-//                         ['password' => bcrypt($request->new_password)]
-//                     );
+            $user = User::where('id',$userFind->id)->update(
+                        ['password' => bcrypt($request->new_password)]
+                    );
     
-//             DB::delete('delete from forgot_code where id = ?',[$data->id]);
-//             // Mail notification for change password success for account forgot
-//             $dataSendMail = [
-//                 'description'=>'notiChangePasswordSuccess',
-//                 'title' => 'Xác nhận thay đổi mật khẩu',
-//                 'content'=>'Mật khẩu đã được thay đổi'
-//             ];
-//             SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
-//             return response()->json([
-//                 'message' => 'User successfully changed password',
-//                 'user' => $user
-//             ], 201);
-//         }else{
-//             return response()->json(['error'=>"No one have code"], 422);
-//         }
-//     }       
+            DB::delete('delete from forgot_code where id = ?',[$data->id]);
+            // Mail notification for change password success for account forgot
+            // $dataSendMail = [
+            //     'description'=>'notiChangePasswordSuccess',
+            //     'title' => 'Xác nhận thay đổi mật khẩu',
+            //     'content'=>'Mật khẩu đã được thay đổi'
+            // ];
+            // SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
+            return response()->json([
+                'message' => 'User successfully changed password',
+                'user' => $user
+            ], 201);
+        }else{
+            return response()->json(['error'=>"No one have code"], 422);
+        }
+    }       
    
    
 }
