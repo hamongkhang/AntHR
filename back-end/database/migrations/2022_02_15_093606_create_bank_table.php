@@ -15,10 +15,10 @@ class CreateBankTable extends Migration
     {
         Schema::create('bank', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->integer('employee_id')->unsigned();;
-            $table->text('user_name');
-            $table->text('user_number');
+            $table->string('name')->nullable();
+            $table->integer('employee_id')->unsigned();
+            $table->text('user_name')->nullable();
+            $table->text('user_number')->nullable();
            $table->timestamps();
            $table->foreign('employee_id')
             ->references('id')

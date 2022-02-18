@@ -16,10 +16,10 @@ class CreateAddressTable extends Migration
         Schema::create('address', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned();;
-            $table->string('postal_code');
-            $table->string('city');
-            $table->string('country');
-            $table->string('state');
+            $table->string('postal_code')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
             $table->timestamps();
             $table->foreign('employee_id')
             ->references('id')

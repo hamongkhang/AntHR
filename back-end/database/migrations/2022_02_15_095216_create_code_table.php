@@ -16,7 +16,7 @@ class CreateCodeTable extends Migration
         Schema::create('code', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned();;
-            $table->text('code');
+            $table->text('code')->nullable();
             $table->timestamps();
             $table->foreign('employee_id')
             ->references('id')
