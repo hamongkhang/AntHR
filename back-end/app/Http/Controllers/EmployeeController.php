@@ -226,7 +226,10 @@ class EmployeeController extends Controller
      *     @SWG\Response(
      *         response=401,
      *         description="No one!"
-     *     )
+     *     ),
+     *      *  *  security={
+     *           {"api_key_security_example": {}}
+     *       }
      * )
      */
     public function getOneEmployee($id){
@@ -264,7 +267,10 @@ class EmployeeController extends Controller
      *     @SWG\Response(
      *         response=401,
      *         description="No one!"
-     *     )
+     *     ),
+     *      *  *  security={
+     *           {"api_key_security_example": {}}
+     *       }
      * )
      */
     public function getAllEmployee(){
@@ -303,7 +309,10 @@ class EmployeeController extends Controller
      *     @SWG\Response(
      *         response=401,
      *         description="Delete failed!"
-     *     )
+     *     ),
+     *      *  *  security={
+     *           {"api_key_security_example": {}}
+     *       }
      * )
      */
     public function destroyEmployee($id){

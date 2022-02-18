@@ -48,7 +48,10 @@ class AccountController extends Controller
      *     @SWG\Response(
      *         response=401,
      *         description="Failed!"
-     *     )
+     *     ),
+     *      security={
+     *           {"api_key_security_example": {}}
+     *       }
      * )
      */
     public function blockAccount($id){
@@ -71,6 +74,77 @@ class AccountController extends Controller
                     'user' => $account
                     ], 201);
                }
+            }else{
+                return response()->json([
+                    'error'=>1,
+                    'message'=>"Failed"
+                ]);
+            }
+        }else{
+            return response()->json([
+                'error'=>1,
+                'message'=>"Account login is not admin"
+            ]);
+        }
+    }
+
+       /**
+     * @SWG\POST(
+     *     path="api/account/authoriseAccount/",
+     *     description="Return a employee's information",
+     *     @SWG\Parameter(
+     *         name="id",
+     *         in="query",
+     *         type="integer",
+     *         description="Account ID",
+     *         required=true,
+     *     ),
+     *  @SWG\Parameter(
+     *         name="role",
+     *         in="query",
+     *         type="integer",
+     *         description="Account role",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Change authorise account successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="email", type="string"),
+     *             @SWG\Property(property="role", type="integer"),
+     *             @SWG\Property(property="password", type="string"),
+     *             @SWG\Property(property="status", type="string"),
+     *             @SWG\Property(property="created_at", type="datetime"),
+     *             @SWG\Property(property="updated_at", type="datetime"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized!"
+     *     ),
+     *    security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function authoriseAccount(Request $request){
+        $validator=Validator::make($request->all(),[
+            "id"=>'required|integer',
+            "role"=>'required|integer'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
+        }
+        $admin=auth()->user();
+        if($admin->role==1){
+            $account=User::find($request->id);
+            if($account){
+                $account->role=$request->role;
+                $account->save();
+                return response()->json([
+                    'message' => 'Change authorise account successfully',
+                    'user' => $account
+                    ], 201);
             }else{
                 return response()->json([
                     'error'=>1,
