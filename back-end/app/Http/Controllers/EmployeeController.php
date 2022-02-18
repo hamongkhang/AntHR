@@ -133,7 +133,7 @@ class EmployeeController extends Controller
     
          /**
      * @SWG\POST(
-     *     path="/api/employee/createAccount/",
+     *     path="api/employee/createAccount/",
      *     description="Return a account's information",
      *     @SWG\Parameter(
      *         name="password",
@@ -206,82 +206,4 @@ class EmployeeController extends Controller
         ], 401);
        }
     }
-
-             /**
-     * @SWG\GET(
-     *     path="/api/employee/getOneEmployee/{id}",
-     *     description="Return a employee's information",
-     *     @SWG\Response(
-     *         response=200,
-     *         description="Get employee successfully",
-     *         @SWG\Schema(
-     *             @SWG\Property(property="email", type="string"),
-     *             @SWG\Property(property="role", type="integer"),
-     *             @SWG\Property(property="password", type="string"),
-     *             @SWG\Property(property="status", type="string"),
-     *             @SWG\Property(property="created_at", type="datetime"),
-     *             @SWG\Property(property="updated_at", type="datetime"),
-     *            )
-     *     ),
-     *     @SWG\Response(
-     *         response=401,
-     *         description="No one!"
-     *     )
-     * )
-     */
-    public function getOneEmployee($id){
-        $employeeFind = DB::table('employee')->where('id', $request->id)->first();
-        $addressFind = DB::table('address')->where('employee_id', $request->id)->first();
-        $result=[$employeeFind,$addressFind];
-        if($employeeFind){
-            return response()->json([
-            'message' => 'Get employee successfully',
-            'user' => $result
-            ], 201);
-        }else{
-            return response()->json([
-                'error'=>1,
-                'description'=>'No one',
-            ], 401);
-        }
-    }
-             /**
-     * @SWG\GET(
-     *     path="/api/employee/getAllEmployee/",
-     *     description="Return a employee's information",
-     *     @SWG\Response(
-     *         response=200,
-     *         description="Get employee successfully",
-     *         @SWG\Schema(
-     *             @SWG\Property(property="email", type="string"),
-     *             @SWG\Property(property="role", type="integer"),
-     *             @SWG\Property(property="password", type="string"),
-     *             @SWG\Property(property="status", type="string"),
-     *             @SWG\Property(property="created_at", type="datetime"),
-     *             @SWG\Property(property="updated_at", type="datetime"),
-     *            )
-     *     ),
-     *     @SWG\Response(
-     *         response=401,
-     *         description="No one!"
-     *     )
-     * )
-     */
-    public function getAllEmployee(){
-        $employeeFind = DB::table('employee')->get();
-        $addressFind = DB::table('address')->get();
-        $result=[$employeeFind,$addressFind];
-        if($employeeFind){
-            return response()->json([
-            'message' => 'Get employee successfully',
-            'user' => $result
-            ], 201);
-        }else{
-            return response()->json([
-                'error'=>1,
-                'description'=>'No one',
-            ], 401);
-        }
-    }
-
 }
