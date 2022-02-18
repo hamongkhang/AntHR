@@ -31,19 +31,19 @@ class MailNotify extends Mailable
     public function build()
     {
         if($this->data['description'] == 'getNewCode'){
-            return $this->from('web.vatly365@gmail.com')->view('mails.mailGetNewCode')->subject('[VatLy365]_Email xác nhận đăng kí');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[VatLy365]_Email xác nhận đăng kí');
 
         }
         else if ($this->data['description'] == 'notiRegisterSuccess'){
-            return $this->from('web.vatly365@gmail.com')->view('mails.mailNotification')->subject('[VatLy365]_Thông báo đăng kí thành công');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[VatLy365]_Thông báo đăng kí thành công');
 
         }
         else if ($this->data['description'] == 'notiChangePasswordSuccess'){
-            return $this->from('web.vatly365@gmail.com')->view('mails.mailNotification')->subject('[VatLy365]_Thông báo cập nhật tài khoản');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[VatLy365]_Thông báo cập nhật tài khoản');
 
         }
         else if($this->data['description'] == 'getCodeForgot'){
-            return $this->from('web.vatly365@gmail.com')->view('mails.mailGetNewCode')->subject('[VatLy365]_Email xác nhận thay đổi');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[VatLy365]_Email xác nhận thay đổi');
 
         }
     }
