@@ -53,3 +53,7 @@ Route::get('/employee/getAllEmployee', [App\Http\Controllers\EmployeeController:
 Route::get('/employee/getOneEmployee/{id}', [App\Http\Controllers\EmployeeController::class, 'getOneEmployee'])->name('employee.getOneEmployee');
 Route::delete('/employee/destroyEmployee/{id}', [App\Http\Controllers\EmployeeController::class, 'destroyEmployee'])->name('employee.destroyEmployee');
 
+/////////////////////////////////////// Account APIs //////////////////////////////////////////////////////////////////////////////
+
+Route::get('/account/blockAccount/{id}', [App\Http\Controllers\AccountController::class, 'blockAccount'])->name('account.blockAccount');
+Route::get('/account/authoriseAccount/{id}', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
