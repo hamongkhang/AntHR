@@ -28,7 +28,7 @@ class UsersController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['onLogin','onRegister','checkDomain','getCode']]);
+        $this->middleware('auth:api', ['except' => ['onLogin','onRegister','checkDomain','getCode','getCodeForgotPassword','changePasswordForgot']]);
     }
      /**
      * @SWG\POST(
@@ -79,7 +79,7 @@ class UsersController extends Controller
             return response()->json($validator->errors(), 422);      
         }
 
-        if (! $token = auth()->attempt($validator->validated())) {
+        if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         if (auth()->user()->status==="block") {
@@ -274,12 +274,12 @@ class UsersController extends Controller
         $employee = Employee::create($postEmployee);
         $company = Company::create($postCompany);
         //Send mail notification Register account success
-        // $dataSendMail = [
-        //     'description'=>'notiRegisterSuccess',
-        //     'title' => 'Đăng kí tài khoản thành công',
-        //     'content'=>"Chúc mừng bạn đã đăng kí tài khoản thành công tại VatLy365 của chúng tôi, truy cập trang web để có những bài học bổ ích."
-        // ];
-        // SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+        $dataSendMail = [
+            'description'=>'notiRegisterSuccess',
+            'title' => 'Đăng kí tài khoản thành công',
+            'content'=>"Chúc mừng bạn đã đăng kí tài khoản thành công tại AntHR của chúng tôi, truy cập trang web để có những bài học bổ ích."
+        ];
+        SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
         return Response()->json(array("successfully"=> 1,"account"=>$postAccount));
     }
     else{
@@ -421,14 +421,14 @@ class UsersController extends Controller
         ];
          $user = RegisterCode::create($post);
           // Mail send new code for new account register
-        //  $dataSendMail = [
-        //     'description'=>'getNewCode',
-        //     'title' => 'Xác nhận email đăng kí',
-        //     'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-        //     'content'=>'Để xác nhận đăng kí, vui lòng nhập mã xác nhận ở bên dưới',
-        //     'code'=>$code
-        // ];
-        //  SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+         $dataSendMail = [
+            'description'=>'getNewCode',
+            'title' => 'Xác nhận email đăng kí',
+            'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+            'content'=>'Để xác nhận đăng kí, vui lòng nhập mã xác nhận ở bên dưới',
+            'code'=>$code
+        ];
+         SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
        return Response()->json(array("Successfully. Please check code your email!"=> 1));
     }
     }
@@ -530,12 +530,12 @@ class UsersController extends Controller
                     ['password' => bcrypt($request->new_password)]
                 );
         // Mail notification about change password success
-        //  $dataSendMail = [
-        //     'description'=>'notiChangePasswordSuccess',
-        //     'title' => 'Cập nhật mật khẩu thành công',
-        //     'content'=>'Đổi mật khẩu thành công'
-        // ];
-        //  SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
+         $dataSendMail = [
+            'description'=>'notiChangePasswordSuccess',
+            'title' => 'Cập nhật mật khẩu thành công',
+            'content'=>'Đổi mật khẩu thành công'
+        ];
+         SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
         return response()->json([
             'message' => 'User successfully changed password',
             'user' => $user
@@ -587,14 +587,14 @@ class UsersController extends Controller
                     $user->code = $code;
                     $user->save();
                     // Mail send code for account forgot password
-                    // $dataSendMail = [
-                    //     'description'=>'getCodeForgot',
-                    //     'title' => 'Xác nhận thay đổi mật khẩu',
-                    //     'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-                    //     'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-                    //     'code'=>$code
-                    // ];
-                    // SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+                    $dataSendMail = [
+                        'description'=>'getCodeForgot',
+                        'title' => 'Xác nhận thay đổi mật khẩu',
+                        'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+                        'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
+                        'code'=>$code
+                    ];
+                    SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
                     return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email ));    
                 }else{
                     $postArrayRes = [
@@ -605,14 +605,14 @@ class UsersController extends Controller
                     ];
                      $user = ForgotCode::create($postArrayRes);
                     // Mail send code for account forgot password
-                    //  $dataSendMail = [
-                    //     'description'=>'getCodeForgot',
-                    //     'title' => 'Xác nhận thay đổi mật khẩu',
-                    //     'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-                    //     'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-                    //     'code'=>$code
-                    // ];
-                    // SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
+                     $dataSendMail = [
+                        'description'=>'getCodeForgot',
+                        'title' => 'Xác nhận thay đổi mật khẩu',
+                        'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+                        'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
+                        'code'=>$code
+                    ];
+                    SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email ));
                 }
         }else{
@@ -686,12 +686,12 @@ class UsersController extends Controller
     
             DB::delete('delete from forgot_code where id = ?',[$data->id]);
             // Mail notification for change password success for account forgot
-            // $dataSendMail = [
-            //     'description'=>'notiChangePasswordSuccess',
-            //     'title' => 'Xác nhận thay đổi mật khẩu',
-            //     'content'=>'Mật khẩu đã được thay đổi'
-            // ];
-            // SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
+            $dataSendMail = [
+                'description'=>'notiChangePasswordSuccess',
+                'title' => 'Xác nhận thay đổi mật khẩu',
+                'content'=>'Mật khẩu đã được thay đổi'
+            ];
+            SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
             return response()->json([
                 'message' => 'User successfully changed password',
                 'user' => $user
