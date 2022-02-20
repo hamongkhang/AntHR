@@ -47,7 +47,68 @@
                     "401": {
                         "description": "Failed!"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/account/authoriseAccount/": {
+            "post": {
+                "description": "Return a employee's information",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Account ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Account role",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Change authorise account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
             }
         },
         "/api/employee/createAccount/": {
@@ -146,7 +207,12 @@
                     "401": {
                         "description": "No one!"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
             }
         },
         "/api/employee/getAllEmployee/": {
@@ -181,7 +247,12 @@
                     "401": {
                         "description": "No one!"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
             }
         },
         "/api/employee/destroyEmployee/{id}": {
@@ -216,7 +287,12 @@
                     "401": {
                         "description": "Delete failed!"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
             }
         },
         "api/users/login/": {
