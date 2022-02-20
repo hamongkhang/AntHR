@@ -284,4 +284,50 @@ class EmployeeController extends Controller
         }
     }
 
+                 /**
+     * @SWG\DELETE(
+     *     path="/api/employee/destroyEmployee/{id}",
+     *     description="Return a employee's information",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Delete employee successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="email", type="string"),
+     *             @SWG\Property(property="role", type="integer"),
+     *             @SWG\Property(property="password", type="string"),
+     *             @SWG\Property(property="status", type="string"),
+     *             @SWG\Property(property="created_at", type="datetime"),
+     *             @SWG\Property(property="updated_at", type="datetime"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Delete failed!"
+     *     )
+     * )
+     */
+    public function destroyEmployee($id){
+        $checkLogin = auth()->user();
+        if($checkLogin->role==1){
+            $employee= Employee::find($id);
+            if ($employee){
+               $employee->delete();
+               return response()->json([
+                   'message'=>"Delete successfully",
+                   'data'=>$employee
+               ]);
+            }else{
+               return response()->json([
+                   'error'=>1,
+                   'description'=>'Delete failed'
+               ],401);
+            }
+        }else{
+            return response()->json([
+                'error'=>1,
+                'description'=>'account login is not admin',
+            ], 401);
+        }
+    }
+
 }
