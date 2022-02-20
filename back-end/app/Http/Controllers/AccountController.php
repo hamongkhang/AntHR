@@ -158,4 +158,51 @@ class AccountController extends Controller
             ]);
         }
     }
+
+
+     /**
+     * @SWG\GET(
+     *     path="/api/account/userProfile",
+     *     description="Return a profile's information",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Block or Active account successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="email", type="string"),
+     *             @SWG\Property(property="role", type="integer"),
+     *             @SWG\Property(property="password", type="string"),
+     *             @SWG\Property(property="status", type="string"),
+     *             @SWG\Property(property="created_at", type="datetime"),
+     *             @SWG\Property(property="updated_at", type="datetime"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Failed!"
+     *     ),
+     *      security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function userProfile(){
+        $checkLogin=auth()->user();
+        if($checkLogin){
+            $employeeFind = DB::table('employee')->where('user_id', $checkLogin->id)->first();
+            $codeFind = DB::table('code')->where('employee_id',  $employeeFind->id)->first();
+            $addressFind = DB::table('address')->where('employee_id',  $employeeFind->id)->first();
+            $roleFind = DB::table('role')->where('employee_id',  $employeeFind->id)->first();
+            $bankFind = DB::table('bank')->where('employee_id',  $employeeFind->id)->first();
+            $get=[$checkLogin,$employeeFind,$codeFind,$addressFind,$bankFind];
+            return response()->json([
+                'message'=>"Delete successfully",
+                'data'=>$get
+            ]);
+        }else{
+        return response()->json([
+            'error'=>1,
+            'description'=>'No user',
+        ], 401);
+    }
+    }
 }

@@ -111,6 +111,46 @@
                 ]
             }
         },
+        "/api/account/userProfile": {
+            "get": {
+                "description": "Return a profile's information",
+                "responses": {
+                    "200": {
+                        "description": "Block or Active account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Failed!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
         "/api/employee/createAccount/": {
             "post": {
                 "description": "Return a account's information",
