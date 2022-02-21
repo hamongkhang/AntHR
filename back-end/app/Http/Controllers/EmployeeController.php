@@ -373,10 +373,7 @@ class EmployeeController extends Controller
 public function changeAvatar(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'avatar'=>'image|mimes:png,jpeg,jpg',
-    ],[
-        'avatar.image' => 'Hãy chọn hình ảnh',
-        'avatar.mimes' => 'Hãy chọn hình ảnh có đuôi là PNG, JPG, JPEG',
+        'avatar'=>'image|mimes:png,jpeg,jpg,webp',
     ]);
     if ($validator->fails()) {
         return response()->json(['error'=>$validator->errors()], 400);      
@@ -409,7 +406,7 @@ public function changeAvatar(Request $request)
             }
             else{
                 return response()->json([
-                    'error' => 'No images selected',
+                    'error' => ['avatar'=>['No images selected']],
                     ], 400);
             }
         }
@@ -418,6 +415,210 @@ public function changeAvatar(Request $request)
                 'error' => 'employee not found',
                 ], 404);
         }
+    }
+    else{
+        return response()->json([
+            'error' => 'Unauthorized',
+            ], 401);
+    }
+}
+   /**
+     * @SWG\POST(
+     *     path="/api/employee/changeInformation/",
+     *     description="change information employee",
+     *     @SWG\Parameter(
+     *         name="first_name",
+     *         in="query",
+     *         type="string",
+     *         description="employee first name",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="last_name",
+     *         in="query",
+     *         type="string",
+     *         description="employee last name",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="phone",
+     *         in="query",
+     *         type="string",
+     *         description="employee phone number",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="birthday",
+     *         in="query",
+     *         type="string",
+     *         description="employee birthday",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="postal_code",
+     *         in="query",
+     *         type="string",
+     *         description="employee postal code",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="city",
+     *         in="query",
+     *         type="string",
+     *         description="employee city",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="country",
+     *         in="query",
+     *         type="string",
+     *         description="employee country",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="state",
+     *         in="query",
+     *         type="string",
+     *         description="employee state",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="name_in_bank",
+     *         in="query",
+     *         type="string",
+     *         description="employee name in bank",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="user_name",
+     *         in="query",
+     *         type="string",
+     *         description="employee user name in bank",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="user_number",
+     *         in="query",
+     *         type="string",
+     *         description="employee bank number",
+     *         required=false,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Change information success",
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Employee not found"
+     *     ),
+     *     @SWG\Response(
+     *         response=400,
+     *         description="validation's errors"
+     *     )
+     *      *      *  *  security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+public function changeInformation(Request $request){
+    $validator = Validator::make($request->all(), [
+        'first_name' => 'max:255',
+        'last_name' => 'max:255',
+        'phone' => 'max:13',
+        'birthday' => 'before:today',
+
+        'postal_code' => 'max:255',
+        'city' => 'max:255',
+        'country' => 'max:255',
+        'state' => 'max:255',
+
+        'name_in_bank' => 'max:255',
+        'user_name' => 'max:255',
+        'user_number' => 'max:255',
+    ]);
+    if ($validator->fails()) {
+        return response()->json(['error'=>$validator->errors()], 400);      
+    }
+    $onLogin = auth()->user();
+    if($onLogin){
+        // update information in employee table
+        $employee = Employee::where('user_id',$onLogin->id)->first();
+        if($employee){
+            $employee->first_name =$request->first_name != null? $request->first_name:$employee->first_name;
+            $employee->last_name = $request->last_name != null? $request->last_name:$employee->last_name;
+            $employee->phone = $request->phone != null? $request->phone:$employee->phone;
+            $employee->birthday = $request->birthday != null?$request->birthday:$employee->birthday;
+            $employee->gender = $request->gender != null? $request->gender:$employee->gender;
+            $employee->updated_at = Carbon::now('Asia/Ho_Chi_Minh');
+            $employee->save();
+            // update information in address table
+            $address = DB::table('address')->where('employee_id', $employee->id)->first();
+            if($address){
+                $address = DB::table('address')
+                ->where('employee_id',$employee->id)
+                ->update(
+                    [
+                        'postal_code' => $request->postal_code!=null?$request->postal_code:$address->postal_code,
+                        'city' => $request->city!=null?$request->city:$address->city,
+                        'country' => $request->country!=null?$request->country:$address->country,
+                        'state' => $request->state!=null?$request->state:$address->state,
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    ]
+                    );
+            }
+            else{
+                $address = DB::table('address')->insert(
+                    [
+                        'employee_id' => $employee->id,
+                        'postal_code' => $request->postal_code,
+                        'city' => $request->city,
+                        'country' => $request->country,
+                        'state' => $request->state,
+                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    ]
+                    );
+            }
+            // update information in bank table
+            $bank = DB::table('bank')->where('employee_id', $employee->id)->first();
+            if($bank){
+                $bank = DB::table('bank')
+                ->where('employee_id',$employee->id)
+                ->update(
+                    [
+                        'name' => $request->name_in_bank!=null?$request->name_in_bank:$bank->name,
+                        'user_name' => $request->user_name!=null?$request->user_name:$bank->user_name,
+                        'user_number' => $request->user_number!=null?$request->user_number:$bank->user_number,
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    ]
+                    );
+            }
+            else{
+                $bank = DB::table('bank')->insert(
+                    [
+                        'employee_id' => $employee->id,
+                        'name' => $request->name_in_bank,
+                        'user_name' => $request->user_name,
+                        'user_number' => $request->user_number,
+                        'created_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                        'updated_at' => Carbon::now('Asia/Ho_Chi_Minh'),
+                    ]
+                    );
+            }
+            return response()->json([
+                'message' => 'Change your information success',
+                ], 200);
+        }
+        else{
+            return response()->json([
+                'error' => 'employee not found',
+                ], 404);
+        }
+        
     }
     else{
         return response()->json([
