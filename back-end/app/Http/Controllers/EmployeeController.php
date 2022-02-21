@@ -373,10 +373,7 @@ class EmployeeController extends Controller
 public function changeAvatar(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'avatar'=>'image|mimes:png,jpeg,jpg',
-    ],[
-        'avatar.image' => 'Hãy chọn hình ảnh',
-        'avatar.mimes' => 'Hãy chọn hình ảnh có đuôi là PNG, JPG, JPEG',
+        'avatar'=>'image|mimes:png,jpeg,jpg,webp',
     ]);
     if ($validator->fails()) {
         return response()->json(['error'=>$validator->errors()], 400);      
@@ -409,7 +406,7 @@ public function changeAvatar(Request $request)
             }
             else{
                 return response()->json([
-                    'error' => 'No images selected',
+                    'error' => ['avatar'=>['No images selected']],
                     ], 400);
             }
         }
