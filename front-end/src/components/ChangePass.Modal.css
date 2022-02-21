@@ -1,0 +1,92 @@
+.modal-content {
+  border: 16px solid white;
+}
+.fa,
+.fab,
+.fad,
+.fal,
+.far,
+.fas {
+  position: static;
+  /* margin-left: 95%;
+  transform: translateY(-177%);
+  -webkit-transform: translateY(-177%);
+  -moz-transform: translateY(-177%);
+  -ms-transform: translateY(-177%);
+  -o-transform: translateY(-177%); */
+}
+.btn-check:active + .btn-primary,
+.btn-check:checked + .btn-primary,
+.btn-primary.active,
+.btn-primary:active,
+.show > .btn-primary.dropdown-toggle {
+  color: #ff9900;
+  background-color: #ffffcc;
+  border-color: #ffffcc;
+  font-family: Arial;
+}
+.btn-check:active + .btn-secondary,
+.btn-check:checked + .btn-secondary,
+.btn-secondary.active,
+.btn-secondary:active,
+.show > .btn-secondary.dropdown-toggle {
+  color: #ff9900;
+  background-color: #565e64;
+  border-color: #51585e;
+  font-family: Arial;
+}
+.col-form-label {
+  font-family: Arial;
+}
+.modal-title .h4 {
+  font-family: Arial;
+}
+.form-control {
+  font-family: Arial;
+}
+.form-changepass {
+  padding-top: 30px;
+  display: center;
+}
+
+#eye_modal {
+  margin-right: 15px;
+  transform: translateY(-170%);
+  -webkit-transform: translateY(-170%);
+  -moz-transform: translateY(-170%);
+  -ms-transform: translateY(-170%);
+  -o-transform: translateY(-170%);
+}
+@media (min-width: 2560px) {
+}
+
+@media (max-width: 1024px) {
+}
+
+@media (max-width: 768px) {
+  .form-changepass {
+    padding-top: 40px;
+    display: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-changepass {
+    padding-top: 20px;
+    display: center;
+  }
+}
+
+@media (max-width: 375px) {
+  .form-changepass {
+    padding-top: 20px;
+    display: center;
+  }
+}
+
+@media (max-width: 320px) {
+  .form-changepass {
+    padding-top: 20px;
+    display: center;
+  }
+}
