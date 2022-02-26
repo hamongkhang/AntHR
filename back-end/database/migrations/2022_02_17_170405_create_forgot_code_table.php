@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAccountTable extends Migration
+class CreateForgotCodeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,11 @@ class CreateAccountTable extends Migration
      */
     public function up()
     {
-        Schema::create('account', function (Blueprint $table) {
+        Schema::create('forgot_code', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('employee_id')->unsigned();;
             $table->text('email');
-            $table->text('password');
-            $table->integer('role');
+            $table->string('code');
             $table->timestamps();
-            $table->foreign('employee_id')
-            ->references('id')
-            ->on('employee')
-            ->onUpdate('cascade')
-            ->onDelete('cascade');
         });
     }
 
@@ -35,6 +28,6 @@ class CreateAccountTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('account');
+        Schema::dropIfExists('forgot_code');
     }
 }
