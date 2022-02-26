@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 use App\Models\Employee;
 use App\Models\Company;
@@ -339,4 +340,86 @@ class EmployeeController extends Controller
         }
     }
 
+    
+        /**
+     * @SWG\POST(
+     *     path="/api/employee/changeAvatar/",
+     *     description="change avatar employee",
+     *     @SWG\Parameter(
+     *         name="avatar",
+     *         in="query",
+     *         type="object",
+     *         description="image type",
+     *         required=true,
+     *     )
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Change avatar success",
+     *     ),
+     *     @SWG\Response(
+     *         response=401,
+     *         description="Unauthorized"
+     *     ),
+     *     @SWG\Response(
+     *         response=404,
+     *         description="Employee not found"
+     *     ),
+     *     @SWG\Response(
+     *         response=400,
+     *         description="No image selected"
+     *     )
+     * )
+     */
+public function changeAvatar(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'avatar'=>'image|mimes:png,jpeg,jpg,webp',
+    ]);
+    if ($validator->fails()) {
+        return response()->json(['error'=>$validator->errors()], 400);      
+    }
+    $checkLogin = auth()->user();
+    if($checkLogin){
+        $employee = Employee::where('user_id',$checkLogin->id)->first();
+        if($employee){
+            if($request->hasfile('avatar')) {
+                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars';
+                if($employee->avatar!=null){
+                    File::delete($destinationPath.DIRECTORY_SEPARATOR.$employee->avatar);
+                }
+                if (!file_exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0775, true);
+                }       
+                $file = $request->file('avatar');
+                $date = now('Asia/Ho_Chi_Minh');
+                $date = $date->format('d-m-Y-H-i-s');
+                $extension = $file->extension();
+                $newImageName = Str::slug('avatar', '_').'_'.$date.'.'.$extension;
+                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars', $newImageName);
+                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'images'.'/'.'avatars'.'/'.$newImageName;
+                $employee->avatar = $newImageName;
+                $employee->save();
+                return response()->json([
+                    'message' => 'Change avatar success',
+                    ], 200);
+                
+            }
+            else{
+                return response()->json([
+                    'error' => ['avatar'=>['No images selected']],
+                    ], 400);
+            }
+        }
+        else{
+            return response()->json([
+                'error' => 'employee not found',
+                ], 404);
+        }
+    }
+    else{
+        return response()->json([
+            'error' => 'Unauthorized',
+            ], 401);
+    }
+}
 }

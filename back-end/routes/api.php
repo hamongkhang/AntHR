@@ -55,6 +55,7 @@ Route::post('/employee/createAccount', [App\Http\Controllers\EmployeeController:
 Route::get('/employee/getAllEmployee', [App\Http\Controllers\EmployeeController::class, 'getAllEmployee'])->name('employee.getAllEmployee');
 Route::get('/employee/getOneEmployee/{id}', [App\Http\Controllers\EmployeeController::class, 'getOneEmployee'])->name('employee.getOneEmployee');
 Route::delete('/employee/destroyEmployee/{id}', [App\Http\Controllers\EmployeeController::class, 'destroyEmployee'])->name('employee.destroyEmployee');
+Route::post('/employee/changeAvatar', [App\Http\Controllers\EmployeeController::class, 'changeAvatar'])->name('employee.changeAvatar');
 
 /////////////////////////////////////// Account APIs //////////////////////////////////////////////////////////////////////////////
 
