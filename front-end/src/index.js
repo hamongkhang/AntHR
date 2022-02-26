@@ -3,17 +3,13 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import Login from './Components/Login';
-import Login2 from './Components/Login2';
-import './Components/Login.css';
-import './Components/Login2.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './css/account.css';
 
-// npm i --save react-bootstrap
+
 ReactDOM.render(
   <React.StrictMode>
-    {/* <Login /> */}
-    <Login2 />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

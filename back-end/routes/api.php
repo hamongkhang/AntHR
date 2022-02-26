@@ -35,6 +35,9 @@ Route::get('token', function (Request $request) {
 /////////////////////////////////////// Users APIs //////////////////////////////////////////////////////////////////////////////
 
 Route::post('/user/getCode', [App\Http\Controllers\UsersController::class, 'getCode'])->name('user.getCode');
+Route::post('/user/checkForm1', [App\Http\Controllers\UsersController::class, 'checkForm1'])->name('user.checkForm1');
+Route::post('/user/checkForm2', [App\Http\Controllers\UsersController::class, 'checkForm2'])->name('user.checkForm2');
+Route::post('/user/checkForm3', [App\Http\Controllers\UsersController::class, 'checkForm3'])->name('user.checkForm3');
 Route::post('/user/register', [App\Http\Controllers\UsersController::class, 'onRegister'])->name('user.register');
 Route::post('/user/checkDomain', [App\Http\Controllers\UsersController::class, 'checkDomain'])->name('user.checkDomain');
 Route::post('/user/login', [App\Http\Controllers\UsersController::class, 'onLogin'])->name('user.login');

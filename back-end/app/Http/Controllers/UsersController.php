@@ -28,7 +28,7 @@ class UsersController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['onLogin','onRegister','checkDomain','getCode','getCodeForgotPassword','changePasswordForgot']]);
+        $this->middleware('auth:api', ['except' => ['onLogin','onRegister','checkDomain','getCode','getCodeForgotPassword','changePasswordForgot','checkForm1','checkForm2','checkForm3']]);
     }
      /**
      * @SWG\POST(
@@ -76,7 +76,7 @@ class UsersController extends Controller
             'password' => 'required|string|min:8',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);      
+            return response()->json(['error'=>$validator->errors()], 400);      
         }
 
         if (!$token = auth()->attempt($validator->validated())) {
@@ -121,8 +121,8 @@ class UsersController extends Controller
         $validator=Validator::make($request->All(),[
             'domain'=>'required'
         ]);
-        if($validator->fails()){
-            return response()->json($validator->errors(),422);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);      
         }
         $domainFind=DB::table('company')->where('domain', $request->domain)->first();
         if($domainFind){
@@ -140,11 +140,13 @@ class UsersController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     protected function createNewToken($token){
+        $name=DB::table('employee')->where('user_id', auth()->user()->id)->first();
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
+            'name' => $name
         ]);
     }
  
@@ -362,6 +364,39 @@ class UsersController extends Controller
      *     )
      * )
      */
+    public function checkForm1(Request $request){
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'email'=>'required|email|unique:employee',
+            'password'=>'required|min:8',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
+        }
+        return Response()->json(array("Successfully. Please check code your email!"=> 1));
+    }
+    public function checkForm2(Request $request){
+        $validator = Validator::make($request->all(), [
+            'domain'=>'required',
+            'size'=>'required|integer|',
+            'company_name'=>'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
+        }
+        return Response()->json(array("Successfully. Please check code your email!"=> 1));
+    }
+    public function checkForm3(Request $request){
+        $validator = Validator::make($request->all(), [
+            'role'=>'required',
+            'over_view'=>'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
+        }
+        return Response()->json(array("Successfully. Please check code your email!"=> 1));
+    }
     public function getCode(Request $request){
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
@@ -517,12 +552,9 @@ class UsersController extends Controller
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);     
         }
-        if($request->current_password===$request->new_password){
-            return response()->json(['Old password is same new password'=>$validator->errors()], 401);     
-        }
         $hashedPassword = auth()->user()->password;
         if (!Hash::check($request->current_password , $hashedPassword)) {
-            return response()->json(['Current password is not correct'=>$validator->errors()], 401);     
+            return response()->json(['error'=>"Current password is not correct"], 401);
         }
         $userId = auth()->user()->id;
 
@@ -571,8 +603,8 @@ class UsersController extends Controller
             'email' => 'required|string|email',
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
         }
         $code=$random = Str::random(6);
         $data = DB::table('users')->where('email', $request->email)->first();
@@ -671,8 +703,8 @@ class UsersController extends Controller
             'new_password_confirmed' => 'required|string|same:new_password|min:8',
         ]);
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401);     
         }
 
         $data = DB::table('forgot_code')->where('code', $request->code)->first();
