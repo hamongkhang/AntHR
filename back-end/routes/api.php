@@ -63,3 +63,7 @@ Route::post('/employee/changeInformation', [App\Http\Controllers\EmployeeControl
 Route::get('/account/blockAccount/{id}', [App\Http\Controllers\AccountController::class, 'blockAccount'])->name('account.blockAccount');
 Route::post('/account/authoriseAccount', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
 Route::get('/account/userProfile', [App\Http\Controllers\AccountController::class, 'userProfile'])->name('account.userProfile');
+
+Route::get('/auth/redirect/{provider}', [App\Http\Controllers\SocialController::class, 'redirect'])->name('user.redirect');
+Route::get('/callback/{provider}',  [App\Http\Controllers\SocialController::class, 'callback'])->name('user.callback');
+Route::get('/auth/redirect2/{provider}', [App\Http\Controllers\SocialController::class, 'redirect2'])->name('user.redirect2');

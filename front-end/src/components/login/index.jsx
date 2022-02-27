@@ -15,6 +15,15 @@ import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 
 const Login = (props) => {
+    const { changeRender, setReRender } = props;
+    const value = queryString.parse(props.location.search);
+    const first_name = value.first_name;
+    const last_name = value.last_name;
+    const avatar = value.avatar;
+    const avatar_google = value.avatar_google;
+    const access_token = value.access_token;
+    const error = value.error;
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
     const togglePasswordVisibility = () => {
       if(!isPasswordShown){
@@ -107,26 +116,19 @@ const Login = (props) => {
   };
 
 
-    // const loginGoogle = (event) => {
-    //     const requestOptions = {
-    //         method: 'GET',
-    //     };
-    //     fetch('http://127.0.0.1:8000/api/auth/redirect/google', requestOptions)
-    //         .then((res) => res.json())
-    //         .then((json) => {
-    //             window.location.href = json.link;
-    //         });
-    // };
-    // const loginFacebook = (event) => {
-    //     const requestOptions = {
-    //         method: 'GET',
-    //     };
-    //     fetch('http://127.0.0.1:8000/api/auth/facebook', requestOptions)
-    //         .then((res) => res.json())
-    //         .then((json) => {
-    //             window.location.href = json.link;
-    //         });
-    // };
+    const loginGoogle = (event) => {
+      event.preventDefault();
+
+        const requestOptions = {
+            method: 'GET',
+        };
+        fetch(process.env.REACT_APP_API+'/auth/redirect/google', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+                window.location.href = json.link;
+            });
+    };
+
 
     const onLogin = (e) => {
             e.preventDefault();
@@ -186,8 +188,42 @@ const Login = (props) => {
     };
     useEffect(() => {
       if (localStorage.getItem('access_token')) {
-          history.push('/user-profile');
+        history.push('/user-profile');
+      }else if(access_token){
+        localStorage.setItem('access_token', access_token);
+        localStorage.setItem('first_name', first_name);
+        localStorage.setItem('last_name', last_name);
+        if (avatar_google) {
+            localStorage.setItem('avatar_google', avatar_google);
+        } else {
+            localStorage.setItem('avatar', avatar);
+        }
+        changeRender();
+        setReRender(true);
+        history.push('/user-profile');
+      }else if(error){
+        if (error === 'Blocked') {
+          toast.warn(`Your account has been blocked !!!`, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+          });
+      }else{
+        toast.error(`Login information is incorrect !!!`, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+      });
       }
+    }
   }, []);
     return(
   showLogin ? 
@@ -278,6 +314,7 @@ const Login = (props) => {
           <Button
             type="submit"
             className="btnLogin "
+            onClick={(event)=>loginGoogle(event)}
             style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #CCCCCC",
