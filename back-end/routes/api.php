@@ -63,7 +63,17 @@ Route::post('/employee/changeInformation', [App\Http\Controllers\EmployeeControl
 Route::get('/account/blockAccount/{id}', [App\Http\Controllers\AccountController::class, 'blockAccount'])->name('account.blockAccount');
 Route::post('/account/authoriseAccount', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
 Route::get('/account/userProfile', [App\Http\Controllers\AccountController::class, 'userProfile'])->name('account.userProfile');
-
 Route::get('/auth/redirect/{provider}', [App\Http\Controllers\SocialController::class, 'redirect'])->name('user.redirect');
 Route::get('/callback/{provider}',  [App\Http\Controllers\SocialController::class, 'callback'])->name('user.callback');
-Route::get('/auth/redirect2/{provider}', [App\Http\Controllers\SocialController::class, 'redirect2'])->name('user.redirect2');
+
+
+/////////////////////////////////////// Document Folder APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/document/getAllFolder', [App\Http\Controllers\DocumentFolderController::class, 'getAllFolder'])->name('document.getAllFolder');
+Route::get('/document/getOneFolder/{id}', [App\Http\Controllers\DocumentFolderController::class, 'getOneFolder'])->name('document.getOneFolder');
+Route::delete('/document/destroyFolder/{id}', [App\Http\Controllers\DocumentFolderController::class, 'destroyFolder'])->name('document.destroyFolder');
+Route::post('/document/createFolder', [App\Http\Controllers\DocumentFolderController::class, 'createFolder'])->name('document.createFolder');
+Route::post('/document/updateFolder/{id}', [App\Http\Controllers\DocumentFolderController::class, 'updateFolder'])->name('document.updateFolder');
+Route::post('/document/changeShare/{id}', [App\Http\Controllers\DocumentFolderController::class, 'changeShare'])->name('document.changeShare');
+Route::post('/document/createDocument', [App\Http\Controllers\DocumentController::class, 'createDocument'])->name('document.createDocument');
+Route::post('/document/updateDocument/{id}', [App\Http\Controllers\DocumentController::class, 'updateDocument'])->name('document.updateDocument');
+Route::delete('/document/destroyDocument/{id}', [App\Http\Controllers\DocumentController::class, 'destroyDocument'])->name('document.destroyDocument');

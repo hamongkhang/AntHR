@@ -151,6 +151,490 @@
                 ]
             }
         },
+        "/api/document/createDocument": {
+            "post": {
+                "description": "Return document's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document's name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Document's size",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "folder_id",
+                        "in": "query",
+                        "description": "Document's folder",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create folder successfully",
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/updateDocument/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document's Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Document's size",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "folder_id",
+                        "in": "query",
+                        "description": "Document's folder",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/destroyDocument/{id}": {
+            "delete": {
+                "description": "Return document's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete document successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/createFolder": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document folder's name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Document folder's description",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "share",
+                        "in": "query",
+                        "description": "Document folder's share",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create folder successfully",
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/getAllFolder": {
+            "get": {
+                "description": "Return all document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/getOneFolder/id": {
+            "get": {
+                "description": "Return one document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "size": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/updateFolder/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document folder's Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Document folder's description",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/destroyFolder/{id}": {
+            "delete": {
+                "description": "Return document folder's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/changeShare/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
         "/api/employee/createAccount/": {
             "post": {
                 "description": "Return a account's information",
