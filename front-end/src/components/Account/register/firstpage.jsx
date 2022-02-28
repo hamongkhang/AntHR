@@ -15,21 +15,39 @@ const Firstpage = () => {
         email:'',
     });
  
-    const handleChange=(e)=>{
+    const handleChange=(e, number)=>{
+        console.log(number);
         const {name, value} =e.target;
         setDataForm({...dataForm,[name]:value});
-
-        if(e.target.value !==''){
-            setDisable(false);
-            setStylebnt({
-                cursor:'pointer',
-                backgroundColor:'#ffffcc',
-                color:'#ff9900',
-              });
+        if( e.target.value !==''&& dataForm.password !==''  && dataForm.lastName !==''  
+        && dataForm.email !=='' && number==1){
+            checkResult();
         }
+        if( e.target.value !==''&& dataForm.firstName !==''  && dataForm.password !==''  
+        && dataForm.email !=='' && number==2){
+            checkResult();
+        }
+        if( e.target.value !==''&& dataForm.firstName !==''  && dataForm.lastName !==''  
+        && dataForm.password !=='' && number==3){
+            checkResult();
+        }
+        if( e.target.value !==''&& dataForm.firstName !==''  && dataForm.lastName !==''  
+        && dataForm.email !=='' && number==4){
+            checkResult();
+        }   
         if(e.target.value==''){
+            setDisable(true);
             setStylebnt(null)
         }
+    }
+
+    const checkResult=()=>{
+        setDisable(false);
+        setStylebnt({
+            cursor:'pointer',
+            backgroundColor:'#ffffcc',
+            color:'#ff9900',
+          });
     }
 
     const Eye = () => {
@@ -59,19 +77,20 @@ const Firstpage = () => {
                   
                     <div className={register.register__form}>
                         <div className={`${register.wrapper__form_input1} ${register.wrapper__form}`}>
-                            <input type='text' name='firstName' placeholder='First Name' value={dataForm.firstName} onChange={handleChange}/>
+                            <input type='text' name='firstName' placeholder='First Name' value={dataForm.firstName} 
+                            onChange={(e)=>{{handleChange(e,1)}}}/>
                         </div>
                         <div className={`${register.wrapper__form_input2} ${register.wrapper__form}`}>
-                            <input type='text' name='lastName' placeholder='Last Name'
-                            value={dataForm.lastName} onChange={handleChange}/>
+                            <input type='text' name='lastName' placeholder='Last Name' value={'btn1'}
+                            value={dataForm.lastName} onChange={(e)=>{{handleChange(e,2)}}}/>
                         </div>
                         <div className={`${register.wrapper__form_input3} ${register.wrapper__form}`}>
-                            <input type='email' name='email' placeholder='Work Email'
-                            value={dataForm.email} onChange={handleChange}/>
+                            <input type='email' name='email' placeholder='Work Email' value={'btn1'}
+                            value={dataForm.email} onChange={(e)=>{{handleChange(e,3)}}}/>
                         </div>
                         <div className={`${register.wrapper__form_input4} ${register.wrapper__form}`}>
                             <input type={password} name='password' placeholder='Password' 
-                            value={dataForm.password} onChange={handleChange}/>
+                            value={dataForm.password} onChange={(e)=>{{handleChange(e,4)}}}/>
                             <i onClick={Eye} className={`fa ${eye ? "fa-eye-slash" : "fa-eye"} ${register.icon_eye}`}></i>
                         </div>
                     </div>

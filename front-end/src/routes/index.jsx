@@ -7,13 +7,15 @@ import {
 import Firstpage from '../components/Account/register/firstpage';
 import Secondpage from '../components/Account/register/secondpage';
 import Thirdpage from "../components/Account/register/thirdpage";
+import Profile from "../components/Views/profile";
 
 const routes = () => {
     return (
         <>
             <Router>
                 <Routes>
-                    <Route path="/" exact element={<Firstpage />} />
+
+                    <Route path="/" exact element={<Profile />} />
                     <Route path="second-page" exact element={<Secondpage />} />
                     <Route path="third-page" exact element={<Thirdpage />} />
                 </Routes>
