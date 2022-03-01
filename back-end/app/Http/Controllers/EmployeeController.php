@@ -12,6 +12,10 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Exports\ExportEmployee;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 use App\Models\Employee;
 use App\Models\Company;
@@ -27,7 +31,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['createAccount']]);
+        $this->middleware('auth:api', ['except' => []]);
     }
 
          /**
@@ -275,9 +279,10 @@ class EmployeeController extends Controller
      * )
      */
     public function getAllEmployee(){
+        $userFind=DB::table('users')->get();
         $employeeFind = DB::table('employee')->get();
         $addressFind = DB::table('address')->get();
-        $result=[$employeeFind,$addressFind];
+        $result=[$userFind,$employeeFind,$addressFind];
         if($employeeFind){
             return response()->json([
             'message' => 'Get employee successfully',
@@ -626,4 +631,9 @@ public function changeInformation(Request $request){
             ], 401);
     }
 }
+
+public function exportEmployee(){
+    return Excel::download(new ExportEmployee, 'employee.xlsx');
+}
+
 }
