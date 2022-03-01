@@ -115,6 +115,7 @@ class NewController extends Controller
         return response()->json(["error" => "You are not admin!!!"],401);
     }
     }
+    
     /**
      * @SWG\GET(
      *     path="/api/new/getAllNew",
