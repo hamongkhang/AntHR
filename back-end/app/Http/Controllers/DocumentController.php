@@ -27,7 +27,7 @@ class DocumentController extends Controller
      *      @SWG\Parameter(
      *         name="name",
      *         in="query",
-     *         type="string",
+     *         type="file",
      *         description="Document's name",
      *         required=true,
      *     ),
@@ -126,7 +126,7 @@ class DocumentController extends Controller
      *  @SWG\Parameter(
      *         name="name",
      *         in="query",
-     *         type="string",
+     *         type="file",
      *         description="Document's Name",
      *         required=true,
      *     ),

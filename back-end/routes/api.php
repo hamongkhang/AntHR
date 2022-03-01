@@ -69,7 +69,7 @@ Route::get('/auth/redirect/{provider}', [App\Http\Controllers\SocialController::
 Route::get('/callback/{provider}',  [App\Http\Controllers\SocialController::class, 'callback'])->name('user.callback');
 
 
-/////////////////////////////////////// Document Folder APIs //////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////// Document APIs //////////////////////////////////////////////////////////////////////////////
 Route::get('/document/getAllFolder', [App\Http\Controllers\DocumentFolderController::class, 'getAllFolder'])->name('document.getAllFolder');
 Route::get('/document/getOneFolder/{id}', [App\Http\Controllers\DocumentFolderController::class, 'getOneFolder'])->name('document.getOneFolder');
 Route::delete('/document/destroyFolder/{id}', [App\Http\Controllers\DocumentFolderController::class, 'destroyFolder'])->name('document.destroyFolder');
@@ -80,3 +80,75 @@ Route::post('/document/createDocument', [App\Http\Controllers\DocumentController
 Route::post('/document/updateDocument/{id}', [App\Http\Controllers\DocumentController::class, 'updateDocument'])->name('document.updateDocument');
 Route::delete('/document/destroyDocument/{id}', [App\Http\Controllers\DocumentController::class, 'destroyDocument'])->name('document.destroyDocument');
 Route::get('/document/downloadDocument/{id}', [App\Http\Controllers\DocumentController::class, 'downloadDocument'])->name('document.downloadDocument');
+
+
+/////////////////////////////////////// News APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/new/getAllNew', [App\Http\Controllers\NewController::class, 'getAllNew'])->name('new.getAllNew');
+Route::get('/new/getOneNew/{id}', [App\Http\Controllers\NewController::class, 'getOneNew'])->name('new.getOneNew');
+Route::delete('/new/destroyNew/{id}', [App\Http\Controllers\NewController::class, 'destroyNew'])->name('new.destroyNew');
+Route::post('/new/createNew', [App\Http\Controllers\NewController::class, 'createNew'])->name('new.createNew');
+Route::post('/new/updateNew/{id}', [App\Http\Controllers\NewController::class, 'updateNew'])->name('new.updateNew');
+Route::post('/new/changeImportant/{id}', [App\Http\Controllers\NewController::class, 'changeImportant'])->name('new.changeImportant');
+Route::get('/new/downloadNew/{id}', [App\Http\Controllers\NewController::class, 'downloadNew'])->name('new.downloadNew');
+
+
+/////////////////////////////////////// Praises APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/praise/getAllPraise', [App\Http\Controllers\PraiseController::class, 'getAllPraise'])->name('praise.getAllPraise');
+Route::get('/praise/getOnePraise/{id}', [App\Http\Controllers\PraiseController::class, 'getOnePraise'])->name('praise.getOnePraise');
+Route::delete('/praise/destroyPraise/{id}', [App\Http\Controllers\PraiseController::class, 'destroyPraise'])->name('praise.destroyPraise');
+Route::post('/praise/createPraise', [App\Http\Controllers\PraiseController::class, 'createPraise'])->name('praise.createPraise');
+Route::post('/praise/changeStatus/{id}', [App\Http\Controllers\PraiseController::class, 'changeStatus'])->name('praise.changeStatus');
+
+
+////////////////////////////////////// Present APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/present/getAllCategory', [App\Http\Controllers\PresentCategoryController::class, 'getAllCategory'])->name('present.getAllCategory');
+Route::get('/present/getOneCategory/{id}', [App\Http\Controllers\PresentCategoryController::class, 'getOneCategory'])->name('present.getOneCategory');
+Route::delete('/present/destroyCategory/{id}', [App\Http\Controllers\PresentCategoryController::class, 'destroyCategory'])->name('present.destroyCategory');
+Route::post('/present/createCategory', [App\Http\Controllers\PresentCategoryController::class, 'createCategory'])->name('present.createCategory');
+Route::post('/present/updateCategory/{id}', [App\Http\Controllers\PresentCategoryController::class, 'updateCategory'])->name('present.updateCategory');
+Route::post('/present/createPresent', [App\Http\Controllers\PresentController::class, 'createPresent'])->name('present.createPresent');
+Route::get('/present/getAllPresent', [App\Http\Controllers\PresentController::class, 'getAllPresent'])->name('present.getAllPresent');
+Route::get('/present/getOnePresent/{id}', [App\Http\Controllers\PresentController::class, 'getOnePresent'])->name('present.getOnePresent');
+Route::post('/present/updatePresent/{id}', [App\Http\Controllers\PresentController::class, 'updatePresent'])->name('present.updatePresent');
+Route::delete('/present/destroyPresent/{id}', [App\Http\Controllers\PresentController::class, 'destroyPresent'])->name('present.destroyPresent');
+Route::post('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
+Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
+
+
+
+////////////////////////////////////// Score APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/score/getOneScore/{id}', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
+
+
+////////////////////////////////////// Cart Present APIs //////////////////////////////////////////////////////////////////////////////
+Route::delete('/cart_present/destroyCartPresent/{id}', [App\Http\Controllers\CartPresentController::class, 'destroyCartPresent'])->name('cart_present.destroyCartPresent');
+Route::post('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusAdmin'])->name('cart_present.changeStatusAdmin');
+Route::post('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -20,6 +20,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Employee;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\UserScore;
 
 
 
@@ -117,6 +118,14 @@ class EmployeeController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $postScore = [
+            'user_id'  =>$employeeFind->id,
+            'score'  => 0,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+        ];   
+        DB::delete('delete from register_code where id = ?',[$dataFind->id]);
+        $score=UserScore::create($postScore);
         $employee = Employee::create($postEmployee);
         if($request->send_mail==1){
 ///////////////////
