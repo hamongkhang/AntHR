@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
+
 
 use App\Models\Document;
 use App\Models\DocumentFolder;
@@ -16,7 +18,7 @@ use App\Models\DocumentFolder;
 class DocumentController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth:api', ['except' => []]);
+        $this->middleware('auth:api', ['except' => ['downloadDocument']]);
     }
     /**
      * @SWG\POST(
@@ -269,5 +271,42 @@ public function updateDocument($id,Request $request){
         }else{
             return response()->json(['error'=>"You are not admin !!!"], 401);
         }
+    }
+
+      /**
+     * @SWG\GET(
+     *     path="/api/document/downloadDocument/{id}",
+     *     description="Return document's information",
+     *     @SWG\Response(
+     *         response=200,
+     *         description="Download document successfully",
+     *         @SWG\Schema(
+     *             @SWG\Property(property="id", type="integer"),
+     *             @SWG\Property(property="name", type="string"),
+     *             @SWG\Property(property="size", type="text"),
+     *             @SWG\Property(property="folder_id", type="integer"),
+     *             @SWG\Property(property="created_at", type="timestamp"),
+     *             @SWG\Property(property="updated_at", type="timestamp"),
+     *            )
+     *     ),
+     *     @SWG\Response(
+     *         response=400,
+     *         description="Invalid id !!!"
+     *     ),
+     *   security={
+     *           {"api_key_security_example": {}}
+     *       }
+     * )
+     */
+    public function downloadDocument($id)
+    {
+            $document= Document::find($id);
+            if ($document){
+               $path = public_path().DIRECTORY_SEPARATOR."upload".DIRECTORY_SEPARATOR."document".DIRECTORY_SEPARATOR.$document->name;
+               $fileName = $document->name;
+               return Response::download($path, $fileName, ['Content-Type: application']);
+            }else{
+                return response()->json(['error'=>"Invalid id !!!"], 400);
+            }
     }
 }

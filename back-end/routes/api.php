@@ -77,3 +77,4 @@ Route::post('/document/changeShare/{id}', [App\Http\Controllers\DocumentFolderCo
 Route::post('/document/createDocument', [App\Http\Controllers\DocumentController::class, 'createDocument'])->name('document.createDocument');
 Route::post('/document/updateDocument/{id}', [App\Http\Controllers\DocumentController::class, 'updateDocument'])->name('document.updateDocument');
 Route::delete('/document/destroyDocument/{id}', [App\Http\Controllers\DocumentController::class, 'destroyDocument'])->name('document.destroyDocument');
+Route::get('/document/downloadDocument/{id}', [App\Http\Controllers\DocumentController::class, 'downloadDocument'])->name('document.downloadDocument');

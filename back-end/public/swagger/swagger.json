@@ -323,6 +323,46 @@
                 ]
             }
         },
+        "/api/document/downloadDocument/{id}": {
+            "get": {
+                "description": "Return document's information",
+                "responses": {
+                    "200": {
+                        "description": "Download document successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
         "/api/document/createFolder": {
             "post": {
                 "description": "Return document folder's informaion.",
