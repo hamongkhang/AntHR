@@ -17,6 +17,7 @@ use App\Models\Company;
 use App\Models\User;
 use App\Models\RegisterCode;
 use App\Models\ForgotCode;
+use App\Models\UserScore;
 
 
 
@@ -272,9 +273,16 @@ class UsersController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $postScore = [
+            'user_id'  =>$employeeFind->id,
+            'score'  => 0,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+        ];   
         DB::delete('delete from register_code where id = ?',[$dataFind->id]);
         $employee = Employee::create($postEmployee);
         $company = Company::create($postCompany);
+        $score=UserScore::create($postScore);
         //Send mail notification Register account success
         $dataSendMail = [
             'description'=>'notiRegisterSuccess',
