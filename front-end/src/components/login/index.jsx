@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Row from "react-bootstrap/Row";
@@ -15,195 +13,74 @@ import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 
 const Login = (props) => {
-    const { changeRender, setReRender } = props;
-    const value = queryString.parse(props.location.search);
-    const first_name = value.first_name;
-    const last_name = value.last_name;
-    const avatar = value.avatar;
-    const avatar_google = value.avatar_google;
-    const access_token = value.access_token;
-    const error = value.error;
+  const { changeRender, setReRender } = props;
+  const value = queryString.parse(window.location.search);
+  const first_name = value.first_name;
+  const last_name = value.last_name;
+  const avatar = value.avatar;
+  const avatar_google = value.avatar_google;
+  const access_token = value.access_token;
+  const error = value.error;
+  const navigate = useNavigate()
 
-    const [isPasswordShown, setIsPasswordShown] = useState(false);
-    const togglePasswordVisibility = () => {
-      if(!isPasswordShown){
-          setIsPasswordShown(true);
-      }else{
-        setIsPasswordShown(false);
-      }
-    };
-
-    const [showLogin, setShowLogin] = useState(true);
-    const [errorForm1, setErrorForm1] = useState({
-      domain:null,
-    });
-    const [errorForm2, setErrorForm2] = useState({
-      email:null,
-      password:null,
-    });
-    const [domain, setDomain] = useState({
-      domain:''
-    });
-    const [user, setUser] = useState({
-      email:'',
-      password:''
-    });
-    const match = useRouteMatch();
-    const history = useHistory();
-    const addDomain = (event) => {
-        const target = event.target;
-        const field = target.name;
-        const value = target.value;
-        setDomain({
-            ...domain,
-            [field]: value,
-        });
-    };
-
-    const addUser = (event) => {
-      const target = event.target;
-      const field = target.name;
-      const value = target.value;
-      setUser({
-          ...user,
-          [field]: value,
-      });
-    };
-
-    const checkDomain = (e) => {
-      e.preventDefault();
-          const _formData = new FormData();
-          _formData.append('domain', domain.domain);
-          const requestOptions = {
-              method: 'POST',
-              body: _formData,
-          };
-          fetch(process.env.REACT_APP_API+'/user/checkDomain', requestOptions)
-              .then((res) => res.json())
-              .then((json) => {
-                  if (json.error) {
-                    if(json.error=="No one have domain"){
-                      toast.error(`Domain does not exist !!!`, {
-                          position: 'top-center',
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
-                      setErrorForm1("");
-                    }else{
-                      setErrorForm1(json.error);
-                    }
-                  } else {
-                      toast.success(`Successfully !!!`, {
-                          position: 'top-center',
-                          autoClose: 500,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
-                      if(!showLogin){
-                        setShowLogin(true);
-                      }else{
-                        setShowLogin(false);
-                   }
-                }
-              });
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const togglePasswordVisibility = () => {
+    if (!isPasswordShown) {
+      setIsPasswordShown(true);
+    } else {
+      setIsPasswordShown(false);
+    }
   };
 
+  const [showLogin, setShowLogin] = useState(true);
+  const [errorForm1, setErrorForm1] = useState({
+    domain: null,
+  });
+  const [errorForm2, setErrorForm2] = useState({
+    email: null,
+    password: null,
+  });
+  const [domain, setDomain] = useState({
+    domain: ''
+  });
+  const [user, setUser] = useState({
+    email: '',
+    password: ''
+  });
+  const addDomain = (event) => {
+    const target = event.target;
+    const field = target.name;
+    const value = target.value;
+    setDomain({
+      ...domain,
+      [field]: value,
+    });
+  };
 
-    const loginGoogle = (event) => {
-      event.preventDefault();
+  const addUser = (event) => {
+    const target = event.target;
+    const field = target.name;
+    const value = target.value;
+    setUser({
+      ...user,
+      [field]: value,
+    });
+  };
 
-        const requestOptions = {
-            method: 'GET',
-        };
-        fetch(process.env.REACT_APP_API+'/auth/redirect/google', requestOptions)
-            .then((res) => res.json())
-            .then((json) => {
-                window.location.href = json.link;
-            });
+  const checkDomain = (e) => {
+    e.preventDefault();
+    const _formData = new FormData();
+    _formData.append('domain', domain.domain);
+    const requestOptions = {
+      method: 'POST',
+      body: _formData,
     };
-
-
-    const onLogin = (e) => {
-            e.preventDefault();
-            const _formData = new FormData();
-            _formData.append('email', user.email);
-            _formData.append('password', user.password);
-            const requestOptions = {
-                method: 'POST',
-                body: _formData,
-            };
-            fetch(process.env.REACT_APP_API+'/user/login', requestOptions)
-                .then((res) => res.json())
-                .then((json) => {
-                  if(json.error){
-                    if (json.error === 'Unauthorized') {
-                      toast.error(`Login information is incorrect !!!`, {
-                          position: 'top-center',
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
-                      setErrorForm2('');
-                  } else if (json.error === 'Blocked') {
-                      toast.warn(`Your account has been blocked !!!`, {
-                          position: 'top-center',
-                          autoClose: 5000,
-                          hideProgressBar: false,
-                          closeOnClick: true,
-                          pauseOnHover: true,
-                          draggable: true,
-                          progress: undefined,
-                      });
-                      setErrorForm2("");
-                  }else{
-                      setErrorForm2(json.error);
-                  }
-                  }else{
-                    localStorage.setItem('access_token', json.access_token);
-                    localStorage.setItem('first_name',json.name.first_name);
-                    localStorage.setItem('last_name',json.name.last_name);
-                    localStorage.setItem('avatar', json.name.avatar);
-                    toast.success(`Logged in successfully !!!`, {
-                        position: 'top-center',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        draggable: true,
-                        progress: undefined,
-                    });
-                     history.push('/');
-                  }
-                });
-    };
-    useEffect(() => {
-      if (localStorage.getItem('access_token')) {
-        history.push('/user-profile');
-      }else if(access_token){
-        localStorage.setItem('access_token', access_token);
-        localStorage.setItem('first_name', first_name);
-        localStorage.setItem('last_name', last_name);
-        if (avatar_google) {
-            localStorage.setItem('avatar_google', avatar_google);
-        } else {
-            localStorage.setItem('avatar', avatar);
-        }
-        changeRender();
-        setReRender(true);
-        history.push('/user-profile');
-      }else if(error){
-        if (error === 'Blocked') {
-          toast.warn(`Your account has been blocked !!!`, {
+    fetch(process.env.REACT_APP_API + '/user/checkDomain', requestOptions)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          if (json.error == "No one have domain") {
+            toast.error(`Domain does not exist !!!`, {
               position: 'top-center',
               autoClose: 5000,
               hideProgressBar: false,
@@ -211,8 +88,128 @@ const Login = (props) => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
+            });
+            setErrorForm1("");
+          } else {
+            setErrorForm1(json.error);
+          }
+        } else {
+          toast.success(`Successfully !!!`, {
+            position: 'top-center',
+            autoClose: 500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
           });
-      }else{
+          if (!showLogin) {
+            setShowLogin(true);
+          } else {
+            setShowLogin(false);
+          }
+        }
+      });
+  };
+
+
+  const loginGoogle = (event) => {
+    event.preventDefault();
+
+    const requestOptions = {
+      method: 'GET',
+    };
+    fetch(process.env.REACT_APP_API + '/auth/redirect/google', requestOptions)
+      .then((res) => res.json())
+      .then((json) => {
+        window.location.href = json.link;
+      });
+  };
+
+
+  const onLogin = (e) => {
+    e.preventDefault();
+    const _formData = new FormData();
+    _formData.append('email', user.email);
+    _formData.append('password', user.password);
+    const requestOptions = {
+      method: 'POST',
+      body: _formData,
+    };
+    fetch(process.env.REACT_APP_API + '/user/login', requestOptions)
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.error) {
+          if (json.error === 'Unauthorized') {
+            toast.error(`Login information is incorrect !!!`, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setErrorForm2('');
+          } else if (json.error === 'Blocked') {
+            toast.warn(`Your account has been blocked !!!`, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+            setErrorForm2("");
+          } else {
+            setErrorForm2(json.error);
+          }
+        } else {
+          localStorage.setItem('access_token', json.access_token);
+          localStorage.setItem('first_name', json.name.first_name);
+          localStorage.setItem('last_name', json.name.last_name);
+          localStorage.setItem('avatar', json.name.avatar);
+          toast.success(`Logged in successfully !!!`, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          navigate('/home');
+        }
+      });
+  };
+  useEffect(() => {
+    if (localStorage.getItem('access_token')) {
+      navigate('/home');
+    } else if (access_token) {
+      localStorage.setItem('access_token', access_token);
+      localStorage.setItem('first_name', first_name);
+      localStorage.setItem('last_name', last_name);
+      if (avatar_google) {
+        localStorage.setItem('avatar_google', avatar_google);
+      } else {
+        localStorage.setItem('avatar', avatar);
+      }
+      changeRender();
+      setReRender(true);
+      navigate('/home');
+    } else if (error) {
+      if (error === 'Blocked') {
+        toast.warn(`Your account has been blocked !!!`, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      } else {
         toast.error(`Login information is incorrect !!!`, {
           position: 'top-center',
           autoClose: 5000,
@@ -221,30 +218,32 @@ const Login = (props) => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-      });
+        });
       }
     }
   }, []);
-    return(
-  showLogin ? 
-    <div className="container mt-5" >
+
+  return (
+    // <p>Login</p>
+    showLogin ?
+      <div className="container mt-5" >
         <div className="mt-5 " id="loginState">
           <Form className="formLogin">
             <h3>Login to your account</h3>
             <Form.Group className="mb-3 mt-3" controlId="formBasicEmail">
               <Form.Label>Domain Company*</Form.Label>
               <Form.Control name="domain" onChange={(event) => addDomain(event)} type="text" placeholder="Domain Company" required />
-              <span className="errorNotify">{errorForm1.domain?errorForm1.domain[0]:""}</span>
+              <span className="errorNotify">{errorForm1.domain ? errorForm1.domain[0] : ""}</span>
             </Form.Group>
             <Button
-            type={'submit'}
+              type={'submit'}
               onClick={(event) => checkDomain(event)}
               className={"btnLogin"}
               style={{
                 backgroundColor: "#FFFF66",
                 border: "1px solid #ff9900",
-                color:"#ff9900",
-                fontWeight:"bold"
+                color: "#ff9900",
+                fontWeight: "bold"
               }}
             >
               Continue
@@ -259,15 +258,15 @@ const Login = (props) => {
           </center>
         </div>
       </div>
-:
-    <div className="container">
+      :
+      <div className="container">
         <Form id="memberLoginForm">
           <h3>Member Login</h3>
           <p>Good day!</p>
           <Form.Group className="mt-3" controlId="formBasicEmail">
             <Form.Label>Email Address</Form.Label>
             <Form.Control name="email" onChange={(event) => addUser(event)} type="email" placeholder="Email Address" />
-            <span className="errorNotify">{errorForm2.email?errorForm2.email[0]:""}</span>
+            <span className="errorNotify">{errorForm2.email ? errorForm2.email[0] : ""}</span>
           </Form.Group>
           <Form.Group className="mt-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
@@ -283,7 +282,7 @@ const Login = (props) => {
               style={{ float: "right" }}
               onClick={() => togglePasswordVisibility()}
             />
-            <span className="errorNotify">{errorForm2.password?errorForm2.password[0]:""}</span>
+            <span className="errorNotify">{errorForm2.password ? errorForm2.password[0] : ""}</span>
           </Form.Group>
           <Row className="mb-3 mt-3">
             <Col md="auto">
@@ -292,9 +291,9 @@ const Login = (props) => {
               </Form.Group>
             </Col>
             <Col sm="auto">
-              <a  style={{
-              color:"#ff9900",
-            }} href="/forgot-password">Forgot password?</a>
+              <a style={{
+                color: "#ff9900",
+              }} href="/forgot-password">Forgot password?</a>
             </Col>
           </Row>
           <Button
@@ -304,8 +303,8 @@ const Login = (props) => {
             style={{
               backgroundColor: "#FFFF66",
               border: "1px solid #ff9900",
-              color:"#ff9900",
-              fontWeight:"bold"
+              color: "#ff9900",
+              fontWeight: "bold"
             }}
           >
             Continue
@@ -314,7 +313,7 @@ const Login = (props) => {
           <Button
             type="submit"
             className="btnLogin "
-            onClick={(event)=>loginGoogle(event)}
+            onClick={(event) => loginGoogle(event)}
             style={{
               backgroundColor: "#FFFFFF",
               border: "1px solid #CCCCCC",
@@ -331,6 +330,6 @@ const Login = (props) => {
           </Button>
         </Form>
       </div>
-    );
+  );
 }
 export default Login;

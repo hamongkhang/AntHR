@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePages from './components/home';
-import UserProfile from './components/user_profile';
-
-
 
 const loading = (
     <svg viewBox="25 25 50 50" className="preloader">
@@ -22,22 +19,22 @@ function App() {
                 <div className="my-0 mx-auto relative">
                     <React.Suspense fallback={loading}>
                         <Router>
-                            <Switch>
+                            <Routes>
                             {/* <Route path="/admin" exact component={LoginAdmin} />
                             <Route path="/admin/:path" component={Admin} /> */}
-                                <Route
+                                {/* <Route
                                     path="/user-profile"
                                     component={UserProfile}
-                                />
+                                /> */}
                                 <Route
-                                    path="/"
-                                    component={() => (
+                                    path="/*"
+                                    element={
                                         <HomePages
                                             changeRender={changeRender}
                                         />
-                                    )}
+                                    }
                                 />
-                            </Switch>
+                            </Routes>
                         </Router>
                     </React.Suspense>
                 </div>
