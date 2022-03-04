@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
 import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Row from "react-bootstrap/Row";
@@ -11,12 +8,15 @@ import googleLogo from "../../images/googleLogo.png";
 import eye_open from "../../images/eye_open.png";
 import eye_close from "../../images/eye_close.png";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 
 toast.configure();
 
 const Login = (props) => {
+    const navigate = useNavigate();
     const { changeRender, setReRender } = props;
-    const value = queryString.parse(props.location.search);
+    const value = queryString.parse(window.location.search);
     const first_name = value.first_name;
     const last_name = value.last_name;
     const avatar = value.avatar;
@@ -48,8 +48,6 @@ const Login = (props) => {
       email:'',
       password:''
     });
-    const match = useRouteMatch();
-    const history = useHistory();
     const addDomain = (event) => {
         const target = event.target;
         const field = target.name;
@@ -182,13 +180,14 @@ const Login = (props) => {
                         draggable: true,
                         progress: undefined,
                     });
-                     history.push('/');
+                    navigate('/');
+
                   }
                 });
     };
     useEffect(() => {
       if (localStorage.getItem('access_token')) {
-        history.push('/user-profile');
+        navigate('/user-profile');
       }else if(access_token){
         localStorage.setItem('access_token', access_token);
         localStorage.setItem('first_name', first_name);
@@ -200,7 +199,7 @@ const Login = (props) => {
         }
         changeRender();
         setReRender(true);
-        history.push('/user-profile');
+        navigate('/user-profile');
       }else if(error){
         if (error === 'Blocked') {
           toast.warn(`Your account has been blocked !!!`, {
