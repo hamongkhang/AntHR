@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal,Button,Form,Row,Col } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
-import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
+
 
 toast.configure();
 

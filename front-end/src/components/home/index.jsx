@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import Home from '../home/home';
 import Login from '../login';
 import ForgotPassword from "../forgot_password";
 import Register from "../register";
+import New from "../new";
 
 const HomePages = (props) => {
     const { changeRender } = props;
@@ -32,36 +33,36 @@ const HomePages = (props) => {
         <>
          <Home setReRender={setReRender} checkLoggedIn={checkLoggedIn} />
             <div>
-                <Route path="/register" exact component={Register} />
-                <Route
-                    path="/login"
-                    exact
-                    render={(props) => (
-                        <Login
+              <Routes>
+                    <Route path="/register" element={<Register />} />
+                    <Route
+                        path="/login"
+                        element={<Login
                             changeRender={changeRender}
                             setReRender={setReRender}
                             checkLoggedIn={checkLoggedIn}
                             {...props}
                         />
-                    )}
-                />
-                <Route path="/forgot-password" exact component={ForgotPassword} />
-               {/*  <Route path="/xac-nhan-ma" exact component={CodeVerification} />
+                        }
+                    />
+                    <Route path="/forgot-password" element={<ForgotPassword/>} />
+                    <Route path="/new" element={<New/>} />
+                    {/*  <Route path="/xac-nhan-ma" exact element={CodeVerification} />
                 <Route
                     path="/xac-nhan-ma-quen-mat-khau"
                     exact
-                    component={CodeVerificationForgot}
+                    element={CodeVerificationForgot}
                 />
                 <Route
                     path="/dat-lai-mat-khau"
                     exact
-                    component={ResetPassword}
+                    element={ResetPassword}
                 /> */}
-                <Route
-                    path="/"
-                    exact
-                    component={() => <Home changeRender={changeRender} />}
-                />
+                    <Route
+                        path="/home/*"
+                        element={<Home changeRender={changeRender} setReRender={setReRender} checkLoggedIn={checkLoggedIn} />}
+                    />
+                </Routes>
             </div> 
         </>
     );

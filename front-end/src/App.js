@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePages from './components/home';
 import UserProfile from './components/user_profile';
 
@@ -21,8 +21,7 @@ function App() {
             <div className="max-w-screen-2xl my-0 mx-auto bg-gray-100">
                 <div className="my-0 mx-auto relative">
                     <React.Suspense fallback={loading}>
-                        <Router>
-                            <Switch>
+                    <Routes>
                             {/* <Route path="/admin" exact component={LoginAdmin} />
                             <Route path="/admin/:path" component={Admin} /> */}
                                 <Route
@@ -37,8 +36,7 @@ function App() {
                                         />
                                     )}
                                 />
-                            </Switch>
-                        </Router>
+                             </Routes>
                     </React.Suspense>
                 </div>
             </div>

@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
-import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import googleLogo from "../../images/googleLogo.png";
 import eye_open from "../../images/eye_open.png";
 import eye_close from "../../images/eye_close.png";
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+
 
 toast.configure();
 
@@ -48,8 +45,7 @@ const ForgotPassword = (props) => {
       new_password:'',
       new_password_confirmed:''
     });
-    const match = useRouteMatch();
-    const history = useHistory();
+    const navigate = useNavigate();
     const addForgot = (event) => {
         const target = event.target;
         const field = target.name;
@@ -212,7 +208,7 @@ const ForgotPassword = (props) => {
                         draggable: true,
                         progress: undefined,
                     });
-                     history.push('/login');
+                     navigate('/login');
                   }
                 });
     };

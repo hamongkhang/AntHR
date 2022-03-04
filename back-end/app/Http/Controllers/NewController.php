@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+
 
 use App\Models\News;
 
@@ -100,8 +102,10 @@ class NewController extends Controller
                 $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                 $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'new', $name);
                 $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'new'.'/'.$name;
+            }else{
+                $name=$request->file;
             }
-        $postArray = [
+            $postArray = [
             'title'  => $request->title,
             'content'=>$request->content,
             'important'=>$request->important,
