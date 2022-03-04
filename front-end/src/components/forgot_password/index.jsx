@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button } from "react-bootstrap";
+import { Link, useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import eye_open from "../../images/eye_open.png";
 import eye_close from "../../images/eye_close.png";
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 toast.configure();
 
 const ForgotPassword = (props) => {
+    const navigate = useNavigate()
     const [isPasswordShown1, setIsPasswordShown1] = useState(false);
     const togglePasswordVisibility1 = () => {
       if(!isPasswordShown1){
@@ -45,7 +48,6 @@ const ForgotPassword = (props) => {
       new_password:'',
       new_password_confirmed:''
     });
-    const navigate = useNavigate();
     const addForgot = (event) => {
         const target = event.target;
         const field = target.name;

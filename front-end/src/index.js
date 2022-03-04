@@ -12,8 +12,8 @@ import New from "./components/new";
 
 ReactDOM.render(
   <BrowserRouter>
-    {/* <App /> */}
-    <New />
+    <App />
+    {/* <New /> */}
   </BrowserRouter>,
   document.getElementById('root'),
 );

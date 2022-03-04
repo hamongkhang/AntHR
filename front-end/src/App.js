@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePages from './components/home';
-import UserProfile from './components/user_profile';
-
-
 
 const loading = (
     <svg viewBox="25 25 50 50" className="preloader">
@@ -24,17 +21,17 @@ function App() {
                     <Routes>
                             {/* <Route path="/admin" exact component={LoginAdmin} />
                             <Route path="/admin/:path" component={Admin} /> */}
-                                <Route
+                                {/* <Route
                                     path="/user-profile"
                                     component={UserProfile}
-                                />
+                                /> */}
                                 <Route
-                                    path="/"
-                                    component={() => (
+                                    path="/*"
+                                    element={
                                         <HomePages
                                             changeRender={changeRender}
                                         />
-                                    )}
+                                    }
                                 />
                              </Routes>
                     </React.Suspense>

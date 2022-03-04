@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Home from '../home/home';
 import Login from '../login';
 import ForgotPassword from "../forgot_password";
@@ -8,7 +8,7 @@ import New from "../new";
 
 const HomePages = (props) => {
     const { changeRender } = props;
-    const [reRender, setReRender] = useState(false); 
+    const [reRender, setReRender] = useState(false);
 
     const [checkLoggedIn, setCheckLoggedIn] = useState(false);
 
@@ -31,7 +31,6 @@ const HomePages = (props) => {
 
     return (
         <>
-         <Home setReRender={setReRender} checkLoggedIn={checkLoggedIn} />
             <div>
               <Routes>
                     <Route path="/register" element={<Register />} />

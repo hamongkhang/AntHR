@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import register from "../../css/register.module.css";
 import styleSecond from '../../css/register.module.css';
 import { useTheme } from '@mui/material/styles';
@@ -10,10 +10,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import styleThird from '../../css/register.module.css';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-
-
-
 
 toast.configure();
 
