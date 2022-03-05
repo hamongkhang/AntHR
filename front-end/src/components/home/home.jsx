@@ -45,10 +45,7 @@ const Home = (props) => {
         if (width > 900) {
             handleDrawerClose()
         }
-        if(!checkLoggedIn){
-            navigate('/login')
-        }
-    })
+    },[])
     return (
             <ThemeProvider theme={customTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -59,7 +56,6 @@ const Home = (props) => {
                 ></Header>
                 <Main open={open} sx={{pt:10, px:5}}>
                     <DrawerHeader />
-                    {/* routes path */}
                     <Routes>
                         <Route path="profile/*" element={<UserProfile />} />
                     </Routes>

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Badge, Container, Toolbar, Typography, IconButton, Box, Avatar } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -43,7 +43,20 @@ const NavBar = (props) => {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const menuId = 'primary-search-account-menu';
     const mobileMenuId = 'primary-search-account-menu-mobile';
-
+    const navigate = useNavigate()
+    const handleLogout = () =>{
+        let $token = localStorage.getItem('access_token')
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Authorization": `Bearer ` + $token }
+          };
+          fetch(process.env.REACT_APP_API + '/user/logout', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+            });
+        localStorage.clear();
+        navigate('/')
+    }
     const handleChangeTab = (event, newPath) => {
         setTab(newPath);
     };
@@ -138,7 +151,7 @@ const NavBar = (props) => {
                                 color="inherit"
                             >
                                 {/* <AccountCircle /> */}
-                                <Avatar src='http://localhost:3000/bg7.jpg' sx={{ width: 24, height: 24 }} variant='circular'></Avatar>
+                                <Avatar src='http://localhost:8000/upload/images/avatars/avatar_05-03-2022-02-08-10.jpg' sx={{ width: 24, height: 24 }} variant='circular'></Avatar>
                             </IconButton>
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -171,12 +184,14 @@ const NavBar = (props) => {
                 menuId={menuId}
                 isMenuOpen={isMenuOpen}
                 handleMenuClose={handleMenuClose}
-                anchorEl={anchorEl} />
+                anchorEl={anchorEl} 
+                handleLogout={handleLogout}/>
             <MobileAccountMenu
                 mobileMenuId={mobileMenuId}
                 isMobileMenuOpen={isMobileMenuOpen}
                 handleMobileMenuClose={handleMobileMenuClose}
-                mobileMoreAnchorEl={mobileMoreAnchorEl} />
+                mobileMoreAnchorEl={mobileMoreAnchorEl} 
+                handleLogout={handleLogout}/>
         </>
     )
 }

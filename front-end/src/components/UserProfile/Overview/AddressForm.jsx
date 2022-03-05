@@ -14,6 +14,7 @@ const AddressForm = (props) => {
         >
             <TextField
                 error={errors.country.length > 0 ? true : false}
+                helperText={errors.country.length > 0? errors.country[0]:''}
                 id="country"
                 label="Country"
                 name='country'
@@ -24,6 +25,7 @@ const AddressForm = (props) => {
 
             <TextField
                 error={errors.city.length > 0 ? true : false}
+                helperText={errors.city.length > 0? errors.city[0]:''}
                 id="city"
                 label="City"
                 name='city'
@@ -33,8 +35,9 @@ const AddressForm = (props) => {
                 value={employee.city} />
             <TextField
                 error={errors.state.length > 0 ? true : false}
+                helperText={errors.state.length > 0? errors.state[0]:''}
                 id="state"
-                label="Phone Number"
+                label="State"
                 name='state'
                 variant="outlined"
                 size='small'
@@ -42,6 +45,7 @@ const AddressForm = (props) => {
                 value={employee.state} />
             <TextField
                 error={errors.postal_code.length > 0 ? true : false}
+                helperText={errors.postal_code.length > 0? errors.postal_code[0]:''}
                 id="postal_code"
                 label="Postal"
                 name='postal_code'

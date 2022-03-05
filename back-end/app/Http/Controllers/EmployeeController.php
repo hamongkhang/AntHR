@@ -542,7 +542,7 @@ public function changeInformation(Request $request){
     $validator = Validator::make($request->all(), [
         'first_name' => 'max:255',
         'last_name' => 'max:255',
-        'phone' => 'max:13',
+        'phone' => 'max:11|min:9',
         'birthday' => 'before:today',
 
         'postal_code' => 'max:255',

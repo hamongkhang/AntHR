@@ -14,6 +14,7 @@ const PersonalInforForm = (props) => {
         >
             <TextField
                 error={errors.first_name.length > 0 ? true : false}
+                helperText={errors.first_name.length > 0? errors.first_name[0]:''}
                 id="first_name"
                 label="First Name"
                 name='first_name'
@@ -24,6 +25,7 @@ const PersonalInforForm = (props) => {
 
             <TextField
                 error={errors.last_name.length > 0 ? true : false}
+                helperText={errors.last_name.length > 0 ? errors.last_name[0]:''}
                 id="last_name"
                 label="Last Name"
                 name='last_name'
@@ -33,25 +35,18 @@ const PersonalInforForm = (props) => {
                 value={employee.last_name} />
             <TextField
                 error={errors.phone.length > 0 ? true : false}
+                helperText={errors.phone.length > 0 ?errors.phone[0]:''}
                 id="phone"
                 label="Phone Number"
                 name='phone'
                 variant="outlined"
                 size='small'
+                type={'number'}
                 onChange={(e) => { setEmployee({ ...employee, phone: e.target.value }) }}
                 value={employee.phone} />
             <TextField
-                error={errors.email.length > 0 ? true : false}
-                id="email"
-                label="Email"
-                name='email'
-                variant="outlined"
-                size='small'
-                type={'email'}
-                onChange={(e) => { setEmployee({ ...employee, email: e.target.value }) }}
-                value={employee.email} />
-            <TextField
                 error={errors.birthday.length > 0 ? true : false}
+                helperText={errors.birthday.length > 0 ?errors.birthday[0]:''}
                 id="birthday"
                 label="Birthday"
                 name='birthday'

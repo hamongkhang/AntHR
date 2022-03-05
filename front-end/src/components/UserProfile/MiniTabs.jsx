@@ -18,7 +18,7 @@ const MiniTabs = (props) => {
           indicatorColor='primary'
         >
           <Tab value="overview" label="Overview" to={`overview`} component={Link} />
-          <Tab value="two" label="Item Two" to={`two`} component={Link} />
+          <Tab value="account" label="Account" to={`account`} component={Link} />
         </Tabs>
       </ThemeProvider>
     </Box>

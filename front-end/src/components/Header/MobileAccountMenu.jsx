@@ -11,7 +11,7 @@ const MobileAccountMenu = (props) => {
     const {isMobileMenuOpen} = props
     const {handleMobileMenuClose} = props
     const {mobileMoreAnchorEl} = props
-
+    const {handleLogout} = props
     return (
         <Menu
             anchorEl={mobileMoreAnchorEl}
@@ -60,7 +60,7 @@ const MobileAccountMenu = (props) => {
                 </IconButton>
                 <Typography>My Account</Typography>
             </MenuItem>
-            <MenuItem to='/home' component={Link}>
+            <MenuItem onClick={handleLogout}>
                 <IconButton
                     size="large"
                     aria-label="account of current user"

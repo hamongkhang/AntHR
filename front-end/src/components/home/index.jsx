@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Home from '../home/home';
 import Login from '../login';
 import ForgotPassword from "../forgot_password";
@@ -11,7 +11,7 @@ const HomePages = (props) => {
     const [reRender, setReRender] = useState(false);
 
     const [checkLoggedIn, setCheckLoggedIn] = useState(false);
-
+    const navigate = useNavigate()
     const handleCheckLoggedIn = () => {
         if (localStorage.getItem('access_token')) {
             let token = localStorage.getItem('access_token');
@@ -19,9 +19,11 @@ const HomePages = (props) => {
                 setCheckLoggedIn(true);
             } else {
                 setCheckLoggedIn(false);
+                navigate('/login')
             }
         } else {
             setCheckLoggedIn(false);
+            navigate('/login')
         }
     };
 
