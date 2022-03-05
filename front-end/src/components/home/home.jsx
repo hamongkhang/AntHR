@@ -9,6 +9,7 @@ import DrawerHeader from "../Header/DrawerHeader";
 import useWindowDimensions from "../../config/windowDimensions";
 import UserProfile from '../UserProfile';
 
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(

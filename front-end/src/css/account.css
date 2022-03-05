@@ -235,3 +235,203 @@
           width: 70%;
         }
   }
+  * {
+    font-size: 14px;
+  }
+  .employeeIcon {
+    width: 20px;
+    height: 20px;
+  }
+  .employeeNav {
+    border-bottom: solid 1px #dddddd;
+  }
+  
+  .nav-link {
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: 0px 10px;
+    position: relative;
+    opacity: 0.75;
+  }
+  
+  .nav-link:hover {
+    opacity: 1;
+  }
+  .nav-link::before {
+    transition: 300ms;
+    height: 20px;
+    content: "";
+    position: absolute;
+    background-color: #222222;
+  }
+  .nav-link-grow-up::before {
+    height: 0%;
+    width: 100%;
+    bottom: 0px;
+    margin-bottom: -15px;
+  }
+  
+  .nav-link-grow-up:hover::before {
+    height: 2px;
+  }
+  
+  .bobyEmployee {
+    border: solid 1px #dddddd;
+    background-color: #eeeeee;
+  }
+  
+  .employeeOption {
+    border: solid 1px #dddddd;
+    padding: 5px;
+    border-radius: 5px;
+  }
+  .searchIcon {
+    z-index: 1;
+    position: relative;
+    padding: 0px;
+    margin: 0px 0px 3px 4px;
+  }
+  .employeeSearch {
+    border: solid 1px#DDDDDD;
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    padding-left: 27px;
+    margin-left: -25px;
+  }
+  .headEmployee {
+    padding: 20px;
+    border-bottom: solid 1px #dddddd;
+  }
+  .tableEmployee {
+    margin-top: 10px;
+  }
+  
+  .employeeAvt {
+    width: 30px;
+    height: 30px;
+  }
+  /* Toggle css */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 0px;
+    bottom: 1px;
+    background-color: #ffffff;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196f3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  /* Click to show   Ofboarding Button */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  /* Show card in directory */
+  .cardEmployees {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+  
+  }
+  .colCards {
+     padding: 20px;
+    border: solid 1px #dddddd; 
+    margin: 20px;
+    text-align: center;
+    background-color: #FFFFFF;
+  }
+  
+  .colCards img{
+    height: 60px;
+    width: 60px;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+  
+  .colCards h6{
+    margin: 20px 0px 20px 0px;
+  }
+  
+  .colCards p{
+    margin-top: -15px;
+  }
+  @media (min-width: 2560px) {
+  }
+  
+  @media (max-width: 1024px) {
+    * {
+      font-size: 14px;
+    }
+    .headEmployee {
+      padding: 20px;
+      border-bottom: solid 1px #dddddd;
+    }
+  }
+  
+  @media (max-width: 768px) {
+  }

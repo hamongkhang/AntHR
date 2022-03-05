@@ -89,6 +89,7 @@ export default function NewBody(props){
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
               <Grid item xs={3} sm={7} md={11}>
+              <Link to={`view/${props.data.id}`} style={{ textDecoration: 'none' }}>
                 <Typography 
                   sx={{ 
                     fontWeight:"bold",
@@ -112,6 +113,7 @@ export default function NewBody(props){
                     Important
                   </Button>:null}
                 </Typography>
+                </Link>
                 <Typography 
                   sx={{ 
                     fontSize:"medium",
@@ -129,7 +131,7 @@ export default function NewBody(props){
               <Grid item xs={1} sm={1} md={1} sx={{display:"flex"}}>
               <IconButton aria-label="delete">
               <Link to={`edit/${props.data.id}`}>
-                <EditIcon sx={{marginTop:"-9px"}} />
+                <EditIcon />
                 </Link>
               </IconButton>
               <IconButton aria-label="delete">
