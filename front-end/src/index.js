@@ -7,13 +7,9 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './css/account.css';
 import { BrowserRouter } from 'react-router-dom';
 
-import New from "./components/new";
-
-
 ReactDOM.render(
   <BrowserRouter>
     <App />
-    {/* <New /> */}
   </BrowserRouter>,
   document.getElementById('root'),
 );

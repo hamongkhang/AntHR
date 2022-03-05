@@ -5,6 +5,7 @@ import Login from '../login';
 import ForgotPassword from "../forgot_password";
 import Register from "../register";
 import New from "../new";
+import NewEdit from "../new/new_edit";
 
 const HomePages = (props) => {
     const { changeRender } = props;
@@ -46,6 +47,7 @@ const HomePages = (props) => {
                     />
                     <Route path="/forgot-password" element={<ForgotPassword/>} />
                     <Route path="/new" element={<New/>} />
+                    <Route path="/new/edit/:id" element={<NewEdit/>} />
                     {/*  <Route path="/xac-nhan-ma" exact element={CodeVerification} />
                 <Route
                     path="/xac-nhan-ma-quen-mat-khau"

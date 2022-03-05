@@ -9,51 +9,84 @@ import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw,ContentState } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import IconButton from '@mui/material/IconButton';
+import {BrowserRouter,Routes,Route,Link,Outlet} from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useParams } from "react-router-dom";
 
 
 
 
+toast.configure();
 
 
-
-const AddNew=(props)=>{
+const NewEdit=(props)=>{
+    const $token=localStorage.getItem('access_token');
+    const [render, setRender] = useState(false);
     const navigate = useNavigate();
     const [checked, setChecked] = React.useState(false);
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty(),);
+    let { id } = useParams();
+
     const handleChange = (event) => {
-        setChecked(event.target.checked);
+      setChecked(event.target.checked);
+      console.log(checked)
     };
+
     const [error, setError] = useState({
       title:null,
       content:null,
       important:null,
       file:null
     });
-    const [addNews, setAddNews] = useState({
-      title:'',
-      content:'',
-      important:'',
-      file:''
-    });
-    const onChangeAddNews = (event) => {
+    const [editNews, setEditNews] = useState({});
+    const getOneNews = () =>{
+        fetch(process.env.REACT_APP_API+'/new/getOneNew/'+id, {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+            if(data.error){
+                toast.error('Loading Failed', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            else{
+                setEditNews(data.data);
+                if(data.data.important===1){
+                  setChecked(true);
+                }else{
+                  setChecked(false);
+                }
+            }
+            
+        });
+    }
+    const onChangeEditNews = (event) => {
       let _name = event.target.name;
       let _type = event.target.type;
       let _value = event.target.value;
       if(_type === "file"){
-          setAddNews({...addNews,['file']:event.target.files[0]});
+          setEditNews({...editNews,['file']:event.target.files[0]});
       }
       else{
-        setAddNews({...addNews,[_name]:_value});
+        setEditNews({...editNews,[_name]:_value});
       }
-  };
-  const onAddNews = (e) => {
+    };
+
+  const onEditNews = (e) => {
     const _formData = new FormData();
-    _formData.append('title', addNews.title);
-    _formData.append('file', addNews.file);
+    _formData.append('title', editNews.title);
+    _formData.append('file', editNews.file);
     if(checked){
       _formData.append('important', 1);
     }else{
@@ -67,9 +100,9 @@ const AddNew=(props)=>{
     const requestOptions = {
         method: 'POST',
         body: _formData,
-        headers: {"Authorization": `Bearer `+props.token}
+        headers: {"Authorization": `Bearer `+$token}
     };
-    fetch(process.env.REACT_APP_API+'/new/createNew', requestOptions)
+    fetch(process.env.REACT_APP_API+'/new/updateNew/'+editNews.id, requestOptions)
         .then((res) => res.json())
         .then((json) => {
           if(json.error){
@@ -102,6 +135,11 @@ const AddNew=(props)=>{
           }
         });
 };
+useEffect(() => {
+  if($token){
+      getOneNews();
+  }
+}, [render])
     return(
         <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100%',paddingLeft:"240px",paddingTop:"40px",paddingRight:"240px",paddingBottom:"40px" }}>
             <Box maxWidth="100%" style={{ backgroundColor: 'white', maxHeight: '100%',paddingRight:"40px", paddingLeft:"40px", paddingTop:"32px", paddingBottom:"32px", border:"solid 1px #cfd8dc",borderRadius:"5px", }}>
@@ -111,9 +149,11 @@ const AddNew=(props)=>{
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
                <Grid item xs={4} sm={8} md={12} sx={{display:"flex"}}>
-               <IconButton aria-label="delete" onClick={()=>window.location.reload()}>
+               <Link to={`/new`}>
+               <IconButton aria-label="delete">
                 <ArrowBackIcon />
               </IconButton>
+              </Link>
                 <Typography 
                   sx={{ 
                     fontWeight:"bold",
@@ -134,8 +174,9 @@ const AddNew=(props)=>{
                   }} 
                   variant="h6"
                 >
-                  Create News 
+                  Edit News 
                 </Typography>
+
             </Grid>
             <Grid item xs={4} sm={8} md={12}>
                 <TextField
@@ -146,10 +187,11 @@ const AddNew=(props)=>{
                   label="Title *"
                   variant="outlined"
                   size='small'
+                  value={editNews.title}
                   type={'text'}
                   sx={{marginTop:'5px',width:"100%"}}
                   InputLabelProps={{ shrink: true}}
-                  onChange={(event) => onChangeAddNews(event)}
+                  onChange={(event) => onChangeEditNews(event)}
                 />
             </Grid>
             <Grid item xs={4} sm={8} md={12} sx={{display:"flex"}}>
@@ -192,6 +234,21 @@ const AddNew=(props)=>{
                     editorClassName="editor-class"
                     toolbarClassName="toolbar-class"
                   />
+                  <Typography  sx={{ 
+                    fontWeight:"bold",
+                    marginTop:"6px",
+                    color:"rgb(35, 54, 78)"
+                  }} 
+                  variant="h7">Old content</Typography>
+                  <Box  
+                        sx={{
+                          backgroundColor:"rgb(249, 250, 251)",
+                          padding:"12px"
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html:editNews.content 
+                        }}>
+                  </Box>
                 </Box>
                 <span className="errorNotify">{error.content?error.content:""}</span>
             </Grid>
@@ -203,13 +260,13 @@ const AddNew=(props)=>{
                   label="Document" 
                   variant="outlined" 
                   InputLabelProps={{ shrink: true}}   
-                  onChange={(event) => onChangeAddNews(event)}
+                  onChange={(event) => onChangeEditNews(event)}
                 />
             </Grid>
             <Grid item xs={4} sm={8} md={4}>
                 <Button 
                   type="submit"
-                  onClick={(event) => onAddNews(event)}
+                  onClick={(event) => onEditNews(event)}
                   sx={{
                     height:40.5,
                     width:"100%",
@@ -227,4 +284,4 @@ const AddNew=(props)=>{
       </div>
     );
 }
-export default AddNew;
+export default NewEdit;

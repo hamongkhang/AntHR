@@ -43,6 +43,12 @@ const New=()=>{
           }
         setResult(a)
       }
+      const onClickRender = (value) => {
+        setRender(value);
+      }
+      const onClickRender2 = (value) => {
+        setRender(value);
+      }
       const callbackFunction2 = (value) => {
         setCheck(true);
         var a=[];
@@ -97,7 +103,7 @@ const New=()=>{
                   news.length?
                     news.map((item,index)=>{
                       return(
-                        <NewBody data={item} />
+                        <NewBody data={item} token={$token} onRender={onClickRender} renderR={render}/>
                       )
                     }):
                 <Typography
@@ -113,7 +119,7 @@ const New=()=>{
               </Typography>
               :result.length?result.map((item,index)=>{
                 return(
-                  <NewBody data={item} />
+                  <NewBody data={item} token={$token} onRender={onClickRender} renderR={render}/>
                 )
               }):
               <Typography

@@ -173,7 +173,7 @@ class NewController extends Controller
      * )
      */
     public function getOneNew($id){ 
-        $data=DB::table('news')->where('id',$id)->get();
+        $data=DB::table('news')->where('id',$id)->first();
         if($data){
             return Response()->json(array("Get new successfully!"=> 1,"data"=>$data ));
         }else{
@@ -242,7 +242,8 @@ public function updateNew($id,Request $request){
     $validator = Validator::make($request->all(), [
         'title' => '',
         'content' => '',
-        'file'=>''
+        'file'=>'',
+        'important'=>''
     ]);
     if ($validator->fails()) {
         return response()->json(['error'=>$validator->errors()], 400);     
@@ -261,10 +262,11 @@ public function updateNew($id,Request $request){
             }else{
                 $content=$request->content;
             }
-            if($request->file===null){
-                $name=$new->file;
+            if ($request->important===null){
+                $important=$new->important;
+            }else{
+                $important=$request->important;
             }
-            else{
             if ($request->hasFile('file'))
             {
                 $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'new';
@@ -278,11 +280,13 @@ public function updateNew($id,Request $request){
                 $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                 $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'new', $name);
                 $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'new'.'/'.$name;
+            }else{
+                $name=$new->file;
             }
-        }
             $new->content=$content;    
             $new->title=$title;    
-            $new->file=$name;    
+            $new->file=$name;  
+            $new->important=$important;   
             $new->updated_at=Carbon::now('Asia/Ho_Chi_Minh'); 
             $new->save(); 
             return Response()->json(array("Update folder successfully!"=> 1,"data"=>$new));
