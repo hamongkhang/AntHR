@@ -5,6 +5,7 @@ import UserProfile from './components/user_profile';
 
 
 
+
 const loading = (
     <svg viewBox="25 25 50 50" className="preloader">
         <circle cx="50" cy="50" r="20"></circle>
@@ -23,6 +24,7 @@ function App() {
                     <React.Suspense fallback={loading}>
                         <Router>
                             <Switch>
+                                
                             {/* <Route path="/admin" exact component={LoginAdmin} />
                             <Route path="/admin/:path" component={Admin} /> */}
                                 <Route
