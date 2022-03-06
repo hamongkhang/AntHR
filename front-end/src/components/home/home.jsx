@@ -10,6 +10,7 @@ import UserProfile from '../UserProfile';
 import New from "../new";
 import NewEdit from "../new/new_edit";
 
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(

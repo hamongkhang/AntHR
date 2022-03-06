@@ -5,7 +5,6 @@ import Login from '../login';
 import ForgotPassword from "../forgot_password";
 import Register from "../register";
 
-
 const HomePages = (props) => {
     const { changeRender } = props;
     const [reRender, setReRender] = useState(false);
@@ -47,7 +46,6 @@ const HomePages = (props) => {
                         }
                     />
                     <Route path="/forgot-password" element={<ForgotPassword/>} />
-                   
                     {/*  <Route path="/xac-nhan-ma" exact element={CodeVerification} />
                 <Route
                     path="/xac-nhan-ma-quen-mat-khau"

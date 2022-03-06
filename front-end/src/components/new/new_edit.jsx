@@ -32,7 +32,6 @@ const NewEdit=(props)=>{
 
     const handleChange = (event) => {
       setChecked(event.target.checked);
-      console.log(checked)
     };
 
     const [error, setError] = useState({
@@ -157,7 +156,7 @@ useEffect(() => {
                 <Typography 
                   sx={{ 
                     fontWeight:"bold",
-                    marginTop:"6px",
+                    marginTop:"8.5px",
                     color:"rgb(35, 54, 78)"
                   }} 
                   variant="h7"
