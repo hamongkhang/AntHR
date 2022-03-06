@@ -131,7 +131,7 @@ const NewEdit=(props)=>{
                 progress: undefined,
             });       
               setError('');
-              navigate('/new');
+              navigate('/home/news');
           }
         });
 };

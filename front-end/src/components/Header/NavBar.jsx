@@ -30,9 +30,12 @@ const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
 
 const NavBar = (props) => {
     const { handleDrawerOpen, tabs } = props;
-    // const { handleDrawerClose } = props;
-    const [tab, setTab] = React.useState('page1');
-    const [tabMenu, setTabMenu] = React.useState('one');
+    const [tab, setTab] = React.useState(tabs[0].value);
+    const [tabMenus, setTabMenus] = React.useState(tabs[0].child);
+    const [tabMenu, setTabMenu] = React.useState( {
+        value:'manage-employees',
+        path:'employees/manage-employees'
+    });
     const [menu, setMenu] = React.useState(false)
     const { width } = useWindowDimensions();
    
@@ -46,9 +49,18 @@ const NavBar = (props) => {
 
     const handleChangeTab = (event, newPath) => {
         setTab(newPath);
+        let t = tabs.find(tab =>(tab.value == newPath))
+        setTabMenus(t?t.child:[])
+        if(t.child.length > 0){
+            setTabMenu(t.child[0])
+        }
+        else{
+            setTabMenu({value:'',path:''})
+        }
     };
     const handleChangeMenu = (e, newPath) => {
-        setTabMenu(newPath)
+        let t = tabMenus.find(tab =>(tab.value == newPath))
+        setTabMenu(t?t:{value:'',path:''})
     }
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -105,7 +117,7 @@ const NavBar = (props) => {
                             <Tabs value={tab} onChange={handleChangeTab} textColor='primary' indicatorColor='primary' TabIndicatorProps={{ style: { backgroundColor: 'transparent' } }}>
                                 {
                                     tabs.map((tab) => (
-                                        <Tab key={tab} value={tab} label={tab} to={`/${tab}`} component={Link}
+                                        <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
                                             sx={{ color: 'white', fontWeight: '600', display: 'block' }}
                                             onMouseDown={displayMenu} onMouseOver={displayMenu}
                                         ></Tab>
@@ -156,12 +168,14 @@ const NavBar = (props) => {
                     </Toolbar>
 
                 </Container>
-                <Toolbar disableGutters sx={{ display: `${menu ? '' : 'none'}`, backgroundColor: 'white' }} onMouseOver={displayMenu}>
+                <Toolbar disableGutters sx={{ backgroundColor: 'white' }} onMouseOver={displayMenu}>
                     <Box justifyContent='space-around' sx={{ width: 1, display: 'flex' }}>
-                        <Tabs value={tabMenu} onChange={handleChangeMenu}>
-                            <Tab label="one" value='one'></Tab>
-                            <Tab label="two" value='two'></Tab>
-                            <Tab label="three" value='three'></Tab>
+                        <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
+                            {
+                                tabMenus.map(child =>(
+                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link}></Tab>
+                                ))
+                            }
                         </Tabs>
                     </Box>
 

@@ -16,7 +16,46 @@ const Header = (props) => {
     const { open } = props;
     const { handleDrawerOpen } = props;
     const { handleDrawerClose } = props;
-    const tabs = ['page1', 'page2'];
+    const tabs = [
+        {
+            value:'employees',
+            child:[
+                {
+                    value:'manage-employees',
+                    path:'employees/manage-employees'
+                },
+                {
+                    value:'directory',
+                    path:'employees/directory'
+                }
+                
+            ]
+        },
+        {
+            value:'attendance',
+            child:[
+                {
+                    value:'my-attendance',
+                    path:'attendance/my-attendance'
+                },
+                {
+                    value:'employees-attendance',
+                    path:'attendance/employees-attendance'
+                }
+                
+            ]
+        },
+        {
+            value:'documents',
+            child:[
+            ]
+        },
+        {
+            value:'news',
+            child:[
+            ]
+        },
+    ];
     return (
         <>
             <NavBar
