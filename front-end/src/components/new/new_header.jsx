@@ -76,7 +76,7 @@ export default function NewHeader(props) {
     props.parentCallback4(event.target.value);
   }
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, mt:5 }}>
       <AppBar 
         sx={{
           backgroundColor:"white",
@@ -85,7 +85,8 @@ export default function NewHeader(props) {
           maxWidth:"100%",
           paddingTop:"10px",
           paddingBottom:"10px",
-          position:"fixed"
+          position:"fixed",
+          top: 64,
         }}
       >
         <Toolbar>
@@ -138,9 +139,8 @@ export default function NewHeader(props) {
                   onChange={(event)=>onChangeSearch3(event)}
                 />
               </Grid>
-              <Grid item xs={4} sm={"hide"} md={2}>
-                <Typography
-                >
+              <Grid item xs={4} sm={true} md={2}>
+                <Typography>
                 </Typography>
               </Grid>
               <Grid item xs={4} sm={4} md={2}>

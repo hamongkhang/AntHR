@@ -14,12 +14,6 @@ import draftToHtml from "draftjs-to-html";
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-
-
-
-
-
-
 const AddNew=(props)=>{
     const navigate = useNavigate();
     const [checked, setChecked] = React.useState(false);
@@ -98,7 +92,7 @@ const AddNew=(props)=>{
                 progress: undefined,
             });       
               setError('');
-              navigate('/new');
+              navigate('/home/news');
           }
         });
 };

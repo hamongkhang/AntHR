@@ -45,15 +45,15 @@ export default function DrawerLeft(props) {
                 <Divider />
                 <List>
                     {tabs.map((text, index) => (
-                        <ListItem button key={text}
-                            value={`/${text}`} to={`/${text}`}
+                        <ListItem button key={text.value}
+                            value={text.value} to={text.value}
                             component={Link}
                             sx={{'&:hover,&:focus':{borderRight:4,borderRightColor:'orange'} }}
                             >
                             <ListItemIcon>
                                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                             </ListItemIcon>
-                            <ListItemText primary={text} />
+                            <ListItemText primary={text.value} />
                         </ListItem>
                     ))}
                 </List>
