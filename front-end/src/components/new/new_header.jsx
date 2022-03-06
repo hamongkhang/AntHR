@@ -85,7 +85,6 @@ export default function NewHeader(props) {
           maxWidth:"100%",
           paddingTop:"10px",
           paddingBottom:"10px",
-          position:"fixed",
           top: 64,
         }}
       >

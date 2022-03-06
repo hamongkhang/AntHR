@@ -23,6 +23,7 @@ export default function NewBody(props){
           title: 'Delete "'+title+'" News?',
           text: "Do you want to permanently delete this news?",
           icon: 'warning',
+          marginTop:"200px",
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',

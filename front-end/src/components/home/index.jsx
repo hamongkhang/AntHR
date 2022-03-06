@@ -46,17 +46,6 @@ const HomePages = (props) => {
                         }
                     />
                     <Route path="/forgot-password" element={<ForgotPassword/>} />
-                    {/*  <Route path="/xac-nhan-ma" exact element={CodeVerification} />
-                <Route
-                    path="/xac-nhan-ma-quen-mat-khau"
-                    exact
-                    element={CodeVerificationForgot}
-                />
-                <Route
-                    path="/dat-lai-mat-khau"
-                    exact
-                    element={ResetPassword}
-                /> */}
                     <Route
                         path="/home/*"
                         element={<Home changeRender={changeRender} setReRender={setReRender} checkLoggedIn={checkLoggedIn} />}

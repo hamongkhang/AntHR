@@ -3,10 +3,7 @@ import {Navbar,Container,Button,Row,Col,Table,Modal,Form} from "react-bootstrap"
 import { useNavigate } from 'react-router-dom';
 import dots from "../../images/dots.png";
 import download from "../../images/download.png";
-import seacrh from "../../images/magnifying-glass.png";
 import setting from "../../images/setting.png";
-import man from "../../images/man.png";
-import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -221,6 +218,9 @@ const   ExportUser = (event) =>{
       <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100vh'}}>
         <Modal
           size="lg"
+          style={{
+            marginTop:"200px"
+          }}
           show={show}
           onHide={() =>handleModal() }
         >
@@ -376,12 +376,6 @@ const   ExportUser = (event) =>{
                       <option value={option.value5}>{option.label5}</option>
                     ))}
                   </select>{" "}
-                  <img src={seacrh} className="employeeIcon searchIcon" />{" "}
-                  <input
-                    type="text"
-                    placeholder="Search by name"
-                    className="employeeSearch"
-                  />
                 </div>
                 <div className="table" style={{ paddingRight: "20px", backgroundColor:"white" }}>
                   <Table responsive="sm" className="tableEmployee">
@@ -413,9 +407,9 @@ const   ExportUser = (event) =>{
                               <td>
                                 {item.avatar
                                   ?
-                                    <img src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
+                                    <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
                                   :
-                                    <img src={process.env.REACT_APP_FILE+'/avatar/man.png'} className="employeeAvt" />
+                                    <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/avatar.png'} className="employeeAvt" />
                                 }
                                {item.last_name+' '+item.first_name}
                               </td>

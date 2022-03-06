@@ -92,7 +92,6 @@ const AddNew=(props)=>{
                 progress: undefined,
             });       
               setError('');
-              navigate('/home/news');
           }
         });
 };

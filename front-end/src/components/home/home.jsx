@@ -9,7 +9,8 @@ import useWindowDimensions from "../../config/windowDimensions";
 import UserProfile from '../UserProfile';
 import New from "../new";
 import NewEdit from "../new/new_edit";
-
+import Employee from "../employees";
+import Directory from "../employees/directory";
 
 const drawerWidth = 240;
 
@@ -65,9 +66,9 @@ const Home = (props) => {
                         <Route path="news" element={<New />} />
                         <Route path="news/edit/:id" element={<NewEdit />} />
 
-                        <Route path="employees" element={<p>Employees</p>} />
-                        <Route path="employees/manage-employees" element={<p>Manage</p>} />
-                        <Route path="employees/directory" element={<p>Drectory</p>} />
+                        <Route path="employees" element={<Employee />} />
+                        <Route path="employees/manage-employees" element={<Employee />} />
+                        <Route path="employees/directory" element={<Directory />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />

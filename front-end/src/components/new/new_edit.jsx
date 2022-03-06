@@ -148,7 +148,7 @@ useEffect(() => {
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
                <Grid item xs={4} sm={8} md={12} sx={{display:"flex"}}>
-               <Link to={`/new`}>
+               <Link to={`/home/news`}>
                <IconButton aria-label="delete">
                 <ArrowBackIcon />
               </IconButton>
