@@ -11,6 +11,8 @@ import New from "../new";
 import NewEdit from "../new/new_edit";
 import Employee from "../employees";
 import Directory from "../employees/directory";
+import Commendation from "../reward";
+import NewView from "../new/new_view";
 
 const drawerWidth = 240;
 
@@ -65,10 +67,14 @@ const Home = (props) => {
 
                         <Route path="news" element={<New />} />
                         <Route path="news/edit/:id" element={<NewEdit />} />
+                        <Route path="news/view/:id" element={<NewView />} />
 
                         <Route path="employees" element={<Employee />} />
                         <Route path="employees/manage-employees" element={<Employee />} />
                         <Route path="employees/directory" element={<Directory />} />
+
+                        <Route path="reward%20gate" element={<Commendation />} />
+                        <Route path="reward-gate/commendation" element={<Commendation />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />

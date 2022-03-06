@@ -1,3 +1,6 @@
+body{
+  background-image:linear-gradient(180deg,#f5fdf8,#f7f9fc);
+}
 .modal-content {
     border: 16px solid white;
   }

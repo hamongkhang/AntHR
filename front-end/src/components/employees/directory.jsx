@@ -33,7 +33,6 @@ const  Directory=(props)=>{
     return (
     <Box 
       sx={{
-      backgroundColor:"#eceff1",
       maxWidth:"100%",
       border:"solid 1px #cfd8dc",
       height:'100%',
