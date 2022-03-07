@@ -30,12 +30,15 @@ const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
 
 const NavBar = (props) => {
     const { handleDrawerOpen, tabs } = props;
-    // const { handleDrawerClose } = props;
-    const [tab, setTab] = React.useState('page1');
-    const [tabMenu, setTabMenu] = React.useState('one');
-    const [menu, setMenu] = React.useState(false)
+    const [tab, setTab] = React.useState(tabs[0].value);
+    const [tabMenus, setTabMenus] = React.useState(tabs[0].child);
+    const [tabMenu, setTabMenu] = React.useState({
+        value: 'manage-employees',
+        path: 'employees/manage-employees'
+    });
     const { width } = useWindowDimensions();
-   
+    const navigate = useNavigate();
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -43,25 +46,21 @@ const NavBar = (props) => {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const menuId = 'primary-search-account-menu';
     const mobileMenuId = 'primary-search-account-menu-mobile';
-    const navigate = useNavigate()
-    const handleLogout = () =>{
-        let $token = localStorage.getItem('access_token')
-        const requestOptions = {
-            method: 'POST',
-            headers: { "Authorization": `Bearer ` + $token }
-          };
-          fetch(process.env.REACT_APP_API + '/user/logout', requestOptions)
-            .then((res) => res.json())
-            .then((json) => {
-            });
-        localStorage.clear();
-        navigate('/')
-    }
+
     const handleChangeTab = (event, newPath) => {
         setTab(newPath);
+        let t = tabs.find(tab => (tab.value == newPath))
+        setTabMenus(t ? t.child : [])
+        if (t.child.length > 0) {
+            setTabMenu(t.child[0])
+        }
+        else {
+            setTabMenu({ value: '', path: '' })
+        }
     };
     const handleChangeMenu = (e, newPath) => {
-        setTabMenu(newPath)
+        let t = tabMenus.find(tab => (tab.value == newPath))
+        setTabMenu(t ? t : { value: '', path: '' })
     }
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -80,20 +79,27 @@ const NavBar = (props) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const displayMenu = () => {
-        setMenu(true)
+    const handleLogout = () => {
+        let $token = localStorage.getItem('access_token')
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Authorization": `Bearer ` + $token }
+        };
+        fetch(process.env.REACT_APP_API + '/user/logout', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+            });
+        localStorage.clear();
+        navigate('/')
     }
-    const undisplayMenu = () => {
-        setMenu(false)
-    }
-    useEffect(()=>{
+    useEffect(() => {
         if (width < 900) {
-           setAnchorEl(null);
+            setAnchorEl(null);
         }
-        else if (width > 900){
+        else if (width > 900) {
             setMobileMoreAnchorEl(null);
         }
-    })
+    }, [])
     return (
         <>
             <AppBar position="fixed" open={props.open} color='secondary'>
@@ -118,9 +124,8 @@ const NavBar = (props) => {
                             <Tabs value={tab} onChange={handleChangeTab} textColor='primary' indicatorColor='primary' TabIndicatorProps={{ style: { backgroundColor: 'transparent' } }}>
                                 {
                                     tabs.map((tab) => (
-                                        <Tab key={tab} value={tab} label={tab} to={`/${tab}`} component={Link}
+                                        <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
                                             sx={{ color: 'white', fontWeight: '600', display: 'block' }}
-                                            onMouseDown={displayMenu} onMouseOver={displayMenu}
                                         ></Tab>
                                     ))
                                 }
@@ -151,7 +156,7 @@ const NavBar = (props) => {
                                 color="inherit"
                             >
                                 {/* <AccountCircle /> */}
-                                <Avatar src='http://localhost:8000/upload/images/avatars/avatar_05-03-2022-02-08-10.jpg' sx={{ width: 24, height: 24 }} variant='circular'></Avatar>
+                                <Avatar src='http://localhost:3000/bg7.jpg' sx={{ width: 24, height: 24 }} variant='circular'></Avatar>
                             </IconButton>
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -169,12 +174,24 @@ const NavBar = (props) => {
                     </Toolbar>
 
                 </Container>
-                <Toolbar disableGutters sx={{ display: `${menu ? '' : 'none'}`, backgroundColor: 'white' }} onMouseOver={displayMenu}>
-                    <Box justifyContent='space-around' sx={{ width: 1, display: 'flex' }}>
-                        <Tabs value={tabMenu} onChange={handleChangeMenu}>
-                            <Tab label="one" value='one'></Tab>
-                            <Tab label="two" value='two'></Tab>
-                            <Tab label="three" value='three'></Tab>
+                <Toolbar disableGutters sx={{ backgroundColor: 'white' }}>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography sx={{
+                            display: window.location.pathname.search('profile') != -1 ? 'block' : 'none', 
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight:600
+                        }}>Profile</Typography>
+                    </Box>
+                    <Box justifyContent='space-around' sx={{ 
+                        width: 1, 
+                        display:window.location.pathname.search('profile') != -1?'none':'flex',
+                        }}>
+                        <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
+                            {
+                                tabMenus.map(child => (
+                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link}/>
+                                ))
+                            }
                         </Tabs>
                     </Box>
 
@@ -184,14 +201,14 @@ const NavBar = (props) => {
                 menuId={menuId}
                 isMenuOpen={isMenuOpen}
                 handleMenuClose={handleMenuClose}
-                anchorEl={anchorEl} 
-                handleLogout={handleLogout}/>
+                anchorEl={anchorEl}
+                handleLogout={handleLogout} />
             <MobileAccountMenu
                 mobileMenuId={mobileMenuId}
                 isMobileMenuOpen={isMobileMenuOpen}
                 handleMobileMenuClose={handleMobileMenuClose}
-                mobileMoreAnchorEl={mobileMoreAnchorEl} 
-                handleLogout={handleLogout}/>
+                mobileMoreAnchorEl={mobileMoreAnchorEl}
+                handleLogout={handleLogout} />
         </>
     )
 }

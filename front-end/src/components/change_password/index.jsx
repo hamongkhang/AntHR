@@ -146,8 +146,8 @@ const ChangePassword = (props) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" size="tb" active onClick={(event) => onChangePassword(event)}>Change Password</Button>{' '}
-                <Button variant="secondary" size="tb" active onClick={props.onHide}>Cancel</Button>
+                <Button variant="primary" style={{ borderColor: 'orange', backgroundColor: '#ffffcc' }} size="tb" active onClick={(event) => onChangePassword(event)}>Change Password</Button>{' '}
+                <Button variant="primary" style={{backgroundColor: 'grey', '&:hover': { borderColor: 'gray' }}}  size="tb" active onClick={props.onHide}>Cancel</Button>
             </Modal.Footer>
           </Modal> 
           </>

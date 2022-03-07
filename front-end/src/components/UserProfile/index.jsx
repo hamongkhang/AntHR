@@ -7,6 +7,7 @@ import LeftBoxInfor from './LeftBoxInfor';
 import PersonalInfor from './Overview/PersonalInfor';
 import Address from './Overview/Address';
 import BankInfor from './Overview/BankInfor';
+import Account from './Account';
 import { toast } from 'react-toastify';
 
 toast.configure();
@@ -79,13 +80,11 @@ const UserProfile = () => {
     fetch(process.env.REACT_APP_API + `/employee/getOneEmployee/${id}`, requestOptions)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.user);
         if (json.error) {
           console.log(json.description);
         }
         else {
           if (json.user[0] != null) {
-            console.log(json.user[0].avatar);
             let e = {
               avatar:'',
               first_name: '',last_name: '',phone: '',email: '',birthday: '',gender: '',
@@ -112,8 +111,6 @@ const UserProfile = () => {
   }
   
   const updateBank = () => {
-    console.log('bank');
-    console.log(employee);
   }
   
   useEffect(() => {
@@ -123,7 +120,14 @@ const UserProfile = () => {
     <Box>
       <Box sx={{ display: { xs: 'block', md: 'grid' } }} gridTemplateColumns="repeat(12, 1fr)" gap={2}>
         <Box gridColumn="span 3">
-          <LeftBoxInfor Item={Item} avatar={employee.avatar} setRerender={setRerender}></LeftBoxInfor>
+          <LeftBoxInfor 
+          Item={Item} 
+          avatar={employee.avatar} 
+          firstname = {employee.first_name}
+          lastname = {employee.last_name}
+          phone={employee.phone} 
+          email={employee.email}
+          setRerender={setRerender}/>
         </Box>
         <Box gridColumn="span 9" gap={2}>
           <Item sx={{ mt: { xs: 3, md: 0 } }}>
@@ -152,7 +156,7 @@ const UserProfile = () => {
                   updateBank={updateBank}
                 />
               </>} />
-            <Route path="account" element={<Item sx={{ mt: 2 }}>account</Item>} />
+            <Route path="account" element={<Account Item={Item} email={employee.email}/>} />
           </Routes>
         </Box>
       </Box>

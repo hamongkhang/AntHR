@@ -4,14 +4,14 @@ import Home from '../home/home';
 import Login from '../login';
 import ForgotPassword from "../forgot_password";
 import Register from "../register";
-import New from "../new";
+
 
 const HomePages = (props) => {
     const { changeRender } = props;
     const [reRender, setReRender] = useState(false);
 
     const [checkLoggedIn, setCheckLoggedIn] = useState(false);
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const handleCheckLoggedIn = () => {
         if (localStorage.getItem('access_token')) {
             let token = localStorage.getItem('access_token');
@@ -47,7 +47,7 @@ const HomePages = (props) => {
                         }
                     />
                     <Route path="/forgot-password" element={<ForgotPassword/>} />
-                    <Route path="/new" element={<New/>} />
+                   
                     {/*  <Route path="/xac-nhan-ma" exact element={CodeVerification} />
                 <Route
                     path="/xac-nhan-ma-quen-mat-khau"

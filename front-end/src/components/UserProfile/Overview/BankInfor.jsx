@@ -16,11 +16,11 @@ const BankInfor = (props) => {
                     <Avatar sx={{ width: 30, height: 30, backgroundColor: 'orange' }}>
                         <AccountBalanceIcon fontSize='small' sx={{ color: 'white' }} />
                     </Avatar>
-                    <Typography sx={{ ml: 2, color: 'black' }} variant='subtitle1'>Personal Information</Typography>
+                    <Typography sx={{ ml: 2, color: 'black' }} variant='subtitle1'>Bank Information</Typography>
                 </Box>
                 {
                     openForm ?
-                    ''
+                        ''
                         :
                         <Button variant='outlined' sx={{ borderColor: 'orange', backgroundColor: '#ffffcc' }} onClick={handleChange}>edit</Button>
                 }
@@ -28,12 +28,12 @@ const BankInfor = (props) => {
             {
                 openForm ?
                     <BankInforForm
-                    employee={employee} 
-                    errors={errors}
-                    setEmployee={setEmployee}
-                    setErrors={setErrors}
-                    updateBank={updateBank}
-                    handleChange={handleChange}>
+                        employee={employee}
+                        errors={errors}
+                        setEmployee={setEmployee}
+                        setErrors={setErrors}
+                        updateBank={updateBank}
+                        handleChange={handleChange}>
                     </BankInforForm>
                     :
                     <Box>
@@ -42,7 +42,7 @@ const BankInfor = (props) => {
                                 <Typography sx={{ mx: 3 }} variant='body2'>Bank's name</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>Vietcombank</Typography>
+                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>-</Typography>
                             </Grid>
                         </Grid>
                         <Grid container columns={{ xs: 2, md: 4 }} sx={{ mr: 3 }}>
@@ -50,13 +50,13 @@ const BankInfor = (props) => {
                                 <Typography sx={{ mx: 3 }} variant='body2'>User name</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>Quanne</Typography>
+                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>-</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
                                 <Typography sx={{ mx: 3 }} variant='body2'>Bank number</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>123456789</Typography>
+                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>-</Typography>
                             </Grid>
                         </Grid>
                     </Box>

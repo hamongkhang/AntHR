@@ -12,6 +12,7 @@ const MobileAccountMenu = (props) => {
     const {handleMobileMenuClose} = props
     const {mobileMoreAnchorEl} = props
     const {handleLogout} = props
+
     return (
         <Menu
             anchorEl={mobileMoreAnchorEl}
