@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { styled } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Badge, Container, Toolbar, Typography, IconButton, Box, Avatar } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
@@ -32,13 +32,13 @@ const NavBar = (props) => {
     const { handleDrawerOpen, tabs } = props;
     const [tab, setTab] = React.useState(tabs[0].value);
     const [tabMenus, setTabMenus] = React.useState(tabs[0].child);
-    const [tabMenu, setTabMenu] = React.useState( {
-        value:'manage-employees',
-        path:'employees/manage-employees'
+    const [tabMenu, setTabMenu] = React.useState({
+        value: 'manage-employees',
+        path: 'employees/manage-employees'
     });
-    const [menu, setMenu] = React.useState(false)
     const { width } = useWindowDimensions();
-   
+    const navigate = useNavigate();
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -49,18 +49,18 @@ const NavBar = (props) => {
 
     const handleChangeTab = (event, newPath) => {
         setTab(newPath);
-        let t = tabs.find(tab =>(tab.value == newPath))
-        setTabMenus(t?t.child:[])
-        if(t.child.length > 0){
+        let t = tabs.find(tab => (tab.value == newPath))
+        setTabMenus(t ? t.child : [])
+        if (t.child.length > 0) {
             setTabMenu(t.child[0])
         }
-        else{
-            setTabMenu({value:'',path:''})
+        else {
+            setTabMenu({ value: '', path: '' })
         }
     };
     const handleChangeMenu = (e, newPath) => {
-        let t = tabMenus.find(tab =>(tab.value == newPath))
-        setTabMenu(t?t:{value:'',path:''})
+        let t = tabMenus.find(tab => (tab.value == newPath))
+        setTabMenu(t ? t : { value: '', path: '' })
     }
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -79,20 +79,27 @@ const NavBar = (props) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
 
-    const displayMenu = () => {
-        setMenu(true)
+    const handleLogout = () => {
+        let $token = localStorage.getItem('access_token')
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Authorization": `Bearer ` + $token }
+        };
+        fetch(process.env.REACT_APP_API + '/user/logout', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+            });
+        localStorage.clear();
+        navigate('/')
     }
-    const undisplayMenu = () => {
-        setMenu(false)
-    }
-    useEffect(()=>{
+    useEffect(() => {
         if (width < 900) {
-           setAnchorEl(null);
+            setAnchorEl(null);
         }
-        else if (width > 900){
+        else if (width > 900) {
             setMobileMoreAnchorEl(null);
         }
-    })
+    }, [])
     return (
         <>
             <AppBar position="fixed" open={props.open} color='secondary'>
@@ -119,7 +126,6 @@ const NavBar = (props) => {
                                     tabs.map((tab) => (
                                         <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
                                             sx={{ color: 'white', fontWeight: '600', display: 'block' }}
-                                            onMouseDown={displayMenu} onMouseOver={displayMenu}
                                         ></Tab>
                                     ))
                                 }
@@ -168,12 +174,22 @@ const NavBar = (props) => {
                     </Toolbar>
 
                 </Container>
-                <Toolbar disableGutters sx={{ backgroundColor: 'white' }} onMouseOver={displayMenu}>
-                    <Box justifyContent='space-around' sx={{ width: 1, display: 'flex' }}>
+                <Toolbar disableGutters sx={{ backgroundColor: 'white' }}>
+                    <Box sx={{ ml: 5 }}>
+                        <Typography sx={{
+                            display: window.location.pathname.search('profile') != -1 ? 'block' : 'none', 
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight:600
+                        }}>Profile</Typography>
+                    </Box>
+                    <Box justifyContent='space-around' sx={{ 
+                        width: 1, 
+                        display:window.location.pathname.search('profile') != -1?'none':'flex',
+                        }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {
-                                tabMenus.map(child =>(
-                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link}></Tab>
+                                tabMenus.map(child => (
+                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link}/>
                                 ))
                             }
                         </Tabs>
@@ -185,12 +201,14 @@ const NavBar = (props) => {
                 menuId={menuId}
                 isMenuOpen={isMenuOpen}
                 handleMenuClose={handleMenuClose}
-                anchorEl={anchorEl} />
+                anchorEl={anchorEl}
+                handleLogout={handleLogout} />
             <MobileAccountMenu
                 mobileMenuId={mobileMenuId}
                 isMobileMenuOpen={isMobileMenuOpen}
                 handleMobileMenuClose={handleMobileMenuClose}
-                mobileMoreAnchorEl={mobileMoreAnchorEl} />
+                mobileMoreAnchorEl={mobileMoreAnchorEl}
+                handleLogout={handleLogout} />
         </>
     )
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePages from './components/home';
+import Welcome from './components/Welcome';
 
 const loading = (
     <svg viewBox="25 25 50 50" className="preloader">
@@ -25,14 +26,8 @@ function App() {
                                     path="/user-profile"
                                     component={UserProfile}
                                 /> */}
-                                <Route
-                                    path="/*"
-                                    element={
-                                        <HomePages
-                                            changeRender={changeRender}
-                                        />
-                                    }
-                                />
+                                <Route path="/*" element={<HomePages changeRender={changeRender}/>} />
+                                <Route path="/" element={<Welcome></Welcome>} />
                              </Routes>
                     </React.Suspense>
                 </div>
@@ -42,26 +37,3 @@ function App() {
 }
 
 export default App;
-
-// import React from 'react';
-// import ChangePassword from './components/change_password';
-// import { Button } from 'react-bootstrap';
-
-// function App() {
-//   const [modalShow, setModalShow] = React.useState(false);
-
-//   return (
-//     <>
-//       <Button variant="primary" onClick={() => setModalShow(true)}>
-//         Launch vertically centered modal
-//       </Button>
-
-//       <ChangePassword
-//         show={modalShow}
-//         onHide={() => setModalShow(false)}
-//       />
-//     </>
-//   );
-// }
-
-// export default App;

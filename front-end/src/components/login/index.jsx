@@ -179,7 +179,7 @@ const Login = (props) => {
                       draggable: true,
                       progress: undefined,
                   });
-                  navigate('/');
+                  navigate('/home');
 
                 }
               });

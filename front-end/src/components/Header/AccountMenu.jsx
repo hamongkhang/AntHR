@@ -9,6 +9,7 @@ const AccountMenu = (props) => {
     const { isMenuOpen } = props
     const { handleMenuClose } = props
     const { anchorEl } = props
+    const { handleLogout } = props
     return (
         <Menu
             anchorEl={anchorEl}
@@ -64,7 +65,7 @@ const AccountMenu = (props) => {
                 </IconButton>
                 <Typography>My Account</Typography>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleLogout}>
                 <IconButton
                     size="small"
                     aria-label="account of current user"
