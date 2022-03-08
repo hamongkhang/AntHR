@@ -25,12 +25,16 @@ const Header = (props) => {
                     path:'reward-gate/commendation'
                 },
                 {
-                    value:'Portal',
-                    path:'reward-gate/portal'
+                    value:'recognition portal',
+                    path:'reward-gate/recognition-portal'
                 },
                 {
                     value:'Receiving gifts',
                     path:'reward-gate/receiving-gifts'
+                },
+                {
+                    value:'Gifts management',
+                    path:'reward-gate/manager'
                 }
             ]
         },

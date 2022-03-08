@@ -13,6 +13,9 @@ import Employee from "../employees";
 import Directory from "../employees/directory";
 import Commendation from "../reward";
 import NewView from "../new/new_view";
+import Gift from "../reward/gift";
+import Portal from "../reward/portal";
+import Manager from "../reward/manager";
 
 const drawerWidth = 240;
 
@@ -74,7 +77,10 @@ const Home = (props) => {
                         <Route path="employees/directory" element={<Directory />} />
 
                         <Route path="reward%20gate" element={<Commendation />} />
+                        <Route path="reward-gate/recognition-portal" element={<Portal />} />
                         <Route path="reward-gate/commendation" element={<Commendation />} />
+                        <Route path="reward-gate/receiving-gifts" element={<Gift />} />
+                        <Route path="reward-gate/manager" element={<Manager />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />
