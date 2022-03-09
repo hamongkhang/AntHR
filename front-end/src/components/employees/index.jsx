@@ -45,7 +45,7 @@ const Employee=()=>{
   const [render, setRender] = useState(false);
 
   const changeStatus = (id) => {
-  fetch("http://localhost:8000/api/account/blockAccount/"+id, {
+  fetch(process.env.REACT_APP_API+"/account/blockAccount/"+id, {
       method: "GET",
       headers: {"Authorization": `Bearer `+$token}
     })

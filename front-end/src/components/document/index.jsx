@@ -32,24 +32,17 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Switch from '@mui/material/Switch';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
 
 const Documents=(props)=>{
+    const navigate = useNavigate();
+    const $token=localStorage.getItem('access_token');
     const [openAdd, setOpenAdd] =useState(false);
     const [openEdit, setOpenEdit] =useState(false);
     const [checked, setChecked] = React.useState(true);
-
+    const [folders, setFolders]= useState([]);
+    const [render, setRender] = useState(false);
     const handleChange = (event) => {
       setChecked(event.target.checked);
     };
@@ -59,7 +52,58 @@ const Documents=(props)=>{
     const clickOpenEdit=()=>{
         setOpenEdit(!openEdit);
     }
-
+    const onChangeShare = (id) => {
+        fetch(process.env.REACT_APP_API+"/document/changeShare/"+id, {
+            method: "POST",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+            if(data.error){
+                toast.error('Share failed.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+      
+            }
+            else{
+                setRender(!render)
+                toast.success('Share successfully.', {
+                 position: "bottom-right",
+                 autoClose: 3000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+                 theme: "colored"
+             });
+            }
+        });
+        };
+    const getDocuments = () =>{
+        fetch(process.env.REACT_APP_API+'/document/getAllFolder', {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+            setFolders(data.data.reverse());
+        });
+    }
+    useEffect(() => {
+        if($token){
+           getDocuments();
+        }else{
+           navigate('/home');
+        }
+    }, [render])
     return(
         <Box 
             sx={{
@@ -109,8 +153,8 @@ const Documents=(props)=>{
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
                         id="name"
                         name="name"
                         label="Name *"
@@ -119,7 +163,7 @@ const Documents=(props)=>{
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddFolders(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
@@ -127,13 +171,15 @@ const Documents=(props)=>{
                             aria-label="minimum height"
                             minRows={3}
                             placeholder="Description"
+                            name="description"
+                            onChange={(event) => onChangeAddFolders(event)}
                             style={{ width: "100%",border:"1px solid rgb(200, 200, 200)",borderRadius:"5px",paddingTop:"5px",paddingLeft:"10px" }}
                         />
                     </Grid>
                     <Grid item xs={4} sm={8} md={4}>
                         <Button 
                             type="submit"
-                            //onClick={(event) => onAddNews(event)}
+                            onClick={(event) => onAddDocuments(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -333,28 +379,31 @@ const Documents=(props)=>{
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rows.map((row) => (
+                                        {folders.length?
+                                         folders.map((item,index)=>{
+                                             return(
                                             <TableRow
-                                                key={row.name}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
                                                 <TableCell component="th" scope="row">
                                                     {/* <Link to={`view/${props.data.id}`} style={{ textDecoration: 'none' }}> */}
                                                     <Link to={`view/3`} style={{ color:"rgba(0, 0, 0, 0.87)",textDecoration: 'none' }}>
-                                                        <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {row.name}
+                                                        <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell align="right">{row.calories}</TableCell>
-                                                <TableCell align="right">{row.fat}</TableCell>
-                                                <TableCell align="right">{row.carbs}</TableCell>
+                                                <TableCell align="right">{item.author?item.author:"-"}</TableCell>
+                                                <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
+                                                    year: 'numeric', month: 'long', day: 'numeric' 
+                                                }).format(new Date(item.created_at)):"-"}</TableCell>
+                                                <TableCell align="right">{item.description?item.description:"-"}</TableCell>
                                                 <TableCell align="right">
                                                     <Switch
-                                                        checked={checked}
-                                                        onChange={handleChange}
+                                                        defaultChecked={item.share===1?true:false}
+                                                        onChange={()=>onChangeShare(item.id)}
                                                         inputProps={{ 'aria-label': 'controlled' }}
                                                     />
                                                 </TableCell>
-                                                <TableCell align="right">{row.protein}</TableCell>
+                                                <TableCell align="right">{item.sum?item.sum:0}</TableCell>
                                                 <TableCell>
                                                     <Grid
                                                         container
@@ -389,7 +438,10 @@ const Documents=(props)=>{
                                                     </Grid>
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
+                                             )
+                                            }
+                                            ):null
+                                        }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
