@@ -18,14 +18,11 @@ const HomePages = (props) => {
                 setCheckLoggedIn(true);
             } else {
                 setCheckLoggedIn(false);
-                navigate('/login')
             }
         } else {
             setCheckLoggedIn(false);
-            navigate('/login')
         }
     };
-
     useEffect(() => {
         handleCheckLoggedIn();
     }, [reRender]);
