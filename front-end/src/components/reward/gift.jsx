@@ -630,14 +630,10 @@ const  Gift=(props)=>{
                                     >
                                         Delete
                                     </Button>
-                                </Box> 
+                                    </Box> 
                                     </Grid>
-                                </Grid>
-                            </Box>
-                        </Grid>
-                        </Grid>
-                            {/* <Grid item xs={2} sm={3} md={3}>
-                                <Box
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
                                     sx={{
                                         backgroundColor:"white",
                                         boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
@@ -649,17 +645,34 @@ const  Gift=(props)=>{
                                         padding: "24px",
                                     }}
                                 > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
                                     <img 
                                         style={{
-                                            height: "70px",
-                                            width: "70px",
-                                            objectFit: 'cover',
-                                            borderRadius: "100%",
+                                            height: "100%",
+                                            width: "100%",
                                             marginBottom:"20px"
                                         }} 
                                        // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                       src={process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
                                     </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
                                     <Typography 
                                         sx={{ 
                                             fontWeight:"bold",
@@ -667,19 +680,7 @@ const  Gift=(props)=>{
                                         }} 
                                         variant="h6"
                                     >
-                                       sssss ssss sssssss sssss sssss ss
-                                    </Typography> 
-                                    <Typography 
-                                        sx={{ 
-                                            color:"rgb(35, 54, 78)",
-                                            fontWeight: "400",
-                                            fontSize: "14px",
-                                            lineheight: "20px",
-                                            color:"rgb(95, 125, 149)",
-                                            marginBottom:"15px"
-                                        }} 
-                                    >
-                                        Finance Manager
+                                      Bún thịt nướng thơm ngon nứt mũi
                                     </Typography> 
                                     <Typography 
                                         sx={{ 
@@ -690,43 +691,749 @@ const  Gift=(props)=>{
                                             color:"rgb(95, 125, 149)"
                                         }} 
                                     >
-                                        <LocalPhoneOutlinedIcon sx={{marginRight:"5px"}} /> 
-                                        <a style={{color: "inherit",textDecoration:"none",fontSize:"16px"}} >aaad aaaaa aaaaa aaaa</a>
+                                      500.000 đồng
                                     </Typography>    
                                     <Typography 
                                         sx={{ 
-                                            color:"rgb(35, 54, 78)",
-                                            fontWeight: "400",
-                                            fontSize: "14px",
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
                                             lineheight: "20px",
-                                            color:"rgb(95, 125, 149)",
-                                            textOverflow:"ellipsis",
-                                            overflow: "hidden",
-                                            marginBottom:"10px"
+                                            color:"red",
                                         }} 
                                     >
-                                        <a  style={{color: "inherit",textDecoration:"none",fontSize:"14px"}}>aaaa aaaaa aaaaa aaaaa</a>
-                                    </Typography>   
-                                    <hr style={{color:"grey"}}></hr>
+                                        500 points
+                                    </Typography> 
                                     <Typography 
                                         sx={{ 
                                             color:"rgb(35, 54, 78)",
                                             fontWeight: "400",
                                             fontSize: "14px",
                                             lineheight: "20px",
-                                            color:"rgb(95, 125, 149)",
-                                            textOverflow:"ellipsis",
-                                            overflow: "hidden",
+                                            color:"rgb(95, 125, 149)"
                                         }} 
                                     >
-                                        Line Manager Mộng Khang Hà
-                                    </Typography>  
-                                </Box> 
-                            </Grid> */}
-                        {/* )
-                    }
-                ):null
-            }      */}
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                    <Grid item xs={4} sm={3} md={3}>
+                                    <Box
+                                    sx={{
+                                        backgroundColor:"white",
+                                        boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                        border:"1px solid rgb(235, 240, 244)",
+                                        alignItems: 'center',
+                                        textAlign: 'center',
+                                        width: "100%",
+                                        borderRadius: '5px',
+                                        padding: "24px",
+                                    }}
+                                > 
+                                    <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                    <img 
+                                        style={{
+                                            height: "100%",
+                                            width: "100%",
+                                            marginBottom:"20px"
+                                        }} 
+                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                    </img>
+                                    <Switch
+                                        checked={checked}
+                                        onChange={handleChange}
+                                        inputProps={{ 'aria-label': 'controlled' }}
+                                        sx={{
+                                            float:"left",
+                                        }}
+                                    />
+                                    <br></br><br></br><br></br>
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight:"bold",
+                                            color:"rgb(35, 54, 78)"
+                                        }} 
+                                        variant="h6"
+                                    >
+                                      Bún thịt nướng thơm ngon nứt mũi
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                      500.000 đồng
+                                    </Typography>    
+                                    <Typography 
+                                        sx={{ 
+                                            fontWeight: "bold",
+                                            fontSize: "24px",
+                                            lineheight: "20px",
+                                            color:"red",
+                                        }} 
+                                    >
+                                        500 points
+                                    </Typography> 
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontWeight: "400",
+                                            fontSize: "14px",
+                                            lineheight: "20px",
+                                            color:"rgb(95, 125, 149)"
+                                        }} 
+                                    >
+                                       Đây là tô bún được bán ở chợ bà chiểu
+                                    </Typography>    
+                                    <Button 
+                                        type="submit"
+                                        onClick={()=>clickOpenEdit()}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button 
+                                        type="submit"
+                                        //onClick={(event) => onAddNews(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"red", 
+                                            color:"#ff9900",
+                                            marginTop:"10px"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        Delete
+                                    </Button>
+                                    </Box> 
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        </Grid>
+                        </Grid>
         </Grid>        
     </Box>
     );
