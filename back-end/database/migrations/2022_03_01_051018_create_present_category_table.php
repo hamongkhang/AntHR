@@ -16,6 +16,7 @@ class CreatePresentCategoryTable extends Migration
         Schema::create('present_category', function (Blueprint $table) {
             $table->increments('id')->nullable();
             $table->text('category')->nullable();
+            $table->text('image')->nullable();
             $table->timestamps();   
         });
     }

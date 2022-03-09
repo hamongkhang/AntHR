@@ -96,7 +96,7 @@ const New=()=>{
     }, [render])
     return(
         !show?
-        <div style={{ backgroundColor: '#eceff1', height: '100vh'}}>
+        <div style={{height: '100vh'}}>
             <NewHeader parentCallback={callbackFunction}  parentCallback2={callbackFunction2} parentCallback3={callbackFunction3} parentCallback4={callbackFunction4}/>
             <div style={{ marginTop:"150px"}}>
               {!check?

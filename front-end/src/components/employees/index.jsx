@@ -215,7 +215,7 @@ const   ExportUser = (event) =>{
     }
 }, [render])
     return (
-      <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100vh'}}>
+      <div maxWidth="100%" style={{height: '100vh'}}>
         <Modal
           size="lg"
           style={{
@@ -346,7 +346,7 @@ const   ExportUser = (event) =>{
             </Container>
           </Navbar>
         </Row>
-        <Row style={{ backgroundColor: "#eceff1", height:"100%" }}>
+        <Row style={{height:"100%" }}>
           <Col className="mt-3">
             <Container fluid>
               <div className=" bobyEmployee " style={{ paddingRight: "20px",paddingLeft: "20px", backgroundColor:"white" }}>

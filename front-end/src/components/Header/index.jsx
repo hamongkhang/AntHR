@@ -18,6 +18,27 @@ const Header = (props) => {
     const { handleDrawerClose } = props;
     const tabs = [
         {
+            value:'reward gate',
+            child:[
+                {
+                    value:'Commendation',
+                    path:'reward-gate/commendation'
+                },
+                {
+                    value:'recognition portal',
+                    path:'reward-gate/recognition-portal'
+                },
+                {
+                    value:'Receiving gifts',
+                    path:'reward-gate/receiving-gifts'
+                },
+                {
+                    value:'Gifts management',
+                    path:'reward-gate/manager'
+                }
+            ]
+        },
+        {
             value:'employees',
             child:[
                 {
@@ -28,7 +49,7 @@ const Header = (props) => {
                     value:'directory',
                     path:'employees/directory'
                 }
-                
+
             ]
         },
         {

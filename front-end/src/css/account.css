@@ -1,3 +1,6 @@
+body{
+  background-image:linear-gradient(180deg,#f5fdf8,#f7f9fc);
+}
 .modal-content {
     border: 16px solid white;
   }
@@ -438,3 +441,23 @@
   .swal2-container:not(.swal2-top):not(.swal2-top-start):not(.swal2-top-end):not(.swal2-top-left):not(.swal2-top-right):not(.swal2-center-start):not(.swal2-center-end):not(.swal2-center-left):not(.swal2-center-right):not(.swal2-bottom):not(.swal2-bottom-start):not(.swal2-bottom-end):not(.swal2-bottom-left):not(.swal2-bottom-right):not(.swal2-grow-fullscreen)>.swal2-modal{
     margin-top: 200px!important;
   }
+  .scrollReward {
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+}
+
+.scrollReward::-webkit-scrollbar { 
+  width: 0 !important;
+  display: none; 
+}
+.scrollReward2 {
+  overflow: auto;
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+}
+
+.scrollReward2::-webkit-scrollbar { 
+width: 0 !important;
+display: none; 
+}

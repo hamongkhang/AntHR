@@ -18,6 +18,7 @@ class PresentCategory extends Model
     protected $fillable = [
         'id',
         'category',
+        'image',
         'created_at',
         'updated_at',
     ];
