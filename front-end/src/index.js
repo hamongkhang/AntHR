@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './css/account.css';
-import './css/document.css';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(

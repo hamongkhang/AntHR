@@ -35,7 +35,7 @@ const Portal = (props) => {
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 9, md: 12 }}
             >
-                <Grid item xs={4} sm={3} md={3} className="scrollReward" display={{ xs: "none", md: "block", sm: "block", position: 'fixed',overflowY:"auto",height:"450px",paddingBottom:"40px"}}>
+                <Grid item xs={4} sm={3} md={3} className="scrollReward" display={{ xs: "none", md: "block", sm: "block", position: 'fixed',overflowY:"auto",height:"800px",paddingBottom:"800px"}}>
                 <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -914,7 +914,7 @@ const Portal = (props) => {
                     </Box>
                 </Grid>
                <Grid item xs={4} sm={3} md={3}  className="scrollReward2" 
-               display={{ xs: "none", md: "block", sm: "block",overflowY:"auto",height:"450px",paddingBottom:"40px",position:"fixed",right:"30px"}}
+               display={{ xs: "none", md: "block", sm: "block",overflowY:"auto",height:"800px",paddingBottom:"800px",position:"fixed",right:"30px"}}
                >
                    <Box
                         sx={{
