@@ -18,6 +18,7 @@ import Switch from '@mui/material/Switch';
 
 const  Gift=(props)=>{
     const [openAdd, setOpenAdd] =useState(false);
+    const [openEdit, setOpenEdit] =useState(false);
     const [checked, setChecked] = React.useState(true);
 
     const handleChange = (event) => {
@@ -25,6 +26,9 @@ const  Gift=(props)=>{
     };
     const clickOpenAdd=()=>{
         setOpenAdd(!openAdd);
+    }
+    const clickOpenEdit=()=>{
+        setOpenEdit(!openEdit);
     }
 
     return (
@@ -180,6 +184,168 @@ const  Gift=(props)=>{
                         <Button 
                             type="submit"
                             onClick={()=>clickOpenAdd()}
+                            //onClick={(event) => onAddNews(event)}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"rgb(204, 204, 204)", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Cancel
+                        </Button>
+                    </Grid> 
+                </Grid>
+            </Box>
+        </Modal>
+        <Modal
+            open={openEdit}
+            onClose={()=>clickOpenEdit()}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box 
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: "80%",
+                    height:"70%",
+                    bgcolor: 'background.paper',
+                    border: '2px solid #ff9900',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius:"10px"
+                }}
+            >
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                    <Grid item xs={4} sm={8} md={12}>
+                    <Typography 
+                         sx={{ 
+                            fontWeight:"bold",
+                            color:"rgb(35, 54, 78)"
+                        }} 
+                        variant="h6"
+                    >
+                        Edit Gifts 
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={6}>
+                    <TextField
+                        //helperText={error.title?error.title[0]:null}
+                        //error={error.title?true:false}
+                        id="name"
+                        name="name"
+                        label="Name *"
+                        variant="outlined"
+                        size='small'
+                        type={'text'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        //onChange={(event) => onChangeAddNews(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={6}>
+                    <FormControl fullWidth> 
+                        <InputLabel id="demo-simple-select-label">Gift Categories</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            //value={age}
+                            label="Age"
+                            sx={{marginTop:"5px",height:"40px",padding:"8.5px 14px"}}
+                            //onChange={handleChange}
+                        >
+                            <MenuItem value={10}>Food</MenuItem>
+                            <MenuItem value={20}>Voucher</MenuItem>
+                            <MenuItem value={30}>Artifacts</MenuItem>
+                        </Select>
+                    </FormControl>
+                    </Grid>
+                    <Grid item xs={4} sm={2} md={4}>
+                    <TextField
+                        //helperText={error.title?error.title[0]:null}
+                        //error={error.title?true:false}
+                        id="price"
+                        name="price"
+                        label="Price *"
+                        variant="outlined"
+                        size='small'
+                        type={'number'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        //onChange={(event) => onChangeAddNews(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={2} md={4
+                    }>
+                    <TextField
+                        //helperText={error.title?error.title[0]:null}
+                        //error={error.title?true:false}
+                        id="score"
+                        name="score"
+                        label="Score *"
+                        variant="outlined"
+                        size='small'
+                        type={'number'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        //onChange={(event) => onChangeAddNews(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={4} md={4}>
+                        <TextField 
+                        id="file" 
+                        type="file" 
+                        name="file"
+                        label="Image" 
+                        variant="outlined" 
+                        InputLabelProps={{ shrink: true}}   
+                       // onChange={(event) => onChangeAddNews(event)}
+                        />
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={12}>
+                    <TextField
+                        //helperText={error.title?error.title[0]:null}
+                        //error={error.title?true:false}
+                        id="description"
+                        name="description"
+                        label="Description *"
+                        variant="outlined"
+                        size='small'
+                        type={'text'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        //onChange={(event) => onChangeAddNews(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={4}>
+                        <Button 
+                            type="submit"
+                            //onClick={(event) => onAddNews(event)}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"#FFFF66", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Publish
+                        </Button>
+                    </Grid> 
+                    <Grid item xs={4} sm={8} md={2}>
+                        <Button 
+                            type="submit"
+                            onClick={()=>clickOpenEdit()}
                             //onClick={(event) => onAddNews(event)}
                             sx={{
                                 height:40.5,
@@ -436,7 +602,7 @@ const  Gift=(props)=>{
                                     </Typography>    
                                     <Button 
                                         type="submit"
-                                        //onClick={(event) => onAddNews(event)}
+                                        onClick={()=>clickOpenEdit()}
                                         sx={{
                                             height:40.5,
                                             width:"100%",

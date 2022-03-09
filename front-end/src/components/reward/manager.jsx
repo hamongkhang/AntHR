@@ -14,6 +14,8 @@ import HistoryIcon from '@mui/icons-material/History';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
+import HistoryOutlinedIcon from '@mui/icons-material/HistoryOutlined';
 
 const Manager = (props) => {
     const $token = localStorage.getItem('access_token');
@@ -57,7 +59,7 @@ const Manager = (props) => {
                                 fontSize: "14px",
                             }}
                         >
-                            <AddCircleOutlineOutlinedIcon/> Create gift
+                            <ApprovalIcon/> Waiting for approval                        
                         </Typography>
                     </Box> 
                     <Box
@@ -101,7 +103,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -113,15 +115,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -138,29 +149,33 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please confirm the employee's redemption information
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
                             </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
+                            <Grid item xs={2} sm={4} md={6}>
                                 <Button 
                                     type="submit"
                                     //onClick={(event) => onAddNews(event)}
@@ -174,6 +189,22 @@ const Manager = (props) => {
                                     size='medium' 
                                 >
                                     Publish
+                                </Button>
+                            </Grid>
+                            <Grid item xs={2} sm={4} md={6}>
+                                <Button 
+                                    type="submit"
+                                    //onClick={(event) => onAddNews(event)}
+                                    sx={{
+                                        height:40.5,
+                                        width:"100%",
+                                        border:"1px solid #ff9900",
+                                        backgroundColor:"red", 
+                                        color:"#ff9900"
+                                    }}
+                                    size='medium' 
+                                >
+                                    Block
                                 </Button>
                             </Grid>
                         </Grid>
@@ -186,7 +217,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -219,7 +250,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -231,15 +262,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -256,29 +296,33 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please confirm the employee's redemption information
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
                             </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
+                            <Grid item xs={2} sm={4} md={6}>
                                 <Button 
                                     type="submit"
                                     //onClick={(event) => onAddNews(event)}
@@ -294,8 +338,24 @@ const Manager = (props) => {
                                     Publish
                                 </Button>
                             </Grid>
+                            <Grid item xs={2} sm={4} md={6}>
+                                <Button 
+                                    type="submit"
+                                    //onClick={(event) => onAddNews(event)}
+                                    sx={{
+                                        height:40.5,
+                                        width:"100%",
+                                        border:"1px solid #ff9900",
+                                        backgroundColor:"red", 
+                                        color:"#ff9900"
+                                    }}
+                                    size='medium' 
+                                >
+                                    Block
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Box>   
+                    </Box> 
                     <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -304,7 +364,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -337,7 +397,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -349,15 +409,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -374,29 +443,33 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please confirm the employee's redemption information
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
                             </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
+                            <Grid item xs={2} sm={4} md={6}>
                                 <Button 
                                     type="submit"
                                     //onClick={(event) => onAddNews(event)}
@@ -412,11 +485,27 @@ const Manager = (props) => {
                                     Publish
                                 </Button>
                             </Grid>
+                            <Grid item xs={2} sm={4} md={6}>
+                                <Button 
+                                    type="submit"
+                                    //onClick={(event) => onAddNews(event)}
+                                    sx={{
+                                        height:40.5,
+                                        width:"100%",
+                                        border:"1px solid #ff9900",
+                                        backgroundColor:"red", 
+                                        color:"#ff9900"
+                                    }}
+                                    size='medium' 
+                                >
+                                    Block
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Box>  
+                    </Box> 
                 </Grid>
                 <Grid item xs={4} sm={5} md={4} display={{ xs: "none", md: "block", sm: "block"}} />
-                <Grid item xs={4} sm={5} md={4} sx={{position:'fix'}}>
+                <Grid item xs={4} sm={5} md={4} sx={{position:'fix',paddingBottom:"40px"}}>
                     <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -436,7 +525,7 @@ const Manager = (props) => {
                                 fontSize: "14px",
                             }}
                         >
-                            <ApprovalIcon/> Waiting for approval
+                            <LocalShippingOutlinedIcon/> Delivering
                         </Typography>
                     </Box> 
                     <Box
@@ -480,7 +569,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -492,15 +581,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -517,24 +615,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please wait for the staff to confirm receipt of the goods
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -542,17 +644,18 @@ const Manager = (props) => {
                             <Grid item xs={4} sm={8} md={12}>
                                 <Button 
                                     type="submit"
+                                    disabled={true}
                                     //onClick={(event) => onAddNews(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
                                         backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Gifts are being delivered to staff
                                 </Button>
                             </Grid>
                         </Grid>
@@ -565,7 +668,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -598,7 +701,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -610,15 +713,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -635,24 +747,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please wait for the staff to confirm receipt of the goods
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -660,21 +776,22 @@ const Manager = (props) => {
                             <Grid item xs={4} sm={8} md={12}>
                                 <Button 
                                     type="submit"
+                                    disabled={true}
                                     //onClick={(event) => onAddNews(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
                                         backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Gifts are being delivered to staff
                                 </Button>
                             </Grid>
                         </Grid>
-                    </Box>   
+                    </Box> 
                     <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -683,7 +800,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -716,7 +833,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -728,15 +845,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -753,24 +879,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Please wait for the staff to confirm receipt of the goods
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -778,21 +908,22 @@ const Manager = (props) => {
                             <Grid item xs={4} sm={8} md={12}>
                                 <Button 
                                     type="submit"
+                                    disabled={true}
                                     //onClick={(event) => onAddNews(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
                                         backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Gifts are being delivered to staff
                                 </Button>
                             </Grid>
                         </Grid>
-                    </Box>  
+                    </Box> 
                 </Grid>
                 <Grid item xs={4} sm={5} md={4} className="scrollReward" display={{ xs: "none", md: "block", sm: "block", position: 'fixed',overflowY:"auto",height:"450px",paddingBottom:"40px",right:"40px"}}>
                     <Box
@@ -801,7 +932,7 @@ const Manager = (props) => {
                             border: "1.5px solid #e0e0e0",
                             borderRadius: '10px',
                             padding: "10px",
-                            backgroundColor:"#4caf50",
+                            backgroundColor:"#2979ff",
                             marginBottom:"10px",
                             textAlign:'center',
                             marginRight:"10px",
@@ -814,7 +945,7 @@ const Manager = (props) => {
                                 fontSize: "14px",
                             }}
                         >
-                            <AddCircleOutlineOutlinedIcon/> Create gift
+                            <HistoryOutlinedIcon/> History
                         </Typography>
                     </Box> 
                     <Box
@@ -858,7 +989,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -870,15 +1001,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -895,24 +1035,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Employee received a gift
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -925,12 +1069,12 @@ const Manager = (props) => {
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
-                                        backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        backgroundColor:"red", 
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Delete
                                 </Button>
                             </Grid>
                         </Grid>
@@ -943,7 +1087,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -976,7 +1120,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -988,15 +1132,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -1013,24 +1166,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Employee received a gift
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -1043,16 +1200,16 @@ const Manager = (props) => {
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
-                                        backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        backgroundColor:"red", 
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Delete
                                 </Button>
                             </Grid>
                         </Grid>
-                    </Box>   
+                    </Box> 
                     <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -1061,7 +1218,7 @@ const Manager = (props) => {
                             padding: "10px",
                             marginRight:"10px",
                             backgroundColor:"white",
-                            marginBottom:"10px"
+                            marginBottom:"10px",
                         }}
                     >
                         <Grid
@@ -1094,7 +1251,7 @@ const Manager = (props) => {
                                         fontSize: "12px",
                                     }}
                                 >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
                                 </Typography>
                                 <Typography
                                     sx={{
@@ -1106,15 +1263,24 @@ const Manager = (props) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
+                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"12px",
+                                        }} 
+                                    >
+                                      Sold out
+                                    </Typography> 
+                                    </Box>
+                                <img
+                                                    style={{
+                                                        height: "100%",
+                                                        width: "100%",
+                                                    }}
+                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                                                </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
                                 <Box sx={{
@@ -1131,24 +1297,28 @@ const Manager = (props) => {
                                                     display: "flex",
                                                 }}
                                             >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
+                                                <Typography
+                                                    sx={{
+                                                        color: "red",
+                                                        fontWeight: "bold",
+                                                        fontSize: "20px",
+
                                                     }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
+                                                >
+                                                    500 points
+                                                </Typography>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
                                                         color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
+                                                        fontWeight: "italic",
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Không ngừng vươn lên trong công việc
+                                                    Employee received a gift
                                                 </Typography>
-                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>
@@ -1161,16 +1331,16 @@ const Manager = (props) => {
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
-                                        backgroundColor:"#FFFF66", 
-                                        color:"#ff9900"
+                                        backgroundColor:"red", 
+                                        color:"##ff9900"
                                     }}
                                     size='medium' 
                                 >
-                                    Publish
+                                    Delete
                                 </Button>
                             </Grid>
                         </Grid>
-                    </Box>  
+                    </Box> 
                 </Grid>
             </Grid>
         </Box>
