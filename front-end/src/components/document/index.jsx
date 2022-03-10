@@ -17,22 +17,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
-import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Switch from '@mui/material/Switch';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 
 const Documents=(props)=>{
@@ -40,18 +34,182 @@ const Documents=(props)=>{
     const $token=localStorage.getItem('access_token');
     const [openAdd, setOpenAdd] =useState(false);
     const [openEdit, setOpenEdit] =useState(false);
-    const [checked, setChecked] = React.useState(true);
     const [folders, setFolders]= useState([]);
     const [render, setRender] = useState(false);
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
-    };
     const clickOpenAdd=()=>{
         setOpenAdd(!openAdd);
     }
-    const clickOpenEdit=()=>{
+    const clickOpenEdit=(event,id)=>{
         setOpenEdit(!openEdit);
+        for(var i=0;i<folders.length;i++){
+            if(folders[i].id===id){
+                setEditFolders(folders[i]);
+            }
+        }
     }
+      const [editFolders, setEditFolders] = useState({});
+      const onChangeEditFolders = (event) => {
+        let _name = event.target.name;
+        let _type = event.target.type;
+        let _value = event.target.value;
+        setEditFolders({...editFolders,[_name]:_value});
+        console.log(editFolders)
+      };
+  
+    const onEditFolders = (e) => {
+      const _formData = new FormData();
+      _formData.append('name', editFolders.name);
+      _formData.append('description', editFolders.description);
+      const requestOptions = {
+          method: 'POST',
+          body: _formData,
+          headers: {"Authorization": `Bearer `+$token}
+      };
+      fetch(process.env.REACT_APP_API+'/document/updateFolder/'+editFolders.id, requestOptions)
+          .then((res) => res.json())
+          .then((json) => {
+            if(json.error){
+              if (json.error === 'You are not admin!!!') {
+                toast.error(`You are not admin!!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                setError('');
+            }else{
+                setError(json.error);
+            }
+            }else{
+              toast.success(`Update new successfully !!!`, {
+                  position: 'top-center',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+              });       
+                setError('');
+                setRender(!render);
+                setOpenEdit(!openEdit);
+            }
+          });
+  };
+    const deleteFolders=(event,id,name)=>{
+        Swal.fire({
+            title: 'Delete "'+name+'" Folders?',
+            text: "Do you want to permanently delete this folders?",
+            icon: 'warning',
+            marginTop:"200px",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cance',
+            confirmButtonText: 'Delete'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                onDelete(id);
+            }
+          })
+    }
+    const onDelete = (id) =>{
+      const _formData = new FormData();
+      _formData.append("id",id)
+      fetch(process.env.REACT_APP_API+'/document/destroyFolder/'+id, {
+          method: "DELETE",
+          body:_formData,
+          headers: {"Authorization": `Bearer `+$token}
+        })
+      .then(response => response.json())
+      .then(data =>  {
+         if(data.error){
+              toast.error('Delete Failed.', {
+                  position: "bottom-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored"
+              });
+         }
+         else{
+              setRender(!render)
+              toast.success('Deleted successfully.', {
+                  position: "bottom-right",
+                  autoClose: 3000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored"
+              });
+         }
+      });
+  }
+    const [error, setError] = useState({
+    name:null,
+    description:null,
+  });
+  const [addFolders, setAddFolders] = useState({
+    name:'',
+    description:'',
+  });
+  const onChangeAddFolders = (event) => {
+    let _name = event.target.name;
+    let _type = event.target.type;
+    let _value = event.target.value;
+    setAddFolders({...addFolders,[_name]:_value});
+};
+const onAddFolders = (e) => {
+  const _formData = new FormData();
+  _formData.append('name', addFolders.name);
+  _formData.append('description', addFolders.description);
+  const requestOptions = {
+      method: 'POST',
+      body: _formData,
+      headers: {"Authorization": `Bearer `+$token}
+  };
+  fetch(process.env.REACT_APP_API+'/document/createFolder', requestOptions)
+      .then((res) => res.json())
+      .then((json) => {
+        if(json.error){
+          if (json.error === 'You are not admin!!!') {
+            toast.error(`You are not admin!!!`, {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            setError('');
+        }else{
+            setError(json.error);
+        }
+        }else{
+          toast.success(`Update folder successfully !!!`, {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+          });       
+            setError('');
+            setOpenAdd(!openAdd);
+            setRender(!render);
+        }
+      });
+};
     const onChangeShare = (id) => {
         fetch(process.env.REACT_APP_API+"/document/changeShare/"+id, {
             method: "POST",
@@ -175,11 +333,12 @@ const Documents=(props)=>{
                             onChange={(event) => onChangeAddFolders(event)}
                             style={{ width: "100%",border:"1px solid rgb(200, 200, 200)",borderRadius:"5px",paddingTop:"5px",paddingLeft:"10px" }}
                         />
+                        <span className="errorNotify">{error.description?error.description:""}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={4}>
                         <Button 
                             type="submit"
-                            onClick={(event) => onAddDocuments(event)}
+                            onClick={(event) => onAddFolders(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -196,7 +355,6 @@ const Documents=(props)=>{
                         <Button 
                             type="submit"
                             onClick={()=>clickOpenAdd()}
-                            //onClick={(event) => onAddNews(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -251,31 +409,34 @@ const Documents=(props)=>{
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
                         id="name"
                         name="name"
+                        value={editFolders.name}
                         label="Name *"
                         variant="outlined"
                         size='small'
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditFolders(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                         <TextareaAutosize
                             aria-label="minimum height"
                             minRows={3}
-                            placeholder="Description"
+                            value={editFolders.description}
+                            onChange={(event) => onChangeEditFolders(event)}
+                            name="description"
                             style={{ width: "100%",border:"1px solid rgb(200, 200, 200)",borderRadius:"5px",paddingTop:"5px",paddingLeft:"10px" }}
                         />
                     </Grid>
                     <Grid item xs={4} sm={8} md={4}>
                         <Button 
                             type="submit"
-                            //onClick={(event) => onAddNews(event)}
+                            onClick={(event) => onEditFolders(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -386,8 +547,7 @@ const Documents=(props)=>{
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
                                                 <TableCell component="th" scope="row">
-                                                    {/* <Link to={`view/${props.data.id}`} style={{ textDecoration: 'none' }}> */}
-                                                    <Link to={`view/3`} style={{ color:"rgba(0, 0, 0, 0.87)",textDecoration: 'none' }}>
+                                                    <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
                                                         <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
                                                     </Link>
                                                 </TableCell>
@@ -412,7 +572,7 @@ const Documents=(props)=>{
                                                     >
                                                         <Grid item xs={2} sm={4} md={6}>
                                                             <Box
-                                                                onClick={()=>clickOpenEdit()}
+                                                                onClick={(event)=>clickOpenEdit(event,item.id)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     padding:"5px",
@@ -425,6 +585,7 @@ const Documents=(props)=>{
                                                         </Grid>
                                                         <Grid item xs={2} sm={4} md={6}>
                                                             <Box
+                                                                onClick={(event)=>deleteFolders(event,item.id,item.name)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     float:"left",

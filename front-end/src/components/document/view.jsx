@@ -34,6 +34,9 @@ import FolderIcon from '@mui/icons-material/Folder';
 import { Link } from 'react-router-dom';
 import ArticleIcon from '@mui/icons-material/Article';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+import { useParams } from "react-router-dom";
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -48,6 +51,147 @@ const rows = [
 ];
 
 const DocumentView=(props)=>{
+const navigate = useNavigate();
+let { id } = useParams();
+const $token=localStorage.getItem('access_token');
+const [documents, setDocuments]= useState([]);
+const [render, setRender] = useState(false);
+const [error, setError] = useState({
+    name:null,
+    description:null,
+  });
+  const [addDocuments, setAddDocuments] = useState({
+    name:'',
+  });
+  const onChangeAddDocuments = (event) => {
+    setAddDocuments({...addDocuments,['name']:event.target.files[0]});
+    const _formData = new FormData();
+    _formData.append('name', addDocuments.name);
+    _formData.append('size', addDocuments.name.size);
+    _formData.append('folder_id', id);
+    const requestOptions = {
+         method: 'POST',
+         body: _formData,
+         headers: {"Authorization": `Bearer `+$token}
+     };
+     fetch(process.env.REACT_APP_API+'/document/createDocument', requestOptions)
+         .then((res) => res.json())
+         .then((json) => {
+           if(json.error){
+             if (json.error === 'You are not admin!!!') {
+               toast.error(`You are not admin!!!`, {
+                   position: 'top-center',
+                   autoClose: 5000,
+                   hideProgressBar: false,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: true,
+                   progress: undefined,
+               });
+               setError('');
+           }else{
+            toast.error(json.error.name[0], {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+           }
+           }else{
+             toast.success(`Create document successfully !!!`, {
+                 position: 'top-center',
+                 autoClose: 5000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+             });       
+               setError('');
+               setRender(!render);
+           }
+         });
+};
+
+const getOneDocumentFolders = () =>{
+    fetch(process.env.REACT_APP_API+'/document/getOneFolder/'+id, {
+        method: "GET",
+        headers: {"Authorization": `Bearer `+$token}
+      })
+    .then(response => response.json())
+    .then(data =>  {
+        setDocuments(data.data.reverse());
+    });
+}
+const deleteDocuments=(event,id,name)=>{
+    Swal.fire({
+        title: 'Delete "'+name+'" Files?',
+        text: "Do you want to permanently delete this file?",
+        icon: 'warning',
+        marginTop:"200px",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cance',
+        confirmButtonText: 'Delete'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            onDelete(id);
+        }
+      })
+}
+const onDelete = (id) =>{
+  const _formData = new FormData();
+  _formData.append("id",id)
+  fetch(process.env.REACT_APP_API+'/document/destroyDocument/'+id, {
+      method: "DELETE",
+      body:_formData,
+      headers: {"Authorization": `Bearer `+$token}
+    })
+  .then(response => response.json())
+  .then(data =>  {
+     if(data.error){
+          toast.error('Delete Failed.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+     else{
+          setRender(!render)
+          toast.success('Deleted successfully.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+  });
+}
+const downloadDocuments = (event,id,name) =>{
+    window.location.href = process.env.REACT_APP_API+"/document/downloadDocument/"+id;            
+  }
+useEffect(() => {
+    if($token){
+       getOneDocumentFolders();
+    }else{
+       navigate('/home');
+    }
+}, [render])
+console.log(documents)
+
     return(
         <Box 
             sx={{
@@ -109,6 +253,8 @@ const DocumentView=(props)=>{
                                     <InputBase
                                         type="file"
                                         id="fileUpload"
+                                        name="name"
+                                        onChange={(event)=>onChangeAddDocuments(event)}
                                         sx={{
                                             marginLeft:"5px",
                                             position:"relative",
@@ -136,22 +282,24 @@ const DocumentView=(props)=>{
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {rows.map((row) => (
+                                    {documents.length?
+                                         documents.map((item,index)=>{
+                                             return(
                                             <TableRow
-                                                key={row.name}
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
-                                                <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {row.name}</TableCell>
-                                                <TableCell align="right">{row.calories}</TableCell>
+                                                <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                                <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                                 <TableCell>
                                                     <Grid
                                                         container
                                                         spacing={{ xs: 2, md: 3 }}
                                                         columns={{ xs: 6, sm: 9, md: 12 }}
                                                     >
-                                                        <Grid item xs={2} sm={1} md={4}></Grid>
-                                                        <Grid item xs={2} sm={3} md={2}>
+                                                        <Grid item xs={2} sm={1} md={3}></Grid>
+                                                        <Grid item xs={2} sm={3} md={3}>
                                                             <Box
+                                                                onClick={(event)=>downloadDocuments(event,item.id,item.name)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     paddingTop:"5px",
@@ -163,8 +311,9 @@ const DocumentView=(props)=>{
                                                                 <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
                                                             </Box>
                                                         </Grid>
-                                                        <Grid item xs={2} sm={3} md={2}>
+                                                        <Grid item xs={2} sm={3} md={3}>
                                                             <Box
+                                                                onClick={(event)=>deleteDocuments(event,item.id,item.name)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     paddingTop:"5px",
@@ -176,11 +325,11 @@ const DocumentView=(props)=>{
                                                                 <DeleteOutlinedIcon sx={{color:"red"}}  />
                                                             </Box>
                                                         </Grid>
-                                                        <Grid item xs={2} sm={1} md={4}></Grid>
+                                                        <Grid item xs={2} sm={1} md={3}></Grid>
                                                     </Grid>
                                                 </TableCell>
                                             </TableRow>
-                                        ))}
+                                        )}):null}
                                     </TableBody>
                                 </Table>
                             </TableContainer>

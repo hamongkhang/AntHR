@@ -120,7 +120,7 @@ const NewEdit=(props)=>{
               setError(json.error);
           }
           }else{
-            toast.success(`Create new successfully !!!`, {
+            toast.success(`Update new successfully !!!`, {
                 position: 'top-center',
                 autoClose: 5000,
                 hideProgressBar: false,
