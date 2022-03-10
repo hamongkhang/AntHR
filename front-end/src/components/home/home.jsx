@@ -11,7 +11,7 @@ import New from "../new";
 import NewEdit from "../new/new_edit";
 import Employee from "../employees";
 import Directory from "../employees/directory";
-
+import Dashboard from '../dashboard';
 
 const drawerWidth = 240;
 
@@ -49,7 +49,15 @@ const Home = (props) => {
         if (width > 900) {
             handleDrawerClose()
         }
-    })
+        if (localStorage.getItem('access_token')) {
+            let token = localStorage.getItem('access_token');
+            if (!token) {
+                navigate('/login')
+            }
+        } else {
+            navigate('/login')
+        }
+    });
     return (
         <ThemeProvider theme={customTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -77,6 +85,8 @@ const Home = (props) => {
                         
                         <Route path="documents" element={<p>documents</p>}/>
                         <Route path="documents/:id" element={<p>documents detail</p>}/>
+
+                        <Route path="/" element={<Dashboard/>}/>
                     </Routes>
                 </Main>
             </Box>
