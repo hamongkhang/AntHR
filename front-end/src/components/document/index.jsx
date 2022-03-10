@@ -36,6 +36,9 @@ const Documents=(props)=>{
     const [openEdit, setOpenEdit] =useState(false);
     const [folders, setFolders]= useState([]);
     const [render, setRender] = useState(false);
+    const [search,setSearch]=useState(false);
+    
+    const [searchDocuments,setSearchDocuments]=useState([]);
     const clickOpenAdd=()=>{
         setOpenAdd(!openAdd);
     }
@@ -53,7 +56,6 @@ const Documents=(props)=>{
         let _type = event.target.type;
         let _value = event.target.value;
         setEditFolders({...editFolders,[_name]:_value});
-        console.log(editFolders)
       };
   
     const onEditFolders = (e) => {
@@ -245,6 +247,25 @@ const onAddFolders = (e) => {
             }
         });
         };
+        const onChangeSearch=(e)=>{
+            if(e.target.value!=""){
+              setSearch(true);
+            }else{
+              setSearch(false);
+            }
+            var a=[];
+            for(var i=0;i<folders.length;i++){
+                if(folders[i].name.indexOf(e.target.value)!=-1){
+                  a.push(folders[i]);
+                }else{
+                  setSearchDocuments([]);
+              }
+            }
+            setSearchDocuments(a);
+        }
+        const onSearch=(e)=>{
+            e.preventDefault();
+      }
     const getDocuments = () =>{
         fetch(process.env.REACT_APP_API+'/document/getAllFolder', {
             method: "GET",
@@ -494,6 +515,7 @@ const onAddFolders = (e) => {
                                         sx={{ ml: 1, flex: 1 }}
                                         placeholder="Search By Name ...."
                                         inputProps={{ 'aria-label': 'search by name...' }}
+                                        onChange={(event)=>onChangeSearch(event)}
                                     />
                                         <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
                                             <SearchIcon />
@@ -540,68 +562,142 @@ const onAddFolders = (e) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {folders.length?
-                                         folders.map((item,index)=>{
-                                             return(
-                                            <TableRow
-                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                                <TableCell component="th" scope="row">
-                                                    <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
-                                                        <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
-                                                    </Link>
-                                                </TableCell>
-                                                <TableCell align="right">{item.author?item.author:"-"}</TableCell>
-                                                <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
-                                                    year: 'numeric', month: 'long', day: 'numeric' 
-                                                }).format(new Date(item.created_at)):"-"}</TableCell>
-                                                <TableCell align="right">{item.description?item.description:"-"}</TableCell>
-                                                <TableCell align="right">
-                                                    <Switch
-                                                        defaultChecked={item.share===1?true:false}
-                                                        onChange={()=>onChangeShare(item.id)}
-                                                        inputProps={{ 'aria-label': 'controlled' }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell align="right">{item.sum?item.sum:0}</TableCell>
-                                                <TableCell>
-                                                    <Grid
-                                                        container
-                                                        spacing={{ xs: 2, md: 3 }}
-                                                        columns={{ xs: 4, sm: 8, md: 12 }}
-                                                    >
-                                                        <Grid item xs={2} sm={4} md={6}>
-                                                            <Box
-                                                                onClick={(event)=>clickOpenEdit(event,item.id)}
-                                                                sx={{
-                                                                    backgroundColor:"rgb(224, 230, 234)",
-                                                                    padding:"5px",
-                                                                    borderRadius:"3px",
-                                                                    float:"right"
-                                                                }}
-                                                            >
-                                                                <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
-                                                            </Box>
+                                    {!search?
+                                        folders.length?
+                                        folders.map((item,index)=>{
+                                            return(
+                                           <TableRow
+                                               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                           >
+                                               <TableCell component="th" scope="row">
+                                                   <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
+                                                       <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
+                                                   </Link>
+                                               </TableCell>
+                                               <TableCell align="right">{item.author?item.author:"-"}</TableCell>
+                                               <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
+                                                   year: 'numeric', month: 'long', day: 'numeric' 
+                                               }).format(new Date(item.created_at)):"-"}</TableCell>
+                                               <TableCell align="right">{item.description?item.description:"-"}</TableCell>
+                                               <TableCell align="right">
+                                                   <Switch
+                                                       defaultChecked={item.share===1?true:false}
+                                                       onChange={()=>onChangeShare(item.id)}
+                                                       inputProps={{ 'aria-label': 'controlled' }}
+                                                   />
+                                               </TableCell>
+                                               <TableCell align="right">{item.sum?item.sum:0}</TableCell>
+                                               <TableCell>
+                                                   <Grid
+                                                       container
+                                                       spacing={{ xs: 2, md: 3 }}
+                                                       columns={{ xs: 4, sm: 8, md: 12 }}
+                                                   >
+                                                       <Grid item xs={2} sm={4} md={6}>
+                                                           <Box
+                                                               onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                               sx={{
+                                                                   backgroundColor:"rgb(224, 230, 234)",
+                                                                   padding:"5px",
+                                                                   borderRadius:"3px",
+                                                                   float:"right"
+                                                               }}
+                                                           >
+                                                               <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
+                                                           </Box>
+                                                       </Grid>
+                                                       <Grid item xs={2} sm={4} md={6}>
+                                                           <Box
+                                                               onClick={(event)=>deleteFolders(event,item.id,item.name)}
+                                                               sx={{
+                                                                   backgroundColor:"rgb(224, 230, 234)",
+                                                                   float:"left",
+                                                                   padding:"5px",
+                                                                   borderRadius:"3px",
+                                                               }}
+                                                           >
+                                                               <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                           </Box>
+                                                       </Grid>
+                                                   </Grid>
+                                               </TableCell>
+                                           </TableRow>
+                                            )
+                                           }
+                                           ):null
+                                    :    
+                                        searchDocuments.length?
+                                            searchDocuments.map((item,index)=>{
+                                                return(
+                                                    <TableRow
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row">
+                                                        <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
+                                                            <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
+                                                        </Link>
+                                                    </TableCell>
+                                                    <TableCell align="right">{item.author?item.author:"-"}</TableCell>
+                                                    <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
+                                                        year: 'numeric', month: 'long', day: 'numeric' 
+                                                    }).format(new Date(item.created_at)):"-"}</TableCell>
+                                                    <TableCell align="right">{item.description?item.description:"-"}</TableCell>
+                                                    <TableCell align="right">
+                                                        <Switch
+                                                            defaultChecked={item.share===1?true:false}
+                                                            onChange={()=>onChangeShare(item.id)}
+                                                            inputProps={{ 'aria-label': 'controlled' }}
+                                                        />
+                                                    </TableCell>
+                                                    <TableCell align="right">{item.sum?item.sum:0}</TableCell>
+                                                    <TableCell>
+                                                        <Grid
+                                                            container
+                                                            spacing={{ xs: 2, md: 3 }}
+                                                            columns={{ xs: 4, sm: 8, md: 12 }}
+                                                        >
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
+                                                                    onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                                    sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                        float:"right"
+                                                                    }}
+                                                                >
+                                                                    <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
+                                                                </Box>
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
+                                                                    onClick={(event)=>deleteFolders(event,item.id,item.name)}
+                                                                    sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        float:"left",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                    }}
+                                                                >
+                                                                    <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                                </Box>
+                                                            </Grid>
                                                         </Grid>
-                                                        <Grid item xs={2} sm={4} md={6}>
-                                                            <Box
-                                                                onClick={(event)=>deleteFolders(event,item.id,item.name)}
-                                                                sx={{
-                                                                    backgroundColor:"rgb(224, 230, 234)",
-                                                                    float:"left",
-                                                                    padding:"5px",
-                                                                    borderRadius:"3px",
-                                                                }}
-                                                            >
-                                                                <DeleteOutlinedIcon sx={{color:"red"}}  />
-                                                            </Box>
-                                                        </Grid>
-                                                    </Grid>
-                                                </TableCell>
-                                            </TableRow>
-                                             )
-                                            }
-                                            ):null
+                                                    </TableCell>
+                                                </TableRow>
+                                                )})
+                                        :
+                                        <Typography
+                                        align="center"
+                                        variant="h4" 
+                                        sx={{ 
+                                          mb: 1.5,
+                                          color:"rgb(105, 129, 148)",
+                                        }} 
+                                        color="text.secondary" 
+                                      >
+                                       No data found
+                                      </Typography>
                                         }
                                     </TableBody>
                                 </Table>

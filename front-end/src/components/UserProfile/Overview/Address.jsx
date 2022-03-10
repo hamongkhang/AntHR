@@ -31,7 +31,6 @@ const Address = (props) => {
             .then((res) => res.json())
             .then((json) => {
                 if (json.error) {
-                    console.log(json.error.error);
                     if (json.error.error) {
                         toast.error(`${json.error.error}`, {
                             position: 'top-center',

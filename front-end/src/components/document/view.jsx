@@ -1,15 +1,12 @@
 import React, {useEffect,useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
-import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,44 +14,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextareaAutosize from '@mui/material/TextareaAutosize';
-import Switch from '@mui/material/Switch';
-import FolderIcon from '@mui/icons-material/Folder';
-import { Link } from 'react-router-dom';
 import ArticleIcon from '@mui/icons-material/Article';
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useParams } from "react-router-dom";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import Typography from '@mui/material/Typography';
 
 const DocumentView=(props)=>{
 const navigate = useNavigate();
 let { id } = useParams();
 const $token=localStorage.getItem('access_token');
 const [documents, setDocuments]= useState([]);
+const [search,setSearch]=useState(false);
+const [searchDocuments,setSearchDocuments]=useState([]);
 const [render, setRender] = useState(false);
 const [error, setError] = useState({
     name:null,
@@ -182,7 +156,27 @@ const onDelete = (id) =>{
 }
 const downloadDocuments = (event,id,name) =>{
     window.location.href = process.env.REACT_APP_API+"/document/downloadDocument/"+id;            
+  }      
+
+  const onChangeSearch=(e)=>{
+      if(e.target.value!=""){
+        setSearch(true);
+      }else{
+        setSearch(false);
+      }
+      var a=[];
+      for(var i=0;i<documents.length;i++){
+          if(documents[i].name.indexOf(e.target.value)!=-1){
+            a.push(documents[i]);
+          }else{
+            setSearchDocuments([]);
+        }
+      }
+      setSearchDocuments(a);
   }
+  const onSearch=(e)=>{
+      e.preventDefault();
+}
 useEffect(() => {
     if($token){
        getOneDocumentFolders();
@@ -190,8 +184,6 @@ useEffect(() => {
        navigate('/home');
     }
 }, [render])
-console.log(documents)
-
     return(
         <Box 
             sx={{
@@ -228,8 +220,9 @@ console.log(documents)
                                         sx={{ ml: 1, flex: 1 }}
                                         placeholder="Search By Name ...."
                                         inputProps={{ 'aria-label': 'search by name...' }}
+                                        onChange={(event)=>onChangeSearch(event)}
                                     />
-                                        <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                        <IconButton onClick={(event)=>onSearch(event)} type="submit" sx={{ p: '10px' }} aria-label="search">
                                             <SearchIcon />
                                         </IconButton>
                                 </Paper>
@@ -282,10 +275,11 @@ console.log(documents)
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                    {documents.length?
-                                         documents.map((item,index)=>{
-                                             return(
-                                            <TableRow
+                                    {!search?
+                                        documents.length?
+                                            documents.map((item,index)=>{
+                                                return(
+                                                    <TableRow
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
                                                 <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
@@ -328,8 +322,70 @@ console.log(documents)
                                                         <Grid item xs={2} sm={1} md={3}></Grid>
                                                     </Grid>
                                                 </TableCell>
-                                            </TableRow>
-                                        )}):null}
+                                                    </TableRow>
+                                        )}):null
+                                    :    
+                                        searchDocuments.length?
+                                            searchDocuments.map((item,index)=>{
+                                                return(
+                                                    <TableRow
+                                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                       >
+                                           <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                           <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
+                                           <TableCell>
+                                               <Grid
+                                                   container
+                                                   spacing={{ xs: 2, md: 3 }}
+                                                   columns={{ xs: 6, sm: 9, md: 12 }}
+                                               >
+                                                   <Grid item xs={2} sm={1} md={3}></Grid>
+                                                   <Grid item xs={2} sm={3} md={3}>
+                                                       <Box
+                                                           onClick={(event)=>downloadDocuments(event,item.id,item.name)}
+                                                           sx={{
+                                                               backgroundColor:"rgb(224, 230, 234)",
+                                                               paddingTop:"5px",
+                                                               paddingBottom:"5px",
+                                                               borderRadius:"3px",
+                                                               textAlign:"center",
+                                                           }}
+                                                       >
+                                                           <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
+                                                       </Box>
+                                                   </Grid>
+                                                   <Grid item xs={2} sm={3} md={3}>
+                                                       <Box
+                                                           onClick={(event)=>deleteDocuments(event,item.id,item.name)}
+                                                           sx={{
+                                                               backgroundColor:"rgb(224, 230, 234)",
+                                                               paddingTop:"5px",
+                                                               paddingBottom:"5px",
+                                                               borderRadius:"3px",
+                                                               textAlign:"center",
+                                                           }}
+                                                       >
+                                                           <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                       </Box>
+                                                   </Grid>
+                                                   <Grid item xs={2} sm={1} md={3}></Grid>
+                                               </Grid>
+                                           </TableCell>
+                                                    </TableRow>
+                                                )})
+                                        :
+                                        <Typography
+                                        align="center"
+                                        variant="h4" 
+                                        sx={{ 
+                                          mb: 1.5,
+                                          color:"rgb(105, 129, 148)",
+                                        }} 
+                                        color="text.secondary" 
+                                      >
+                                       No data found
+                                      </Typography>
+                                        }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
