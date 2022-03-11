@@ -21,6 +21,9 @@ import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 import { useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 
 const DocumentView=(props)=>{
 const navigate = useNavigate();
@@ -184,6 +187,9 @@ useEffect(() => {
        navigate('/home');
     }
 }, [render])
+const getFile=(event)=>{
+    document.getElementById("fileUpload").click();
+}
     return(
         <Box 
             sx={{
@@ -229,32 +235,30 @@ useEffect(() => {
                             </Grid>
                             <Grid item xs={4} sm={2} md={5}></Grid>
                             <Grid item xs={4} sm={3} md={3}>
-                                <Box 
-                                    type="submit"
-                                    onclick="document.getElementById('fileUpload').click();"
-                                    sx={{
-                                        height:40.5,
-                                        width:"21%",
-                                        borderRadius:"5px",
-                                        border:"1px solid #ff9900",
-                                        backgroundColor:"#FFFF66", 
-                                        color:"#ff9900",
-                                        position:"absolute",
-                                    }}
-                                    size='medium' 
-                                >
-                                    <InputBase
+                                  <InputBase
                                         type="file"
                                         id="fileUpload"
                                         name="name"
                                         onChange={(event)=>onChangeAddDocuments(event)}
                                         sx={{
-                                            marginLeft:"5px",
-                                            position:"relative",
+                                            display:"none"
 
                                         }}
                                     />
-                                </Box>
+                                    <Button 
+                                    type="submit"
+                                    onClick={(event)=>getFile(event)}
+                                    sx={{
+                                        height:40.5,
+                                        width:"100%",
+                                        border:"1px solid #ff9900",
+                                        backgroundColor:"#FFFF66", 
+                                        color:"#ff9900"
+                                    }}
+                                    size='medium' 
+                                >
+                                    <CloudUploadOutlinedIcon />&nbsp; Upload
+                                </Button>
                             </Grid>
                             </Grid>
                         </Box>
