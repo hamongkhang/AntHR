@@ -16,7 +16,8 @@ import NewView from "../new/new_view";
 import Gift from "../reward/gift";
 import Portal from "../reward/portal";
 import Manager from "../reward/manager";
-
+import Documents from "../document";
+import DocumentView from "../document/view";
 
 const drawerWidth = 240;
 
@@ -54,7 +55,15 @@ const Home = (props) => {
         if (width > 900) {
             handleDrawerClose()
         }
-    })
+        if (localStorage.getItem('access_token')) {
+            let token = localStorage.getItem('access_token');
+            if (!token) {
+                navigate('/login')
+            }
+        } else {
+            navigate('/login')
+        }
+    });
     return (
         <ThemeProvider theme={customTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -82,6 +91,9 @@ const Home = (props) => {
                         <Route path="reward-gate/commendation" element={<Commendation />} />
                         <Route path="reward-gate/receiving-gifts" element={<Gift />} />
                         <Route path="reward-gate/manager" element={<Manager />} />
+
+                        <Route path="documents" element={<Documents />} />
+                        <Route path="documents/view/:id" element={<DocumentView />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />

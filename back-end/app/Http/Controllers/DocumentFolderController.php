@@ -73,7 +73,6 @@ class DocumentFolderController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|max:255|unique:document_folder',
             'description' => 'required',
-            'share' => 'required|integer',
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
@@ -85,7 +84,7 @@ class DocumentFolderController extends Controller
         $postArray = [
             'name'  => $request->name,
             'description'=>$request->description,
-            'share'=>$request->share,
+            'share'=>1,
             'sum'=>0,
             'author'=>$author,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),

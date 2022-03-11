@@ -75,9 +75,8 @@ class DocumentController extends Controller
      */
     public function createDocument(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:document',
-            'size' => 'required|max:255',
-            'folder_id' => 'required|integer',
+            'name' => 'unique:document',
+            'folder_id' => 'integer',
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     

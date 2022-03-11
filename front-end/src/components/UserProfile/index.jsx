@@ -81,7 +81,6 @@ const UserProfile = () => {
       .then((res) => res.json())
       .then((json) => {
         if (json.error) {
-          console.log(json.description);
         }
         else {
           if (json.user[0] != null) {

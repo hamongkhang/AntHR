@@ -69,6 +69,10 @@ const Header = (props) => {
         {
             value:'documents',
             child:[
+                {
+                    value:'documents',
+                    path:'documents'
+                }
             ]
         },
         {
