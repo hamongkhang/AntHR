@@ -407,7 +407,11 @@ const   ExportUser = (event) =>{
                               <td>
                                 {item.avatar
                                   ?
-                                    <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
+                                  (item.avatar.search('https://') != -1)
+                                    ?
+                                    <img style={{marginRight:"5px"}} src={item.avatar} className="employeeAvt" />
+                                    :
+                                      <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
                                   :
                                     <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/avatar.png'} className="employeeAvt" />
                                 }

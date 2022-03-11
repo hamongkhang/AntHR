@@ -68,7 +68,16 @@ const  Directory=(props)=>{
                                             borderRadius: "100%",
                                             marginBottom:"20px"
                                         }} 
-                                        src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                        src={item.avatar
+                                                ?
+                                                    (item.avatar.search('https://') != -1)
+                                                        ?
+                                                            item.avatar
+                                                        :
+                                                            process.env.REACT_APP_FILE+'/avatar/'+item.avatar
+                                                :
+                                                    process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                            }>
                                     </img>
                                     <Typography 
                                         sx={{ 

@@ -23,7 +23,7 @@ const Account = (props) => {
                         <Typography sx={{ mx: 3 }} variant='body2'>Email</Typography>
                     </Grid>
                     <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                        <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>{email}</Typography>
+                        <Typography sx={{ mx: 3, color: 'black' ,textOverflow:"ellipsis", overflow: "hidden"}} variant='body2'><a href={"mailto:"+email} style={{color: "inherit",textDecoration:"none"}}>{email}</a></Typography>
                     </Grid>
                     <Grid item xs={1} md={1} sx={{ mb: 2 }}>
                         <Typography sx={{ mx: 3 }} variant='body2'>Password</Typography>

@@ -251,11 +251,11 @@ class EmployeeController extends Controller
      * )
      */
     public function getOneEmployee($id){
-        $employeeFind = DB::table('employee')->where('id', $id)->first();
-        $addressFind = DB::table('address')->where('employee_id', $id)->first();
-        $bankFind = DB::table('bank')->where('employee_id', $id)->first();
-        $roleFind = DB::table('role')->where('employee_id', $id)->first();
-        $codeFind = DB::table('code')->where('employee_id', $id)->first();
+        $employeeFind = DB::table('employee')->where('user_id', $id)->first();
+        $addressFind = DB::table('address')->where('employee_id', $employeeFind->id)->first();
+        $bankFind = DB::table('bank')->where('employee_id',  $employeeFind->id)->first();
+        $roleFind = DB::table('role')->where('employee_id', $employeeFind->id)->first();
+        $codeFind = DB::table('code')->where('employee_id',  $employeeFind->id)->first();
         $result=[$employeeFind,$addressFind,$bankFind,$codeFind,$roleFind];
         if($employeeFind){
             return response()->json([
