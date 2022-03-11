@@ -156,7 +156,21 @@ const NavBar = (props) => {
                                 color="inherit"
                             >
                                 {/* <AccountCircle /> */}
-                                <Avatar src='http://localhost:3000/bg7.jpg' sx={{ width: 24, height: 24 }} variant='circular'></Avatar>
+                                <Avatar 
+                                    src={
+                                        localStorage.getItem('avatar')
+                                            ?
+                                                (localStorage.getItem('avatar').search('https://') != -1)
+                                                ?
+                                                    localStorage.getItem('avatar')
+                                                :
+                                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
+                                            :
+                                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                    }
+                                    //'http://localhost:3000/bg7.jpg' 
+                                    sx={{ width: 24, height: 24 }} variant='circular'>
+                                </Avatar>
                             </IconButton>
                         </Box>
                         <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

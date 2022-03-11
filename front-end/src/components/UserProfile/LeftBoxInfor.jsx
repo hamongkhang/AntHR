@@ -27,7 +27,7 @@ const LeftBoxInfor = (props) => {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.error) {
-                        toast.success(`Update avatar successful`, {
+                        toast.success(`Update avatar successfully`, {
                             position: 'top-center',
                             autoClose: 5000,
                             hideProgressBar: false,
@@ -36,6 +36,7 @@ const LeftBoxInfor = (props) => {
                             draggable: true,
                             progress: undefined,
                         });
+                        localStorage.setItem('avatar',json.data.avatar);
                         setRerender(true)
                     } 
                     else {
@@ -68,7 +69,7 @@ const LeftBoxInfor = (props) => {
                 setScrImg(avatar)
             }
             else{
-                setScrImg(`${process.env.REACT_APP_FILE}/images/avatars/${avatar}`)
+                setScrImg(`${process.env.REACT_APP_FILE}/avatar/${avatar}`)
             }
         }
     }

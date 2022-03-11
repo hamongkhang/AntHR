@@ -193,7 +193,7 @@ const Login = (props) => {
       localStorage.setItem('first_name', first_name);
       localStorage.setItem('last_name', last_name);
       if (avatar_google) {
-          localStorage.setItem('avatar_google', avatar_google);
+          localStorage.setItem('avatar', avatar_google);
       } else {
           localStorage.setItem('avatar', avatar);
       }
