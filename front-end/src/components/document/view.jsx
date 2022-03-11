@@ -22,8 +22,8 @@ import Swal from 'sweetalert2';
 import { useParams } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
+import Modal from '@mui/material/Modal';
 
 const DocumentView=(props)=>{
 const navigate = useNavigate();
@@ -190,6 +190,10 @@ useEffect(() => {
 const getFile=(event)=>{
     document.getElementById("fileUpload").click();
 }
+const [openModal, setOpenModal] =useState(false);
+const clickOpenModal=(event)=>{
+    setOpenModal(!openModal);
+}
     return(
         <Box 
             sx={{
@@ -200,6 +204,29 @@ const getFile=(event)=>{
                 backgroundColor:"white"
             }}
         >
+            <Modal
+            open={openModal}
+            onClose={(event)=>clickOpenModal(event)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        ><Box 
+        sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: "60%",
+            height:"90%",
+            bgcolor: 'background.paper',
+            border: '2px solid #ff9900',
+            boxShadow: 24,
+            p: 4,
+            borderRadius:"10px"
+        }}
+    >
+            <iframe src="https://docs.google.com/gview?url=www.khuyenmaihcmc.vn/files/Ho_so/Huong_dan_su_dung_trang_web.docx&embedded=true" style={{width: '100%', height: '100%'}} frameBorder={0}  />   
+            </Box>                               
+            </Modal>
             <Grid
                     container
                     spacing={{ xs: 2, md: 3 }}
@@ -235,7 +262,7 @@ const getFile=(event)=>{
                             </Grid>
                             <Grid item xs={4} sm={2} md={5}></Grid>
                             <Grid item xs={4} sm={3} md={3}>
-                                  <InputBase
+                            <InputBase
                                         type="file"
                                         id="fileUpload"
                                         name="name"
@@ -286,7 +313,7 @@ const getFile=(event)=>{
                                                     <TableRow
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
-                                                <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                                <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
                                                 <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                                 <TableCell>
                                                     <Grid
@@ -335,7 +362,7 @@ const getFile=(event)=>{
                                                     <TableRow
                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                        >
-                                           <TableCell component="th" scope="row"><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                           <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
                                            <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                            <TableCell>
                                                <Grid
