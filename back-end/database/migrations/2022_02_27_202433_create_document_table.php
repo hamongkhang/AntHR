@@ -16,6 +16,7 @@ class CreateDocumentTable extends Migration
         Schema::create('document', function (Blueprint $table) {
             $table->increments('id')->nullable();
             $table->text('name')->nullable();
+            $table->text('name_show')->nullable();
             $table->text('size')->nullable();
             $table->integer('folder_id')->unsigned();
             $table->timestamps();   

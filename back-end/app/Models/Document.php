@@ -12,6 +12,7 @@ class Document extends Model
     protected $fillable = [
         'id',
         'name',
+        'name_show',
         'size',
         'folder_id',
         'updated_at',

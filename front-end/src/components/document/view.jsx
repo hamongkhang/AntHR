@@ -24,6 +24,8 @@ import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import Modal from '@mui/material/Modal';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import TextField from '@mui/material/TextField';
 
 const DocumentView=(props)=>{
 const navigate = useNavigate();
@@ -40,11 +42,12 @@ const [error, setError] = useState({
   const [addDocuments, setAddDocuments] = useState({
     name:'',
   });
-  const onChangeAddDocuments = (event) => {
-    setAddDocuments({...addDocuments,['name']:event.target.files[0]});
+
+const onChangeAddDocuments=(event)=>{
     const _formData = new FormData();
-    _formData.append('name', addDocuments.name);
-    _formData.append('size', addDocuments.name.size);
+    _formData.append('name', event.target.files[0]);
+    _formData.append('size', event.target.files[0].size);
+    _formData.append('name_show', event.target.files[0].name);
     _formData.append('folder_id', id);
     const requestOptions = {
          method: 'POST',
@@ -67,7 +70,7 @@ const [error, setError] = useState({
                });
                setError('');
            }else{
-            toast.error(json.error.name[0], {
+            toast.error("khang", {
                 position: 'top-center',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -91,7 +94,7 @@ const [error, setError] = useState({
                setRender(!render);
            }
          });
-};
+}
 
 const getOneDocumentFolders = () =>{
     fetch(process.env.REACT_APP_API+'/document/getOneFolder/'+id, {
@@ -169,7 +172,7 @@ const downloadDocuments = (event,id,name) =>{
       }
       var a=[];
       for(var i=0;i<documents.length;i++){
-          if(documents[i].name.indexOf(e.target.value)!=-1){
+          if(documents[i].name_show.indexOf(e.target.value)!=-1){
             a.push(documents[i]);
           }else{
             setSearchDocuments([]);
@@ -194,6 +197,71 @@ const [openModal, setOpenModal] =useState(false);
 const clickOpenModal=(event)=>{
     setOpenModal(!openModal);
 }
+const [openModalEdit, setOpenModalEdit] =useState(false);
+const [editDocuments, setEditDocuments] = useState({});
+
+const EditDocumentShow=(event,id,name)=>{
+    setOpenModalEdit(!openModalEdit);
+    for(var i=0;i<documents.length;i++){
+        if(documents[i].id===id){
+            setEditDocuments(documents[i]);
+        }
+    }
+}
+const onChangeEditDocuments = (event) => {
+    let _name = event.target.name;
+    let _type = event.target.type;
+    let _value = event.target.value;
+    setEditDocuments({...editDocuments,[_name]:_value});
+  };
+  const onChangeEditDocumentFile = (event) => {
+    setEditDocuments({...editDocuments,["name_show"]:event.target.files[0].name,["name"]:event.target.files[0],["size"]:event.target.files[0].size});
+  };
+  const onEditDocuments = (e) => {
+    const _formData = new FormData();
+    _formData.append('name_show', editDocuments.name_show);
+    _formData.append('name', editDocuments.name);
+    _formData.append('size', editDocuments.size);
+    _formData.append('folder_id', id);
+    const requestOptions = {
+        method: 'POST',
+        body: _formData,
+        headers: {"Authorization": `Bearer `+$token}
+    };
+    fetch(process.env.REACT_APP_API+'/document/updateDocument/'+editDocuments.id, requestOptions)
+        .then((res) => res.json())
+        .then((json) => {
+          if(json.error){
+            if (json.error === 'You are not admin!!!') {
+              toast.error(`You are not admin!!!`, {
+                  position: 'top-center',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+              });
+              setError('');
+          }else{
+              setError(json.error);
+          }
+          }else{
+            toast.success(`Update document successfully !!!`, {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });       
+              setError('');
+              setRender(!render);
+              setOpenModalEdit(!openModalEdit);
+          }
+        });
+};
     return(
         <Box 
             sx={{
@@ -226,6 +294,101 @@ const clickOpenModal=(event)=>{
     >
             <iframe src="https://docs.google.com/gview?url=www.khuyenmaihcmc.vn/files/Ho_so/Huong_dan_su_dung_trang_web.docx&embedded=true" style={{width: '100%', height: '100%'}} frameBorder={0}  />   
             </Box>                               
+            </Modal>
+            <Modal
+            open={openModalEdit}
+            onClose={(event)=>EditDocumentShow(event)}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        ><Box 
+        sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: "40%",
+            height:"60%",
+            bgcolor: 'background.paper',
+            border: '2px solid #ff9900',
+            boxShadow: 24,
+            p: 4,
+            borderRadius:"10px"
+        }}
+    >
+<Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                    <Grid item xs={4} sm={8} md={12}>
+                    <Typography 
+                         sx={{ 
+                            fontWeight:"bold",
+                            color:"rgb(35, 54, 78)"
+                        }} 
+                        variant="h6"
+                    >
+                        Edit Document
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={12}>
+                    <TextField
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
+                        id="name_show"
+                        name="name_show"
+                        value={editDocuments.name_show}
+                        label="Name *"
+                        variant="outlined"
+                        size='small'
+                        type={'text'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        onChange={(event) => onChangeEditDocuments(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={12}>
+                    <InputBase
+                                        type="file"
+                                        id="fileEdit"
+                                        name="name"
+                                        onChange={(event)=>onChangeEditDocumentFile(event)}
+                                    />
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={4}>
+                        <Button 
+                            type="submit"
+                            onClick={(event) => onEditDocuments(event)}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"#FFFF66", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Publish
+                        </Button>
+                    </Grid> 
+                    <Grid item xs={4} sm={8} md={2}>
+                        <Button 
+                            type="submit"
+                            onClick={()=>EditDocumentShow()}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"rgb(204, 204, 204)", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Cancel
+                        </Button>
+                    </Grid> 
+                    </Grid>            
+                    </Box>                               
             </Modal>
             <Grid
                     container
@@ -313,18 +476,19 @@ const clickOpenModal=(event)=>{
                                                     <TableRow
                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                             >
-                                                <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                                <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
                                                 <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                                 <TableCell>
                                                     <Grid
                                                         container
                                                         spacing={{ xs: 2, md: 3 }}
-                                                        columns={{ xs: 6, sm: 9, md: 12 }}
+                                                        columns={{ xs: 6, sm: 8, md: 12 }}
                                                     >
-                                                        <Grid item xs={2} sm={1} md={3}></Grid>
-                                                        <Grid item xs={2} sm={3} md={3}>
+                                                         <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
                                                             <Box
-                                                                onClick={(event)=>downloadDocuments(event,item.id,item.name)}
+                                                                onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     paddingTop:"5px",
@@ -336,9 +500,23 @@ const clickOpenModal=(event)=>{
                                                                 <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
                                                             </Box>
                                                         </Grid>
-                                                        <Grid item xs={2} sm={3} md={3}>
+                                                        <Grid item xs={2} sm={2} md={3}>
                                                             <Box
-                                                                onClick={(event)=>deleteDocuments(event,item.id,item.name)}
+                                                                onClick={(event)=>EditDocumentShow(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                               <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
                                                                 sx={{
                                                                     backgroundColor:"rgb(224, 230, 234)",
                                                                     paddingTop:"5px",
@@ -350,7 +528,8 @@ const clickOpenModal=(event)=>{
                                                                 <DeleteOutlinedIcon sx={{color:"red"}}  />
                                                             </Box>
                                                         </Grid>
-                                                        <Grid item xs={2} sm={1} md={3}></Grid>
+                                                        <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
                                                     </Grid>
                                                 </TableCell>
                                                     </TableRow>
@@ -362,7 +541,7 @@ const clickOpenModal=(event)=>{
                                                     <TableRow
                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                        >
-                                           <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name?item.name:"-"}</TableCell>
+                                           <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
                                            <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                            <TableCell>
                                                <Grid
@@ -373,7 +552,7 @@ const clickOpenModal=(event)=>{
                                                    <Grid item xs={2} sm={1} md={3}></Grid>
                                                    <Grid item xs={2} sm={3} md={3}>
                                                        <Box
-                                                           onClick={(event)=>downloadDocuments(event,item.id,item.name)}
+                                                           onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
                                                            sx={{
                                                                backgroundColor:"rgb(224, 230, 234)",
                                                                paddingTop:"5px",
@@ -387,7 +566,7 @@ const clickOpenModal=(event)=>{
                                                    </Grid>
                                                    <Grid item xs={2} sm={3} md={3}>
                                                        <Box
-                                                           onClick={(event)=>deleteDocuments(event,item.id,item.name)}
+                                                           onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
                                                            sx={{
                                                                backgroundColor:"rgb(224, 230, 234)",
                                                                paddingTop:"5px",
