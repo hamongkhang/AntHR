@@ -12,10 +12,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Exports\ExportEmployee;
+use Maatwebsite\Excel\Facades\Excel;
+
+
 
 use App\Models\Employee;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\UserScore;
+use App\Models\Address;
+use App\Models\Code;
+use App\Models\Role;
+use App\Models\Bank;
 
 
 
@@ -27,7 +36,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['createAccount']]);
+        $this->middleware('auth:api', ['except' => ['exportEmployee']]);
     }
 
          /**
@@ -89,7 +98,6 @@ class EmployeeController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email'=>'required|string|email|unique:employee',
-            'send_mail'=>'required',
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);     
@@ -99,7 +107,7 @@ class EmployeeController extends Controller
         $postAccount = [
             'email'  => $request->email,
             'role'  => 0,
-            'status'=>"active",
+            'status'=>"block",
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   
@@ -113,12 +121,20 @@ class EmployeeController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $postScore = [
+            'user_id'  =>$employeeFind->id,
+            'score'  => 0,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+        ];   
+        $score=UserScore::create($postScore);
         $employee = Employee::create($postEmployee);
-        if($request->send_mail==1){
-///////////////////
-        }else{
-//////////////////
-        }
+        $dataSendMail = [
+            'description'=>'notiChangePasswordSuccess',
+            'title' => 'Cập nhật mật khẩu thành công',
+            'content'=>'Đổi mật khẩu thành công'
+        ];
+         SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
         return response()->json([
             'message' => 'Create employee successfully',
             'user' => $employeeFind
@@ -194,6 +210,7 @@ class EmployeeController extends Controller
        $accountFind = DB::table('users')->where('email', $request->email)->first();
        if($accountFind){
         $account = User::find($accountFind->id);
+        $account->status = "active";
         $account->password = Hash::make($request->password);
         $account->save();
         return response()->json([
@@ -234,9 +251,12 @@ class EmployeeController extends Controller
      * )
      */
     public function getOneEmployee($id){
-        $employeeFind = DB::table('employee')->where('id', $request->id)->first();
-        $addressFind = DB::table('address')->where('employee_id', $request->id)->first();
-        $result=[$employeeFind,$addressFind];
+        $employeeFind = DB::table('employee')->where('user_id', $id)->first();
+        $addressFind = DB::table('address')->where('employee_id', $employeeFind->id)->first();
+        $bankFind = DB::table('bank')->where('employee_id',  $employeeFind->id)->first();
+        $roleFind = DB::table('role')->where('employee_id', $employeeFind->id)->first();
+        $codeFind = DB::table('code')->where('employee_id',  $employeeFind->id)->first();
+        $result=[$employeeFind,$addressFind,$bankFind,$codeFind,$roleFind];
         if($employeeFind){
             return response()->json([
             'message' => 'Get employee successfully',
@@ -275,13 +295,13 @@ class EmployeeController extends Controller
      * )
      */
     public function getAllEmployee(){
-        $employeeFind = DB::table('employee')->get();
-        $addressFind = DB::table('address')->get();
-        $result=[$employeeFind,$addressFind];
+        $userFind=DB::table('users')->get();
+        $employeeFind=DB::table('employee')->get();
+        $result=[$userFind,$employeeFind];
         if($employeeFind){
             return response()->json([
             'message' => 'Get employee successfully',
-            'user' => $result
+            'data' => $result
             ], 201);
         }else{
             return response()->json([
@@ -320,8 +340,10 @@ class EmployeeController extends Controller
         $checkLogin = auth()->user();
         if($checkLogin->role==1){
             $employee= Employee::find($id);
+            $user = User::find($employee->user_id);
             if ($employee){
                $employee->delete();
+               $user->delete();
                return response()->json([
                    'message'=>"Delete successfully",
                    'data'=>$employee
@@ -334,8 +356,8 @@ class EmployeeController extends Controller
             }
         }else{
             return response()->json([
-                'error'=>1,
-                'description'=>'account login is not admin',
+                'code'=>1,
+                'error'=>'account login is not admin',
             ], 401);
         }
     }
@@ -383,7 +405,7 @@ public function changeAvatar(Request $request)
         $employee = Employee::where('user_id',$checkLogin->id)->first();
         if($employee){
             if($request->hasfile('avatar')) {
-                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars';
+                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'avatar';
                 if($employee->avatar!=null){
                     File::delete($destinationPath.DIRECTORY_SEPARATOR.$employee->avatar);
                 }
@@ -395,12 +417,13 @@ public function changeAvatar(Request $request)
                 $date = $date->format('d-m-Y-H-i-s');
                 $extension = $file->extension();
                 $newImageName = Str::slug('avatar', '_').'_'.$date.'.'.$extension;
-                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars', $newImageName);
-                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'images'.'/'.'avatars'.'/'.$newImageName;
+                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'avatar', $newImageName);
+                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'avatar'.'/'.$newImageName;
                 $employee->avatar = $newImageName;
                 $employee->save();
                 return response()->json([
                     'message' => 'Change avatar success',
+                    'data'=>$employee
                     ], 200);
                 
             }
@@ -528,7 +551,7 @@ public function changeInformation(Request $request){
     $validator = Validator::make($request->all(), [
         'first_name' => 'max:255',
         'last_name' => 'max:255',
-        'phone' => 'max:13',
+        'phone' => 'max:11|min:9',
         'birthday' => 'before:today',
 
         'postal_code' => 'max:255',
@@ -626,4 +649,8 @@ public function changeInformation(Request $request){
             ], 401);
     }
 }
+public function exportEmployee(){
+    return Excel::download(new ExportEmployee, 'employee.xlsx');
+}
+
 }

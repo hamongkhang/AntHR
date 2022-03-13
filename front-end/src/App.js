@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import HomePages from './components/home';
-import UserProfile from './components/user_profile';
-
-
+import Welcome from './components/Welcome';
 
 const loading = (
     <svg viewBox="25 25 50 50" className="preloader">
@@ -21,24 +19,16 @@ function App() {
             <div className="max-w-screen-2xl my-0 mx-auto bg-gray-100">
                 <div className="my-0 mx-auto relative">
                     <React.Suspense fallback={loading}>
-                        <Router>
-                            <Switch>
+                    <Routes>
                             {/* <Route path="/admin" exact component={LoginAdmin} />
                             <Route path="/admin/:path" component={Admin} /> */}
-                                <Route
+                                {/* <Route
                                     path="/user-profile"
                                     component={UserProfile}
-                                />
-                                <Route
-                                    path="/"
-                                    component={() => (
-                                        <HomePages
-                                            changeRender={changeRender}
-                                        />
-                                    )}
-                                />
-                            </Switch>
-                        </Router>
+                                /> */}
+                                <Route path="/*" element={<HomePages changeRender={changeRender}/>} />
+                                <Route path="/" element={<Welcome></Welcome>} />
+                             </Routes>
                     </React.Suspense>
                 </div>
             </div>
@@ -47,26 +37,3 @@ function App() {
 }
 
 export default App;
-
-// import React from 'react';
-// import ChangePassword from './components/change_password';
-// import { Button } from 'react-bootstrap';
-
-// function App() {
-//   const [modalShow, setModalShow] = React.useState(false);
-
-//   return (
-//     <>
-//       <Button variant="primary" onClick={() => setModalShow(true)}>
-//         Launch vertically centered modal
-//       </Button>
-
-//       <ChangePassword
-//         show={modalShow}
-//         onHide={() => setModalShow(false)}
-//       />
-//     </>
-//   );
-// }
-
-// export default App;

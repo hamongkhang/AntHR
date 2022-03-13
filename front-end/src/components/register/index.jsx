@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import register from "../../css/register.module.css";
 import styleSecond from '../../css/register.module.css';
 import { useTheme } from '@mui/material/styles';
@@ -10,9 +10,6 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import styleThird from '../../css/register.module.css';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router-dom';
-
-
 
 toast.configure();
 
@@ -28,6 +25,7 @@ const MenuProps = {
     },
 };
 const Register = () => {
+    const navigate = useNavigate();
     const [form,setForm]=useState(1);
     const [password, setPassword] = useState('password');
     const [eye, setEye] = useState(true);
@@ -249,11 +247,10 @@ const Register = () => {
                 draggable: true,
                 progress: undefined,
             });
-             history.push('/login');
+            navigate('/login');
           }
         });
     };
-    const history = useHistory();
     return (  
       form==1?
              <section className={register.frame__register}>

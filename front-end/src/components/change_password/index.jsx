@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal,Button,Form,Row,Col } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { useRouteMatch } from 'react-router';
-import queryString from 'query-string';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom';
+
 
 toast.configure();
 
@@ -115,6 +113,7 @@ const ChangePassword = (props) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            style={{marginTop:"60px"}}
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">Change Password</Modal.Title>
@@ -148,8 +147,8 @@ const ChangePassword = (props) => {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" size="tb" active onClick={(event) => onChangePassword(event)}>Change Password</Button>{' '}
-                <Button variant="secondary" size="tb" active onClick={props.onHide}>Cancel</Button>
+                <Button variant="primary" style={{ borderColor: 'orange', backgroundColor: '#ffffcc' }} size="tb" active onClick={(event) => onChangePassword(event)}>Change Password</Button>{' '}
+                <Button variant="primary" style={{backgroundColor: 'grey', '&:hover': { borderColor: 'gray' }}}  size="tb" active onClick={props.onHide}>Cancel</Button>
             </Modal.Footer>
           </Modal> 
           </>
