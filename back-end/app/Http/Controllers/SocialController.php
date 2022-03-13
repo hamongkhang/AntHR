@@ -11,7 +11,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
-
+use Google\Client;
+use App\Models\Document;
+use App\Models\DocumentFolder;
 
 
 class SocialController extends Controller
@@ -20,7 +22,7 @@ class SocialController extends Controller
 
 
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['callback','redirect','createUser']]);
+        $this->middleware('auth:api', ['except' => ['callback','redirect','createUser','googleDriveCallBack','getGoogleDrive','uploadGoogleDrive']]);
     }
 
 
@@ -120,5 +122,63 @@ else{
       'last_name'  =>  $result->last_name,
   ];
 }
+}
+public function checkGoogleDocument(){
+    $client = new Client();
+    $client->setClientId('829518173901-g56megrbtrgras8gnjvmhor2cmu7f2oe.apps.googleusercontent.com');
+    $client->setClientSecret('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');
+    $client->setRedirectUri('http://localhost:8000/api/google-drive/callback');
+    $client->setScopes([
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.appdata',
+        'https://www.googleapis.com/auth/drive.metadata',
+        'https://www.googleapis.com/auth/drive.metadata.readonly',
+        'https://www.googleapis.com/auth/drive.photos.readonly',
+        'https://www.googleapis.com/auth/drive.scripts'
+    ]);
+    $url = $client->createAuthUrl();
+    return Response()->json(array("successfully"=> 1,"data"=>$url));
+}
+public function googleDriveCallBack(){
+    $client = new Client();
+    $client->setClientId('829518173901-g56megrbtrgras8gnjvmhor2cmu7f2oe.apps.googleusercontent.com');
+    $client->setClientSecret('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');
+    $client->setRedirectUri('http://localhost:8000/api/google-drive/callback');
+    $code = request('code');
+    $access_token = $client->fetchAccessTokenWithAuthCode($code);
+    return redirect()->to('http://localhost:3000/home/documents/check?access_token_drive='.$access_token['access_token']);
+}
+public function getGoogleDrive($access_token_google_drive){
+    $client = new Client();
+    $client->setAccessToken($access_token_google_drive);
+    $service = new \Google_Service_Drive($client);
+    $optParams = array(
+            'pageSize' => 100,
+            'fields' => 'nextPageToken, files(id, name)'
+    );
+    $results = $service->files->listFiles($optParams);
+    return Response()->json(array("successfully"=> 1,"data"=>$results));
+}
+public function uploadGoogleDrive($access_token_google_drive,$id,$folder_id){
+    $client = new Client();
+    $client->setAccessToken($access_token_google_drive);
+    $service = new \Google_Service_Drive($client);
+    $export = $service->files->export($id, array('mimeType' => "application/pdf","encoding"=> null));
+    $file=$service->files->get($id);
+    $postArray = [
+        'name'  => $file->name,
+        'size'=>$file->size,
+        'name_show'=> $file->name,
+        'folder_id'=>$folder_id,
+        'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+        'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+    ];
+    $document = Document::create($postArray);
+    $folderUpdate= DocumentFolder::find($folder_id);
+    $folderUpdate->sum=$folderUpdate->sum+1;
+    $folderUpdate->save();
+    return redirect()->to('http://localhost:3000/home/documents/view/'.$folder_id);
+    //return response($export->getBody(), 200, $export->getHeaders());
 }
 }

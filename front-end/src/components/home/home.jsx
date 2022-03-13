@@ -18,6 +18,7 @@ import Portal from "../reward/portal";
 import Manager from "../reward/manager";
 import Documents from "../document";
 import DocumentView from "../document/view";
+import CheckGoogleDrive from "../document/check_google";
 
 const drawerWidth = 240;
 
@@ -94,6 +95,7 @@ const Home = (props) => {
 
                         <Route path="documents" element={<Documents />} />
                         <Route path="documents/view/:id" element={<DocumentView />} />
+                        <Route path="documents/check/" element={<CheckGoogleDrive />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />

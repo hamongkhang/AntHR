@@ -26,6 +26,8 @@ import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import Modal from '@mui/material/Modal';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import TextField from '@mui/material/TextField';
+import AddToDriveIcon from '@mui/icons-material/AddToDrive';
+import ImportantDevicesIcon from '@mui/icons-material/ImportantDevices';
 
 const DocumentView=(props)=>{
 const navigate = useNavigate();
@@ -192,10 +194,15 @@ useEffect(() => {
 }, [render])
 const getFile=(event)=>{
     document.getElementById("fileUpload").click();
+    setUploadFile(!uploadFile);
 }
 const [openModal, setOpenModal] =useState(false);
 const clickOpenModal=(event)=>{
     setOpenModal(!openModal);
+}
+const [uploadFile, setUploadFile] =useState(false);
+const clickUploadFileShow=(event)=>{
+    setUploadFile(!uploadFile);
 }
 const [openModalEdit, setOpenModalEdit] =useState(false);
 const [editDocuments, setEditDocuments] = useState({});
@@ -262,6 +269,17 @@ const onChangeEditDocuments = (event) => {
           }
         });
 };
+const uploadGoogleDrive=(event)=>{
+    fetch(process.env.REACT_APP_API+'/google_document/checkGoogleDocument/', {
+        method: "GET",
+        headers: {"Authorization": `Bearer `+$token}
+      })
+    .then(response => response.json())
+    .then(data =>  {
+        localStorage.setItem('folder_id', id);
+        window.location.href=data.data;
+    });
+}
     return(
         <Box 
             sx={{
@@ -390,6 +408,116 @@ const onChangeEditDocuments = (event) => {
                     </Grid>            
                     </Box>                               
             </Modal>
+            <Modal
+                open={uploadFile}
+                onClose={(event)=>clickUploadFileShow(event)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box 
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: "40%",
+                        height:"40%",
+                        bgcolor: 'background.paper',
+                        border: '2px solid #ff9900',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius:"10px"
+                    }}
+                >
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item xs={4} sm={8} md={12}>
+                            <Typography 
+                                sx={{ 
+                                    fontWeight:"bold",
+                                    color:"rgb(35, 54, 78)"
+                                }} 
+                                variant="h6"
+                            >
+                                Upload File                    
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                            <Grid
+                                container
+                                spacing={{ xs: 2, md: 3 }}
+                                columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                                <Grid item xs={4} sm={8} md={4}>
+                                    <Button 
+                                        type="submit"
+                                        onClick={(event) => getFile(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        <ImportantDevicesIcon />&nbsp; Upload
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4} sm={8} md={8}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"16px",
+                                            marginTop:"8px"
+                                        }} 
+                                    >
+                                        Upload file from your Computer                
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                            <Grid
+                                container
+                                spacing={{ xs: 2, md: 3 }}
+                                columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                                <Grid item xs={4} sm={8} md={4}>
+                                    <Button 
+                                        type="submit"
+                                        onClick={(event) => uploadGoogleDrive(event)}
+                                        sx={{
+                                            height:40.5,
+                                            width:"100%",
+                                            border:"1px solid #ff9900",
+                                            backgroundColor:"#FFFF66", 
+                                            color:"#ff9900"
+                                        }}
+                                        size='medium' 
+                                    >
+                                        <AddToDriveIcon />&nbsp; Upload
+                                    </Button>
+                                </Grid>
+                                <Grid item xs={4} sm={8} md={8}>
+                                    <Typography 
+                                        sx={{ 
+                                            color:"rgb(35, 54, 78)",
+                                            fontSize:"16px",
+                                            marginTop:"8px"
+                                        }} 
+                                    >
+                                        Upload file from your Google Drive               
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>            
+                    </Box>                               
+            </Modal>
             <Grid
                     container
                     spacing={{ xs: 2, md: 3 }}
@@ -437,7 +565,7 @@ const onChangeEditDocuments = (event) => {
                                     />
                                     <Button 
                                     type="submit"
-                                    onClick={(event)=>getFile(event)}
+                                    onClick={(event)=>clickUploadFileShow(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
