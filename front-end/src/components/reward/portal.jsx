@@ -12,6 +12,8 @@ import ChatBubbleOutlineOutlinedIcon from '@mui/icons-material/ChatBubbleOutline
 import HistoryIcon from '@mui/icons-material/History';
 import ApprovalIcon from '@mui/icons-material/Approval';
 import moment from 'moment';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const Portal = (props) => {
     const $token = localStorage.getItem('access_token');
@@ -19,6 +21,7 @@ const Portal = (props) => {
     const [employees, setEmployees]= useState([]);
     const [users, setUsers]= useState([]);
     const [praise, setPraise]= useState([]);
+    const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
 
     const getEmployees = () =>{
@@ -39,14 +42,113 @@ const Portal = (props) => {
           })
         .then(response => response.json())
         .then(data =>  {
-            setPraise(data.data.reverse());
+            setPraise(data.data.reverse());     
+        });
+    }
+    const getPraise2 = () =>{
+        fetch(process.env.REACT_APP_API+'/praise/getAllPraise', {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+            setPraise1(data.data);     
         });
     }
     console.log(praise)
+    console.log(praise1)
+
+    const onPublicPraise=(event,id)=>{
+        fetch(process.env.REACT_APP_API+'/praise/changeStatus/'+id, {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+           if(data.error){
+                toast.error('Public Failed.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+           else{
+                setRender(!render)
+                toast.success('Public successfully.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+        });
+    }
+    const onBlockPraise=(event,id)=>{
+        Swal.fire({
+            title: 'Delete this news?',
+            text: "Do you want to permanently delete this news?",
+            icon: 'warning',
+            marginTop:"200px",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cance',
+            confirmButtonText: 'Delete'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                onBlock(id);
+            }
+          })
+    }
+    const onBlock=(id)=>{
+        fetch(process.env.REACT_APP_API+'/praise/destroyPraise/'+id, {
+            method: "DELETE",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+           if(data.error){
+                toast.error('Delete Failed.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+           else{
+                setRender(!render)
+                toast.success('Delete successfully.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+        });
+    }
+
     useEffect(() => {
         if ($token) {
             getEmployees();
             getPraise();
+            getPraise2();
         } else {
             navigate('/home');
         }
@@ -86,8 +188,8 @@ const Portal = (props) => {
                             <ApprovalIcon/> Waiting for approval
                         </Typography>
                     </Box> 
-                    {praise.length?
-                            praise.map((item,index)=>{
+                    {praise1.length?
+                            praise1.map((item,index)=>{
                                 if(item.status===0){
                                 return(
                                     <Box
@@ -288,7 +390,7 @@ const Portal = (props) => {
                                         <Grid item xs={4} sm={8} md={12}>
                                             <Button 
                                                 type="submit"
-                                                //onClick={(event) => onAddNews(event)}
+                                                onClick={(event) => onPublicPraise(event,item.id)}
                                                 sx={{
                                                     height:40.5,
                                                     width:"100%",
@@ -303,7 +405,7 @@ const Portal = (props) => {
                                             </Button>
                                             <Button 
                                                 type="submit"
-                                                //onClick={(event) => onAddNews(event)}
+                                                onClick={(event) => onBlockPraise(event,item.id)}
                                                 sx={{
                                                     height:40.5,
                                                     width:"100%",

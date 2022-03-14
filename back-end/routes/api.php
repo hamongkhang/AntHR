@@ -97,7 +97,7 @@ Route::get('/praise/getAllPraise', [App\Http\Controllers\PraiseController::class
 Route::get('/praise/getOnePraise/{id}', [App\Http\Controllers\PraiseController::class, 'getOnePraise'])->name('praise.getOnePraise');
 Route::delete('/praise/destroyPraise/{id}', [App\Http\Controllers\PraiseController::class, 'destroyPraise'])->name('praise.destroyPraise');
 Route::post('/praise/createPraise', [App\Http\Controllers\PraiseController::class, 'createPraise'])->name('praise.createPraise');
-Route::post('/praise/changeStatus/{id}', [App\Http\Controllers\PraiseController::class, 'changeStatus'])->name('praise.changeStatus');
+Route::get('/praise/changeStatus/{id}', [App\Http\Controllers\PraiseController::class, 'changeStatus'])->name('praise.changeStatus');
 
 
 ////////////////////////////////////// Present APIs //////////////////////////////////////////////////////////////////////////////
