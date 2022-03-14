@@ -1,12 +1,13 @@
 import './App.css';
-
-import Routes from './routes';
+import Attendance from './components/attendance';
+// import HandleOption from './components/attendance/myattendance/handleClick';
+import ThemeProvider from './theme';
 
 function App() {
   return (
-   <>
-     <Routes />
-   </>
+   <ThemeProvider>
+     <Attendance />
+   </ThemeProvider>
   );
 }
 
