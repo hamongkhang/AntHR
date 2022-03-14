@@ -8,8 +8,11 @@ import Switch from '@mui/material/Switch';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
-
-
+import Grid from "@mui/material/Grid";
+import Box from '@mui/material/Box';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 const options1 = [
   {
@@ -192,6 +195,56 @@ const onDelete = (id) =>{
      else{
           setRender(!render)
           toast.success('Deleted successfully.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+  });
+}
+const decentralizationEmployee=(event,id,first,last)=>{
+  Swal.fire({
+      title: 'Grant admin rights to "'+last+' '+first+'" Employee?',
+      text: "Do you want to grant admin rights to this employee?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cance',
+      confirmButtonText: 'Accept'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          onDecentralization(id);
+      }
+    })
+}
+const onDecentralization = (id) =>{
+  fetch(process.env.REACT_APP_API+'/account/authoriseAccount/'+id, {
+      method: "GET",
+      headers: {"Authorization": `Bearer `+$token}
+    })
+  .then(response => response.json())
+  .then(data =>  {
+     if(data.error){
+          toast.error('Failed.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+     else{
+          setRender(!render)
+          toast.success('Create admin successfully.', {
               position: "bottom-right",
               autoClose: 3000,
               hideProgressBar: false,
@@ -390,7 +443,7 @@ const   ExportUser = (event) =>{
                         <th>Gender</th>
                         <th>Account</th>
                         <th>Join Date</th>
-                        <th>
+                        <th style={{textAlign:"center"}}>
                           <img
                             src={setting}
                             className="employeeIcon searchIcon"
@@ -462,25 +515,53 @@ const   ExportUser = (event) =>{
                         </td>
                         <td>
                           {" "}
-                          <div class="dropdown">
-                            <span>
-                              <img  style={{marginLeft: "6px"}} src={dots} className="employeeIcon" />
-                            </span>
-                            <div class="dropdown-content">
-                              <Button
-                                className="btnEmployee"
+                          <Grid
+                                                            container
+                                                            spacing={{ xs: 2, md: 3 }}
+                                                            columns={{ xs: 4, sm: 8, md: 12 }}
+                                                        >
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
+                                                                    onClick={(event)=>decentralizationEmployee(event,item.user_id,item.first_name,item.last_name)}
+                                                                    sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                        float:"right"
+                                                                    }}
+                                                                >
+                                                                    {
+                                    users.length
+                                    ?
+                                      users.map((itemUser,index)=>{
+                                        if(itemUser.id===item.user_id){
+                                          if(itemUser.role){
+                                            return(
+                                              <AdminPanelSettingsIcon sx={{color:"blue"}}  />
+                                            );
+                                          }else{
+                                            return(
+                                              <GroupAddIcon sx={{color:"blue"}} />
+                                            );
+                                          }
+                                        }}):null}
+                                                                       
+                                                                </Box>
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
                                 onClick={(event)=>deleteEmployee(event,item.id,item.first_name,item.last_name)}
-                                style={{
-                                  backgroundColor: "#FFFF66",
-                                  border: "solid 1px #ff9900",
-                                  color: "#ff9900",
-                                  fontSize: "12px",
-                                }}
-                              >
-                                Delete
-                              </Button>
-                            </div>
-                          </div>
+                                sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        float:"left",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                    }}
+                                                                >
+                                                                    <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                                </Box>
+                                                            </Grid>
+                                                        </Grid>
                         </td>
                             </tr>
                         )

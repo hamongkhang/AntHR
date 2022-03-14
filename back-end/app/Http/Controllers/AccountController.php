@@ -127,19 +127,16 @@ class AccountController extends Controller
      *       }
      * )
      */
-    public function authoriseAccount(Request $request){
-        $validator=Validator::make($request->all(),[
-            "id"=>'required|integer',
-            "role"=>'required|integer'
-        ]);
-        if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401);     
-        }
+    public function authoriseAccount($id){
         $admin=auth()->user();
         if($admin->role==1){
-            $account=User::find($request->id);
+            $account=User::find($id);
             if($account){
-                $account->role=$request->role;
+                if($account->role===1){
+                    $account->role=0;
+                }else{
+                    $account->role=1;
+                }
                 $account->save();
                 return response()->json([
                     'message' => 'Change authorise account successfully',

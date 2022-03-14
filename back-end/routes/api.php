@@ -63,7 +63,7 @@ Route::get('/employee/exportEmployee', [App\Http\Controllers\EmployeeController:
 /////////////////////////////////////// Account APIs //////////////////////////////////////////////////////////////////////////////
 
 Route::get('/account/blockAccount/{id}', [App\Http\Controllers\AccountController::class, 'blockAccount'])->name('account.blockAccount');
-Route::post('/account/authoriseAccount', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
+Route::get('/account/authoriseAccount/{id}', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
 Route::get('/account/userProfile', [App\Http\Controllers\AccountController::class, 'userProfile'])->name('account.userProfile');
 Route::get('/auth/redirect/{provider}', [App\Http\Controllers\SocialController::class, 'redirect'])->name('user.redirect');
 Route::get('/callback/{provider}',  [App\Http\Controllers\SocialController::class, 'callback'])->name('user.callback');
