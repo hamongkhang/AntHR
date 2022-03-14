@@ -11,7 +11,7 @@ const formatTime = (timer) => {
 
 const Timer = (props) => {
     const [open, setOpen] = React.useState(false);
-    const { firstIn, lastOut, setFirstIn, setLastOut } = props
+    const { firstIn, lastOut, setFirstIn, setLastOut } = props;
     const handleClickOpen = () => {
         setOpen(true);
     };
