@@ -117,7 +117,7 @@ Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentControl
 
 
 ////////////////////////////////////// Score APIs //////////////////////////////////////////////////////////////////////////////
-Route::get('/score/getOneScore/{id}', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
+Route::get('/score/getOneScore', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
 
 
 ////////////////////////////////////// Cart Present APIs //////////////////////////////////////////////////////////////////////////////

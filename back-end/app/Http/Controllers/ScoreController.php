@@ -43,10 +43,10 @@ class ScoreController extends Controller
      *      }
      * )
      */
-    public function getOneScore($id){ 
-        $data=DB::table('user_score')->where('user_id',$id)->first();
+    public function getOneScore(){ 
+        $data=DB::table('user_score')->where('user_id',auth()->user()->id)->first();
         if($data){
-            return Response()->json(array("Get score successfully!"=> 1,"data"=>$data ));
+            return Response()->json(array("Get score successfully!"=> 1,"data"=>$data));
         }else{
             return response()->json(["error" => "Invalid id!!!"],400);
         }

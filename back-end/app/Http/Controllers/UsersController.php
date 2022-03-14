@@ -275,7 +275,7 @@ class UsersController extends Controller
         ];
         $postScore = [
             'user_id'  =>$employeeFind->id,
-            'score'  => 0,
+            'score'  => 5000000,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   

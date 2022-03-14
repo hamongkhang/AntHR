@@ -123,7 +123,7 @@ class EmployeeController extends Controller
         ];
         $postScore = [
             'user_id'  =>$employeeFind->id,
-            'score'  => 0,
+            'score'  => 200,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   

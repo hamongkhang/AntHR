@@ -459,3 +459,7 @@ body{
 width: 0 !important;
 display: none; 
 }
+#hoverClass:hover {
+  border: 1px solid #ff9900;
+  background-color:#FFFF66;
+}
