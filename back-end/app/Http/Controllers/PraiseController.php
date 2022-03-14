@@ -102,10 +102,10 @@ class PraiseController extends Controller
      */
     public function createPraise(Request $request){
         $validator = Validator::make($request->all(), [
-            'image' => '',
+            'image' => 'required',
             'message' => 'required',
             'score'=>'required',
-            'present'=>'',
+            'present'=>'required',
             'recipient'=>'required|integer',
             'cheer'=>'required'
         ]);
@@ -145,7 +145,7 @@ class PraiseController extends Controller
 
             $scoreAuthor=UserScore::find($scoreUser->id);
             $scoreAuthor->score=$scoreAuthor->score-$request->score;
-            $scoreAuthor->score_spent=$request->score;
+            $scoreAuthor->score_spent=$scoreAuthor->score_spent+$request->score;
             $scoreAuthor->save();
             $scoreFind = DB::table('user_score')->where('user_id',$request->recipient)->first();
             $scoreSum=UserScore::find($scoreFind->id);

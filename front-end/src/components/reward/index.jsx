@@ -94,7 +94,6 @@ const  Commendation=(props)=>{
         setPraise({...praise,["cheer"]:mess});
       }
       const onAddPraises = (e) => {
-        e.preventDefault();
         const _formData = new FormData();
         _formData.append('image', praise.image);
         _formData.append('recipient', praise.recipient);
@@ -126,7 +125,7 @@ const  Commendation=(props)=>{
                   setError(json.error);
               }
               }else{
-                toast.success(`Congratulations, you have successfully submitted your score !!!`, {
+                toast.success(`Congratulations, Successfully !!!`, {
                     position: 'top-center',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -136,6 +135,7 @@ const  Commendation=(props)=>{
                     progress: undefined,
                 });       
                   setError('');
+                  setRender(!render);
               }
             });
     };
@@ -184,7 +184,6 @@ const  Commendation=(props)=>{
                     spacing={{ xs: 2, md: 3 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
                 >
-                 {/* <Grid item xs={4} sm={8} md={4}></Grid> */}
                     <Grid item xs={4} sm={8} md={4}>
                     <Typography 
                          sx={{ 
@@ -213,7 +212,6 @@ const  Commendation=(props)=>{
                             Cancel
                         </Button>
                     </Grid> 
-                    {/* <Grid item xs={4} sm={8} md={4}></Grid> */}
                     {
                         employees.length?
                           employees.map((item,index)=>{
@@ -576,6 +574,7 @@ const  Commendation=(props)=>{
                                     type="submit"
                                     onClick={(event) => clickOpenModalPraise(event)}
                                     sx={{
+                                        marginTop:"6px",
                                         height:40.5,
                                         width:"100%",
                                         border:"1px solid #ff9900",
@@ -586,6 +585,7 @@ const  Commendation=(props)=>{
                                 >
                                     {!(name==='')?name:"Recipient *"}
                                 </Button>
+                                <span className="errorNotify">{error.recipient?error.recipient:null}</span>
                             </Grid> 
                             <Grid item xs={4} sm={3} md={5}> 
                             <FormControl fullWidth> 
@@ -610,6 +610,7 @@ const  Commendation=(props)=>{
                                     <MenuItem value={10000}>10000 points</MenuItem>
                                 </Select>
                             </FormControl>
+                            <span className="errorNotify">{error.score?error.score:null}</span>
                             </Grid> 
                             <Grid item xs={4} sm={2} md={2}> 
                             </Grid>  
@@ -638,11 +639,10 @@ const  Commendation=(props)=>{
                                 >
                                     <ImageIcon />&nbsp; Image
                                 </Button>
+                                <span className="errorNotify">{error.image?error.image:null}</span>
                             </Grid>  
                             <Grid item xs={4} sm={3} md={5}> 
                                 <TextField
-                                    //helperText={error.title?error.title[0]:null}
-                                    //error={error.title?true:false}
                                     id="present"
                                     name="present"
                                     label="Present *"
@@ -653,6 +653,7 @@ const  Commendation=(props)=>{
                                     InputLabelProps={{ shrink: true}}
                                     onChange={(event) => onChangeAddPraises(event)}
                                 />
+                                 <span className="errorNotify">{error.present?error.present:null}</span>
                             </Grid>    
                             <Grid item xs={4} sm={2} md={2}> 
                             </Grid>
@@ -665,6 +666,7 @@ const  Commendation=(props)=>{
                             onChange={(event) => onChangeAddPraises(event)}
                             style={{ width: "100%",border:"1px solid rgb(200, 200, 200)",borderRadius:"5px",paddingTop:"5px",paddingLeft:"10px" }}
                         />
+                            <span className="errorNotify">{error.message?error.message:null}</span>
                             </Grid>   
                         </Grid>
                     </Box>
@@ -892,6 +894,7 @@ const  Commendation=(props)=>{
                                 >
                                     Your compliments will be approved by the admin and made visible to everyone
                                 </Typography>
+                                <span className="errorNotify">{error.cheer?error.cheer:null}</span>
                             </Grid>
                         </Grid>
                     </Box>
