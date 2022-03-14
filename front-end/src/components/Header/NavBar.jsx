@@ -112,7 +112,11 @@ const NavBar = (props) => {
                         </Box>
 
                         <Typography variant="h6" noWrap component="div" sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
-                            LOGO
+                            <Avatar variant='square'
+                                sx={{ height:50, width:50 }}
+                                src={`${process.env.REACT_APP_FILE}/logo/logo1.png`}
+                                component={Link} to='/home'>
+                            </Avatar>
                         </Typography>
 
 
@@ -156,6 +160,7 @@ const NavBar = (props) => {
                                 color="inherit"
                             >
                                 {/* <AccountCircle /> */}
+
                                 <Avatar 
                                     src={
                                         localStorage.getItem('avatar')
@@ -190,19 +195,24 @@ const NavBar = (props) => {
                 <Toolbar disableGutters sx={{ backgroundColor: 'white' }}>
                     <Box sx={{ ml: 5 }}>
                         <Typography sx={{
-                            display: window.location.pathname.search('profile') != -1 ? 'block' : 'none', 
+                            display: window.location.pathname.search('profile') != -1 ? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
-                            fontSize: 25, fontWeight:600
+                            fontSize: 25, fontWeight: 600
                         }}>Profile</Typography>
+                        <Typography sx={{
+                            display: window.location.pathname == '/home' ? 'block' : 'none',
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight: 600
+                        }}>Dashboard</Typography>
                     </Box>
-                    <Box justifyContent='space-around' sx={{ 
-                        width: 1, 
-                        display:window.location.pathname.search('profile') != -1?'none':'flex',
-                        }}>
+                    <Box justifyContent='space-around' sx={{
+                        width: 1,
+                        display: window.location.pathname.search('profile') != -1 || window.location.pathname == '/home' ? 'none' : 'flex',
+                    }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {
                                 tabMenus.map(child => (
-                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link}/>
+                                    <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link} />
                                 ))
                             }
                         </Tabs>

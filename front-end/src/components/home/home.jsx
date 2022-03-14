@@ -11,6 +11,7 @@ import New from "../new";
 import NewEdit from "../new/new_edit";
 import Employee from "../employees";
 import Directory from "../employees/directory";
+import Dashboard from '../dashboard';
 import Commendation from "../reward";
 import NewView from "../new/new_view";
 import Gift from "../reward/gift";
@@ -103,6 +104,8 @@ const Home = (props) => {
                         
                         <Route path="documents" element={<p>documents</p>}/>
                         <Route path="documents/:id" element={<p>documents detail</p>}/>
+
+                        <Route path="/" element={<Dashboard/>}/>
                     </Routes>
                 </Main>
             </Box>
