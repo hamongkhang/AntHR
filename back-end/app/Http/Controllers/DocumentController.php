@@ -308,9 +308,15 @@ public function updateDocument($id,Request $request){
     {
             $document= Document::find($id);
             if ($document){
-               $path = public_path().DIRECTORY_SEPARATOR."upload".DIRECTORY_SEPARATOR."document".DIRECTORY_SEPARATOR.$document->name;
-               $fileName = $document->name;
-               return Response::download($path, $fileName, ['Content-Type: application']);
+                if($document->size===null){
+                    $path = public_path().DIRECTORY_SEPARATOR."upload".DIRECTORY_SEPARATOR."document".DIRECTORY_SEPARATOR."cxampptmpphpec6etmp_14-03-2022-08-05-07.docx";
+                    $fileName = "cxampptmpphpec6etmp_14-03-2022-08-05-07.docx";
+                    return Response::download($path, $fileName, ['Content-Type: application']);
+                }else{
+                    $path = public_path().DIRECTORY_SEPARATOR."upload".DIRECTORY_SEPARATOR."document".DIRECTORY_SEPARATOR.$document->name;
+                    $fileName = $document->name;
+                    return Response::download($path, $fileName, ['Content-Type: application']);
+                }
             }else{
                 return response()->json(['error'=>"Invalid id !!!"], 400);
             }
