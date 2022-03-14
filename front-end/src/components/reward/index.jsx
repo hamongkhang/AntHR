@@ -92,7 +92,16 @@ const  Commendation=(props)=>{
       };
       const onChangeCheer=(event,mess)=>{
         setPraise({...praise,["cheer"]:mess});
+        if(mess==="Great Inspirational Leadership,Growth Mindset"){
+            setShowCheer(1);
+        }else if(mess==="Expressing and contributing yourself,Challenging development"){
+            setShowCheer(2);
+        }else if(mess==="Helping people grow together,Excellent communication"){
+            setShowCheer(3);
+        }
+        console.log(showCheer)
       }
+      const [showCheer,setShowCheer]=useState(0);
       const onAddPraises = (e) => {
         const _formData = new FormData();
         _formData.append('image', praise.image);
@@ -732,6 +741,7 @@ const  Commendation=(props)=>{
                                         paddingRight:"10px",
                                         paddingTop:"20px",
                                         paddingBottom:"20px",
+                                        backgroundColor:(showCheer===1)?"#FFFF66":"none",
                                     }}
                                     id="hoverClass"
                                     onClick={(event)=>onChangeCheer(event,"Great Inspirational Leadership,Growth Mindset")}
@@ -787,6 +797,7 @@ const  Commendation=(props)=>{
                                         paddingRight:"10px",
                                         paddingTop:"20px",
                                         paddingBottom:"20px",
+                                        backgroundColor:(showCheer===2)?"#FFFF66":"none",
                                     }}
                                     onClick={(event)=>onChangeCheer(event,"Expressing and contributing yourself,Challenging development")}
                                 >
@@ -841,6 +852,7 @@ const  Commendation=(props)=>{
                                         paddingRight:"10px",
                                         paddingTop:"20px",
                                         paddingBottom:"20px",
+                                        backgroundColor:(showCheer===3)?"#FFFF66":"none",
                                     }}
                                     id="hoverClass"
                                     onClick={(event)=>onChangeCheer(event,"Helping people grow together,Excellent communication")}
