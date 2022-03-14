@@ -27,7 +27,7 @@ const LeftBoxInfor = (props) => {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.error) {
-                        toast.success(`Update avatar successful`, {
+                        toast.success(`Update avatar successfully`, {
                             position: 'top-center',
                             autoClose: 5000,
                             hideProgressBar: false,
@@ -36,6 +36,7 @@ const LeftBoxInfor = (props) => {
                             draggable: true,
                             progress: undefined,
                         });
+                        localStorage.setItem('avatar',json.data.avatar);
                         setRerender(true)
                     } 
                     else {
@@ -68,7 +69,7 @@ const LeftBoxInfor = (props) => {
                 setScrImg(avatar)
             }
             else{
-                setScrImg(`${process.env.REACT_APP_FILE}/images/avatars/${avatar}`)
+                setScrImg(`${process.env.REACT_APP_FILE}/avatar/${avatar}`)
             }
         }
     }
@@ -95,11 +96,11 @@ const LeftBoxInfor = (props) => {
             <Divider sx={{ mx: 3, my: 2 }} />
             <Box sx={{ display: 'flex', ml: 3, mt: 1 }}>
                 <EmailOutlinedIcon fontSize='small' />
-                <Typography sx={{ ml: 4, color: 'black' }} variant='body2'>{email?email:'-'}</Typography>
+                <Typography sx={{ ml: 4, color: 'black',textOverflow:"ellipsis", overflow: "hidden"}} variant='body2'><a href={"mailto:"+email} style={{color: "inherit",textDecoration:"none"}}>{email?email:'-'}</a></Typography>
             </Box>
             <Box sx={{ display: 'flex', ml: 3, mt: 1 }}>
                 <PhoneOutlinedIcon fontSize='small' />
-                <Typography sx={{ ml: 4, color: 'black' }} variant='body2'>{phone?phone:'-'}</Typography>
+                <Typography sx={{ ml: 4, color: 'black' }} variant='body2'><a href={"tel:"+phone} style={{color: "inherit",textDecoration:"none"}}>{phone?phone:'-'}</a></Typography>
             </Box>
             <Box sx={{ display: 'flex', ml: 3, mt: 1 }}>
                 <LanguageOutlinedIcon fontSize='small' />

@@ -45,7 +45,7 @@ const Employee=()=>{
   const [render, setRender] = useState(false);
 
   const changeStatus = (id) => {
-  fetch("http://localhost:8000/api/account/blockAccount/"+id, {
+  fetch(process.env.REACT_APP_API+"/account/blockAccount/"+id, {
       method: "GET",
       headers: {"Authorization": `Bearer `+$token}
     })
@@ -215,7 +215,7 @@ const   ExportUser = (event) =>{
     }
 }, [render])
     return (
-      <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100vh'}}>
+      <div maxWidth="100%" style={{height: '100vh'}}>
         <Modal
           size="lg"
           style={{
@@ -346,7 +346,7 @@ const   ExportUser = (event) =>{
             </Container>
           </Navbar>
         </Row>
-        <Row style={{ backgroundColor: "#eceff1", height:"100%" }}>
+        <Row style={{height:"100%" }}>
           <Col className="mt-3">
             <Container fluid>
               <div className=" bobyEmployee " style={{ paddingRight: "20px",paddingLeft: "20px", backgroundColor:"white" }}>
@@ -407,7 +407,11 @@ const   ExportUser = (event) =>{
                               <td>
                                 {item.avatar
                                   ?
-                                    <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
+                                  (item.avatar.search('https://') != -1)
+                                    ?
+                                    <img style={{marginRight:"5px"}} src={item.avatar} className="employeeAvt" />
+                                    :
+                                      <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
                                   :
                                     <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/avatar.png'} className="employeeAvt" />
                                 }

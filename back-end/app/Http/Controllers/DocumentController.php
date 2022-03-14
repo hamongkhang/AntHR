@@ -75,9 +75,8 @@ class DocumentController extends Controller
      */
     public function createDocument(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|unique:document',
-            'size' => 'required|max:255',
-            'folder_id' => 'required|integer',
+            'name' => 'unique:document',
+            'folder_id' => 'integer',
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
@@ -102,6 +101,7 @@ class DocumentController extends Controller
                 $postArray = [
                     'name'  => $newFileName,
                     'size'=>$request->size,
+                    'name_show'=>$request->name_show,
                     'folder_id'=>$request->folder_id,
                     'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
                     'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
@@ -171,9 +171,7 @@ class DocumentController extends Controller
      */
 public function updateDocument($id,Request $request){
     $validator = Validator::make($request->all(), [
-        'name' => 'max:255',
-        'size' => 'max:255',
-        'folder_id' => 'integer',
+        'name_show' => 'max:255',
     ]);
     if ($validator->fails()) {
         return response()->json(['error'=>$validator->errors()], 400);     
@@ -184,6 +182,11 @@ public function updateDocument($id,Request $request){
         if ($folder){
             $document=Document::find($id);
             if($document){
+                if ($request->name_show===null){
+                    $name_show=$document->name_show;
+                }else{
+                    $name_show=$request->name_show;
+                }
                 if ($request->name===null){
                     $name=$document->name;
                 }else{
@@ -200,6 +203,8 @@ public function updateDocument($id,Request $request){
                         $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                         $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'document', $name);
                         $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'document'.'/'.$name;
+                    }else{
+                        $name=$request->name;
                     }
                 } 
                 if ($request->size===null){
@@ -207,7 +212,8 @@ public function updateDocument($id,Request $request){
                 }else{
                     $size=$request->size;
                 }  
-                $document->name=$name;    
+                $document->name=$name;   
+                $document->name_show=$name_show; 
                 $document->size=$size;    
                 $document->updated_at=Carbon::now('Asia/Ho_Chi_Minh'); 
                 $document->save(); 

@@ -54,7 +54,7 @@ useEffect(() => {
   }
 }, [render])
     return(
-        <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100%',paddingLeft:"100px",paddingTop:"40px",paddingRight:"100px",paddingBottom:"40px" }}>
+        <div maxWidth="100%" style={{height: '100%',paddingLeft:"100px",paddingTop:"40px",paddingRight:"100px",paddingBottom:"40px" }}>
             <Box maxWidth="100%" style={{ backgroundColor: 'white', maxHeight: '100%',paddingRight:"40px", paddingLeft:"40px", paddingTop:"32px", paddingBottom:"32px", border:"solid 1px #cfd8dc",borderRadius:"5px", }}>
             <Grid
               container

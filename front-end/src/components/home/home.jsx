@@ -12,6 +12,14 @@ import NewEdit from "../new/new_edit";
 import Employee from "../employees";
 import Directory from "../employees/directory";
 import Dashboard from '../dashboard';
+import Commendation from "../reward";
+import NewView from "../new/new_view";
+import Gift from "../reward/gift";
+import Portal from "../reward/portal";
+import Manager from "../reward/manager";
+import Documents from "../document";
+import DocumentView from "../document/view";
+import CheckGoogleDrive from "../document/check_google";
 
 const drawerWidth = 240;
 
@@ -74,10 +82,21 @@ const Home = (props) => {
 
                         <Route path="news" element={<New />} />
                         <Route path="news/edit/:id" element={<NewEdit />} />
+                        <Route path="news/view/:id" element={<NewView />} />
 
                         <Route path="employees" element={<Employee />} />
                         <Route path="employees/manage-employees" element={<Employee />} />
                         <Route path="employees/directory" element={<Directory />} />
+
+                        <Route path="reward%20gate" element={<Commendation />} />
+                        <Route path="reward-gate/recognition-portal" element={<Portal />} />
+                        <Route path="reward-gate/commendation" element={<Commendation />} />
+                        <Route path="reward-gate/receiving-gifts" element={<Gift />} />
+                        <Route path="reward-gate/manager" element={<Manager />} />
+
+                        <Route path="documents" element={<Documents />} />
+                        <Route path="documents/view/:id" element={<DocumentView />} />
+                        <Route path="documents/check/" element={<CheckGoogleDrive />} />
 
                         <Route path="attendance" element={<p>Attendance</p>} />
                         <Route path="attendance/my-attendance" element={<p>my attendance</p>} />

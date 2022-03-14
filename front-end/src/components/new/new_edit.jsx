@@ -120,7 +120,7 @@ const NewEdit=(props)=>{
               setError(json.error);
           }
           }else{
-            toast.success(`Create new successfully !!!`, {
+            toast.success(`Update new successfully !!!`, {
                 position: 'top-center',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -140,7 +140,7 @@ useEffect(() => {
   }
 }, [render])
     return(
-        <div maxWidth="100%" style={{ backgroundColor: '#eceff1', height: '100%',paddingLeft:"240px",paddingTop:"40px",paddingRight:"240px",paddingBottom:"40px" }}>
+        <div maxWidth="100%" style={{height: '100%',paddingLeft:"240px",paddingTop:"40px",paddingRight:"240px",paddingBottom:"40px" }}>
             <Box maxWidth="100%" style={{ backgroundColor: 'white', maxHeight: '100%',paddingRight:"40px", paddingLeft:"40px", paddingTop:"32px", paddingBottom:"32px", border:"solid 1px #cfd8dc",borderRadius:"5px", }}>
             <Grid
               container

@@ -113,6 +113,7 @@ const ChangePassword = (props) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            style={{marginTop:"60px"}}
           >
             <Modal.Header closeButton>
               <Modal.Title id="contained-modal-title-vcenter">Change Password</Modal.Title>

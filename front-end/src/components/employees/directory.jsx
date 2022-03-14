@@ -33,7 +33,6 @@ const  Directory=(props)=>{
     return (
     <Box 
       sx={{
-      backgroundColor:"#eceff1",
       maxWidth:"100%",
       border:"solid 1px #cfd8dc",
       height:'100%',
@@ -69,7 +68,16 @@ const  Directory=(props)=>{
                                             borderRadius: "100%",
                                             marginBottom:"20px"
                                         }} 
-                                        src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                        src={item.avatar
+                                                ?
+                                                    (item.avatar.search('https://') != -1)
+                                                        ?
+                                                            item.avatar
+                                                        :
+                                                            process.env.REACT_APP_FILE+'/avatar/'+item.avatar
+                                                :
+                                                    process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                            }>
                                     </img>
                                     <Typography 
                                         sx={{ 

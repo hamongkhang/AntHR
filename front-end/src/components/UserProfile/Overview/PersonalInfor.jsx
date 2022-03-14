@@ -30,7 +30,6 @@ const PersonalInfor = (props) => {
             .then((res) => res.json())
             .then((json) => {
                 if (json.error) {
-                    console.log(json.error.error);
                     if (json.error.error) {
                         toast.error(`${json.error.error}`, {
                             position: 'top-center',
@@ -134,13 +133,13 @@ const PersonalInfor = (props) => {
                                 <Typography sx={{ mx: 3 }} variant='body2'>Email</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>{employee.email ? employee.email : '-'}</Typography>
+                                <Typography sx={{ mx: 3, color: 'black',textOverflow:"ellipsis", overflow: "hidden" }} variant='body2'><a href={"mailto:"+employee.email} style={{color: "inherit",textDecoration:"none"}}>{employee.email ? employee.email : '-'}</a></Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
                                 <Typography sx={{ mx: 3 }} variant='body2'>Phone Number</Typography>
                             </Grid>
                             <Grid item xs={1} md={1} sx={{ mb: 2 }}>
-                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>{employee.phone ? employee.phone : '-'}</Typography>
+                                <Typography sx={{ mx: 3, color: 'black' }} variant='body2'><a href={"tel:"+employee.phone} style={{color: "inherit",textDecoration:"none"}}>{employee.phone ? employee.phone : '-'}</a></Typography>
                             </Grid>
                         </Grid>
                     </Box>

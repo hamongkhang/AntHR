@@ -251,11 +251,11 @@ class EmployeeController extends Controller
      * )
      */
     public function getOneEmployee($id){
-        $employeeFind = DB::table('employee')->where('id', $id)->first();
-        $addressFind = DB::table('address')->where('employee_id', $id)->first();
-        $bankFind = DB::table('bank')->where('employee_id', $id)->first();
-        $roleFind = DB::table('role')->where('employee_id', $id)->first();
-        $codeFind = DB::table('code')->where('employee_id', $id)->first();
+        $employeeFind = DB::table('employee')->where('user_id', $id)->first();
+        $addressFind = DB::table('address')->where('employee_id', $employeeFind->id)->first();
+        $bankFind = DB::table('bank')->where('employee_id',  $employeeFind->id)->first();
+        $roleFind = DB::table('role')->where('employee_id', $employeeFind->id)->first();
+        $codeFind = DB::table('code')->where('employee_id',  $employeeFind->id)->first();
         $result=[$employeeFind,$addressFind,$bankFind,$codeFind,$roleFind];
         if($employeeFind){
             return response()->json([
@@ -405,7 +405,7 @@ public function changeAvatar(Request $request)
         $employee = Employee::where('user_id',$checkLogin->id)->first();
         if($employee){
             if($request->hasfile('avatar')) {
-                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars';
+                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'avatar';
                 if($employee->avatar!=null){
                     File::delete($destinationPath.DIRECTORY_SEPARATOR.$employee->avatar);
                 }
@@ -417,12 +417,13 @@ public function changeAvatar(Request $request)
                 $date = $date->format('d-m-Y-H-i-s');
                 $extension = $file->extension();
                 $newImageName = Str::slug('avatar', '_').'_'.$date.'.'.$extension;
-                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'avatars', $newImageName);
-                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'images'.'/'.'avatars'.'/'.$newImageName;
+                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'avatar', $newImageName);
+                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'avatar'.'/'.$newImageName;
                 $employee->avatar = $newImageName;
                 $employee->save();
                 return response()->json([
                     'message' => 'Change avatar success',
+                    'data'=>$employee
                     ], 200);
                 
             }

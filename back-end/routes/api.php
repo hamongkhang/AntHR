@@ -126,7 +126,12 @@ Route::post('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPr
 Route::post('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
 
 
+////////////////////////////////////// Google Drive APIs //////////////////////////////////////////////////////////////////////////////
 
+Route::get('/google_document/checkGoogleDocument', [App\Http\Controllers\SocialController::class, 'checkGoogleDocument'])->name('google_document.checkGoogleDocument');
+Route::get('/google-drive/callback', [App\Http\Controllers\SocialController::class, 'googleDriveCallBack'])->name('google_document.googleDriveCallBack');
+Route::get('/google-drive/getGoogleDrive/{access_token_google_drive}', [App\Http\Controllers\SocialController::class, 'getGoogleDrive'])->name('google_document.getGoogleDrive');
+Route::get('/google-drive/{access_token_google_drive}/{id}/{folder_id}/uploadGoogleDrive', [App\Http\Controllers\SocialController::class, 'uploadGoogleDrive'])->name('google_document.uploadGoogleDrive');
 
 
 
