@@ -269,11 +269,21 @@ class PraiseController extends Controller
         if($checkLogin->role===1){
             $praise= Praise::find($id);
             if ($praise){
-               $praise->delete();
-               return response()->json([
+                $scoreUser = DB::table('user_score')->where('user_id',$praise->author)->first();
+                $scoreAuthor=UserScore::find($scoreUser->id);
+                $scoreAuthor->score=$scoreAuthor->score+$praise->score;
+                $scoreAuthor->score_spent=$scoreAuthor->score_spent-$praise->score;
+                $scoreAuthor->save();
+
+                $scoreFind = DB::table('user_score')->where('user_id',$praise->recipient)->first();
+                $scoreSum=UserScore::find($scoreFind->id);
+                $scoreSum->score=$scoreSum->score-$praise->score;
+                $scoreSum->save();
+                $praise->delete();
+                return response()->json([
                    'message'=>"Delete praise successfully",
                    'data'=>$praise
-               ]);
+                ]);
             }else{
                 return response()->json(['error'=>"Invalid id !!!"], 400);
             }
