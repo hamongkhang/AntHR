@@ -17,13 +17,13 @@ import Swal from 'sweetalert2';
 
 const Portal = (props) => {
     const $token = localStorage.getItem('access_token');
+    const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
     const [employees, setEmployees]= useState([]);
     const [users, setUsers]= useState([]);
     const [praise, setPraise]= useState([]);
     const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
-
     const getEmployees = () =>{
         fetch(process.env.REACT_APP_API+'/employee/getAllEmployee', {
             method: "GET",
@@ -899,7 +899,7 @@ const Portal = (props) => {
                     </Box> 
                     {praise.length?
                             praise.map((item,index)=>{
-                                if(item.status===1){
+                                if(item.author==id_user){
                                 return(
                                     <Box
                                     sx={{
@@ -920,18 +920,67 @@ const Portal = (props) => {
                                         }}
                                     >
                                         <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
-                                            <img
-                                                style={{
-                                                    height: "40px",
-                                                    width: "40px",
-                                                    objectFit: 'cover',
-                                                    borderRadius: "100%",
-                                                    float: "right",
-                                                    border: "2px solid #2196f3",
-                                                }}
-                                                // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                src={process.env.REACT_APP_FILE + '/avatar/avatar.png'}>
-                                            </img>
+                                        {employees.length?
+                                                    employees.map((itemUser,index)=>{
+                                                        if(itemUser.user_id===item.author){
+                                                            if(itemUser.avatar){
+                                                                if(itemUser.avatar.search('https://') !== -1){
+                                                                    return(
+                                                                        <img
+                                                                        style={{
+                                                                            height: "40px",
+                                                                            width: "40px",
+                                                                            objectFit: 'cover',
+                                                                            borderRadius: "100%",
+                                                                            float: "right",
+                                                                            border: "2px solid #2196f3",
+                                                                        }}
+                                                                        src={itemUser.avatar}
+                                                                        >
+                                                                    </img>
+                                                                    );
+                                                                }else{
+                                                                    return(
+                                                                        <img
+                                                                        style={{
+                                                                            height: "40px",
+                                                                            width: "40px",
+                                                                            objectFit: 'cover',
+                                                                            borderRadius: "100%",
+                                                                            float: "right",
+                                                                            border: "2px solid #2196f3",
+                                                                        }}
+                                                                        src={process.env.REACT_APP_FILE+'/avatar/'+itemUser.avatar}
+                                                                        >
+                                                                    </img>
+                                                                    );
+                                                                }
+                                                            }
+                                                            else{
+                                                                return(
+                                                                    <img
+                                                                    style={{
+                                                                        height: "40px",
+                                                                        width: "40px",
+                                                                        objectFit: 'cover',
+                                                                        borderRadius: "100%",
+                                                                        float: "right",
+                                                                        border: "2px solid #2196f3",
+                                                                    }}
+                                                                    src={process.env.REACT_APP_FILE+'/avatar/avatar.png'}
+                                                                    >
+                                                                </img>
+                                                                );
+                                                            }
+                                                        }else{
+                                                            return(
+                                                                null
+                                                            );
+                                                         }
+                                                        }
+                                                    )
+                                                    :null
+                                                }
                                         </Grid>
                                         <Grid item xs={3} sm={5} md={9}>
                                             <Typography
@@ -941,7 +990,33 @@ const Portal = (props) => {
                                                     fontSize: "12px",
                                                 }}
                                             >
-                                                Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
+                                                  {employees.length?
+                                                employees.map((itemUser,index)=>{
+                                                    if(itemUser.user_id===item.author){
+                                                        return(
+                                                            itemUser.last_name+" "+itemUser.first_name+" "
+                                                        )}else{
+                                                        return(
+                                                            null
+                                                        )
+                                                        }
+                                                    })
+                                                :null
+                                            } 
+                                            <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span>
+                                            {employees.length?
+                                                employees.map((itemUser,index)=>{
+                                                    if(itemUser.user_id===item.recipient){
+                                                        return(
+                                                            " "+itemUser.last_name+" "+itemUser.first_name
+                                                        )}else{
+                                                        return(
+                                                            null
+                                                        )
+                                                        }
+                                                    })
+                                                :null
+                                            }
                                             </Typography>
                                             <Typography
                                                 sx={{
@@ -949,7 +1024,27 @@ const Portal = (props) => {
                                                     fontSize: '10px',
                                                 }}
                                             >
-                                                2 phút trước
+                                               {moment(item.updated_at).fromNow()}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={4} sm={8} md={12} sx={{textAlign:"center"}}>
+                                            <Typography
+                                                sx={{
+                                                    color: "#76ff03",
+                                                    fontSize: "18px",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                + {item.score?item.score:null} Points
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    color: "#76ff03",
+                                                    fontSize: "12px",
+                                                    fontWeight: "bold"
+                                                }}
+                                            >
+                                                + {item.present?item.present:null}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
@@ -960,7 +1055,7 @@ const Portal = (props) => {
                                                     fontWeight: "bold"
                                                 }}
                                             >
-                                                Manager Programme Development( Partnership Global) ss ss sss sss s
+                                               {item.message}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
@@ -993,7 +1088,7 @@ const Portal = (props) => {
                                                                     fontSize: "12px",
                                                                 }}
                                                             >
-                                                                Không ngừng vươn lên trong công việc
+                                                                {item.cheer}
                                                             </Typography>
                                                         </Box>
                                                     </Grid>
@@ -1021,123 +1116,6 @@ const Portal = (props) => {
                                 )}})
                             :null
                     }
-                    <Box
-                        sx={{
-                            boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
-                            border: "1.5px solid #e0e0e0",
-                            borderRadius: '10px',
-                            padding: "10px",
-                            backgroundColor:"white",
-                            marginBottom:"10px"
-                        }}
-                    >
-                        <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                            sx={{
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
-                                <img
-                                    style={{
-                                        height: "40px",
-                                        width: "40px",
-                                        objectFit: 'cover',
-                                        borderRadius: "100%",
-                                        float: "right",
-                                        border: "2px solid #2196f3",
-                                    }}
-                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                    src={process.env.REACT_APP_FILE + '/avatar/avatar.png'}>
-                                </img>
-                            </Grid>
-                            <Grid item xs={3} sm={5} md={9}>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                    }}
-                                >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã khen thưởng</span> Nguyễn Hồng Quâns sss ssds
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontSize: '10px',
-                                    }}
-                                >
-                                    2 phút trước
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Typography
-                                    sx={{
-                                        color: "black",
-                                        fontSize: "14px",
-                                        fontWeight: "bold"
-                                    }}
-                                >
-                                    Manager Programme Development( Partnership Global) ss ss sss sss s
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Box sx={{
-                                    alignItems: 'center',
-                                }}>
-                                    <Grid
-                                        container
-                                        spacing={{ xs: 2, md: 3 }}
-                                        columns={{ xs: 4, sm: 8, md: 12 }}
-                                    >
-                                        <Grid item xs={2} sm={8} md={12}>
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                }}
-                                            >
-                                                <img
-                                                    style={{
-                                                        height: "30px",
-                                                        width: "40px",
-                                                    }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/value.png'}>
-                                                </img>
-                                                <Typography
-                                                    sx={{
-                                                        color: "rgb(35, 54, 78)",
-                                                        fontWeight: "bold",
-                                                        fontSize: "12px",
-                                                    }}
-                                                >
-                                                    Không ngừng vươn lên trong công việc
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Button 
-                                    type="submit"
-                                    //onClick={(event) => onAddNews(event)}
-                                    sx={{
-                                        height:40.5,
-                                        width:"100%",
-                                        border:"1px solid #ff9900",
-                                        backgroundColor:"red", 
-                                        color:"#ff9900",
-                                    }}
-                                    size='medium' 
-                                >
-                                    Block
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box> 
                 </Grid>
             </Grid>
         </Box>
