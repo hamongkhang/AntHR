@@ -30,8 +30,9 @@ const HeaderEmployee = () => {
 
     return (
         <>  
-        <Box sx={{position:'fixed', width:'100%', bgcolor:'background.paper',zIndex:2}}>
-            <Box sx={{ mt: 9, mr: 3, ml: 3, mb: 2, flexGrow: 1}}>
+
+        <Box sx={{width:'100%', bgcolor:'background.paper',}}>
+            <Box sx={{ mt: 3, mr: 3, ml: 3, mb: 2, flexGrow: 1}}>
                 <Grid container spacing={2}>
                     <Grid item xs={3} sm={2} md={2} lg={2}>
                         <FormControl sx={{ width:'100%'}} variant="outlined">
@@ -111,22 +112,22 @@ const HeaderEmployee = () => {
 
                     <Grid item xs={4} sm={4} md={4} lg={3.5}>
                         <Stack direction='row' spacing={1.8} sx={{ width: '100%'}}>
-                            <Button variant="contained" sx={{ background: 'background.default' }}>
+                            <Button variant="contained" sx={{ background: 'background.primary' }}>
                                 <FileDownloadOutlinedIcon />
                             </Button>
-                            <Button variant="contained" sx={{ background: 'background.default', textTransform: 'none' }}>
+                            <Button variant="contained" sx={{ background: 'background.primary', textTransform: 'none' }}>
                                 <Typography variant="body2" sx={{fontWeight:600}}>Revert</Typography>
                             </Button>
-                            <Button variant="contained" sx={{ background: 'background.default', textTransform: 'none' }}>
+                            <Button variant="contained" sx={{ background: 'background.primary', textTransform: 'none' }}>
                                 <Typography variant="body2" sx={{fontWeight:600}}>Reject</Typography>
                             </Button>
-                            <Button variant="contained" sx={{ background: 'background.default',
+                            <Button variant="contained" sx={{ background: 'background.primary',
                                 textTransform: 'none',
                                 }}>
                                 <Typography variant="body2" sx={{fontWeight:600}}>Approve</Typography>
                             </Button>
                             <Button variant="contained" 
-                            sx={{ background: 'background.default',
+                            sx={{ background: 'background.primary',
                                     textTransform: 'none',
                                     }}>
                                 <Typography variant="body2" sx={{fontWeight:600}}>Confirm</Typography>
@@ -137,7 +138,6 @@ const HeaderEmployee = () => {
             </Box>
             <Divider />
         </Box>
-       
         </>
     );
 }

@@ -7,6 +7,7 @@ import HandleOption from "./handleclick";
 import SelectDate from "./selectdate";
 import { DataGrid } from '@mui/x-data-grid';
 import { makeStyles } from '@material-ui/core/styles';
+import { color, fontSize } from "@mui/system";
 
 
 const useStyles = makeStyles({
@@ -14,31 +15,36 @@ const useStyles = makeStyles({
     '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
       outline: 'none',
     },
-    '&.MuiDataGrid-root .MuiDataGrid-columnHeaders:focus-within':{
-      outline:'none',
-    }
-  }
+    '&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle': {
+      fontWeight: 600,
+      color: '#ff9900'
+    },
+  },
 });
 const columns = [
-  { field: "id", headerName: 'ID',
-  editable: false,
-  width: 150 },
+  {
+    field: "id", headerName: 'ID',
+    editable: false,
+    width: 100,
+  },
   {
     field: 'date', headerName: 'Date',
     type: 'date',
     editable: false,
-    width: 150
+    sortable: false,
+    width: 150,
   },
   {
     field: 'clockIn',
     headerName: 'Clock In',
     width: 100,
     sortable: false,
+    sortable: false,
   },
   {
     field: 'clockInLocation',
     headerName: 'Clock In Location',
-    width: 150,
+    width: 180,
     editable: false,
     sortable: false,
   },
@@ -52,7 +58,7 @@ const columns = [
   {
     field: 'clockOutLocation',
     headerName: 'Clock Out Location',
-    width: 150,
+    width: 180,
     editable: false,
     sortable: false,
   },
@@ -94,7 +100,7 @@ const columns = [
     renderCell: (params) => {
       return (
         <>
-          <HandleOption date={`${params.row.date}`} />
+          <HandleOption date={params.row.date} />
         </>
       );
     },
@@ -110,20 +116,21 @@ const rows = [
   { id: 7, date: '9 March 2022 ', clockIn: '-', clockInLocation: 'Ferrara', clockOut: 44, clockOutLocation: '-', workSchedule: '8h', longgedTime: '0h', paidTime: '0h', deficit: '-8h' },
   { id: 8, date: '9 March 2022 ', clockIn: '-', clockInLocation: 'Ferrara', clockOut: 44, clockOutLocation: '-', workSchedule: '8h', longgedTime: '0h', paidTime: '0h', deficit: '-8h' },
 ];
+
 const MyAttend = () => {
   const classes = useStyles();
-  
+
   const [tableData, setTableData] = useState([]);
 
-  useEffect (()=>{
+  useEffect(() => {
     setTableData(rows)
-  },[]);
+  }, []);
 
 
   return (
     <>
       <Box style={styles.BoxHeader} sx={{ m: 3, bgcolor: 'background.default' }}>
-        <NotificationsRoundedIcon style={{ color: 'rgb(255 192 0)', fontSize: 30 }} />
+        <NotificationsRoundedIcon sx={{ color: 'primary.main', fontSize: 30 }} />
         <Typography sx={{ pl: 1, pt: 0.5 }}>
           You can only update the attendance record within the last 31 days.
         </Typography>
@@ -133,8 +140,8 @@ const MyAttend = () => {
         <Box style={styles.HeaderBody}>
           <Grid container sx={{ width: '100%' }}>
             <Grid item lg={3} md={4} sm={4} xs={12} sx={{ display: 'flex' }}>
-              <Box style={styles.circle}>
-                <AccessTimeIcon style={styles.textIcon} />
+              <Box style={styles.circle} sx={{ bgcolor: 'background.primary' }}>
+                <AccessTimeIcon sx={{ margin: 'auto', color: 'primary.main' }} />
               </Box>
               <Typography variant="h6" style={styles.textAttendLeft}>&nbsp;{' '} My Attendance </Typography>
             </Grid>
@@ -144,7 +151,9 @@ const MyAttend = () => {
             <Grid item lg={4.5} md={6} sm={8} xs={12} sx={{ display: 'flex' }}>
               <Box style={styles.textAttendRight}>First in 00-00</Box>
               <Box style={styles.textAttendRight}>Last out 00-00</Box>
-              <Button style={styles.CheckAttend}> Click in 00h 00m 00s</Button>
+              <Button variant="contained" style={styles.CheckAttend} sx={{textTransform: 'none'}}>
+                <Typography variant="body2" sx={{ fontWeight: 600 }}>Click in 00h 00m 00s</Typography>
+              </Button>
             </Grid>
           </Grid>
         </Box>
@@ -155,7 +164,7 @@ const MyAttend = () => {
         <Box style={styles.HeaderBody}>
           <Grid container spacing={2} sx={{ mt: 4 }} >
             <Grid item lg={2} md={2} sm={2.3} xs={6} style={styles.BoxSwapper} sx={{ ml: 2 }}>
-              <Typography style={styles.BoxSwapper_Text}>
+              <Typography sx={{ color: 'primary.main', fontWeight: 600 }}>
                 Work Schedule
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>
@@ -164,7 +173,7 @@ const MyAttend = () => {
             </Grid>
 
             <Grid item lg={2} md={2} sm={2.3} xs={6} style={styles.BoxSwapper} sx={{ ml: 1, mr: 1 }}>
-              <Typography style={styles.BoxSwapper_Text}>
+              <Typography sx={{ color: 'primary.main', fontWeight: 600 }}>
                 Logged Time
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>
@@ -173,7 +182,7 @@ const MyAttend = () => {
             </Grid>
 
             <Grid item lg={2} md={2} sm={2} xs={6} style={styles.BoxSwapper} sx={{ mr: 1 }}>
-              <Typography style={styles.BoxSwapper_Text}>
+              <Typography sx={{ color: 'primary.main', fontWeight: 600 }}>
                 Paid Time
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>
@@ -181,7 +190,7 @@ const MyAttend = () => {
               </Typography>
             </Grid>
             <Grid item lg={2} md={2} sm={2} xs={6} style={styles.BoxSwapper} sx={{ mr: 1 }}>
-              <Typography style={styles.BoxSwapper_Text}>
+              <Typography sx={{ color: 'primary.main', fontWeight: 600 }}>
                 Deficit
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>
@@ -189,7 +198,7 @@ const MyAttend = () => {
               </Typography>
             </Grid>
             <Grid item lg={2} md={2} sm={2} xs={6} style={styles.BoxSwapper}>
-              <Typography style={styles.BoxSwapper_Text}>
+              <Typography sx={{ color: 'primary.main', fontWeight: 600 }}>
                 Overtime
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>
@@ -200,7 +209,9 @@ const MyAttend = () => {
         </Box>
 
         <Box style={styles.HeaderBody}>
-          <Box sx={{ height: 475, width: '100%', mt: 4 }} >
+          <Box sx={{
+            height: 475, width: '100%', mt: 4,
+          }} >
             <DataGrid
               className={classes.hide_border}
               rows={tableData}
@@ -218,27 +229,10 @@ const MyAttend = () => {
 
 
 const styles = {
-  Morevert_Icon: {
-    cursor: 'pointer',
-  },
-  TableRow_Text: {
-    fontWeight: 600,
-  },
-  BoxSwapper_Text: {
-    color: 'rgb(42, 210, 95)',
-    fontWeight: 600,
-  },
 
   BoxSwapper: {
     border: '1px solid rgb(227 235 241)',
-    backgroundColor: '#ffffff',
-    boxShadow: "4px 4px 5px #fcfcfc",
     borderRadius: '5px',
-  },
-
-  BoxHeader_table: {
-    marginBottom: '25px',
-    zIndex: 0,
   },
 
   BoxHeader: {
@@ -249,7 +243,7 @@ const styles = {
     hieght: '100%',
     border: '1px solid rgb(227 235 241)',
     borderRadius: '5px',
-    marginTop: 90,
+    // marginTop: 90,
   },
   BoxBody: {
     marginTop: '40px',
@@ -266,13 +260,9 @@ const styles = {
     display: 'flex',
     width: '38px',
     height: '38px',
-    backgroundColor: 'rgb(42, 210, 95)',
     borderRadius: '50%',
   },
-  textIcon: {
-    margin: 'auto',
-    color: '#fcfcfc',
-  },
+
   textAttendLeft: {
     fontWeight: 600,
     display: 'flex',
@@ -294,16 +284,9 @@ const styles = {
 
   CheckAttend: {
     width: '38%',
-    fontSize: '12px',
     display: 'flex',
-    fontFamily: 'Lucida Bright',
-    fontWeight: 600,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(42 210 95)',
     borderRadius: '5px',
     marginLeft: '30px',
-    color: '#fcfcfc',
   },
 }
 

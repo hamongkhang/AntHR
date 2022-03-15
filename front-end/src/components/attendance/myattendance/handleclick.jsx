@@ -126,8 +126,12 @@ const HandleOption = (props) => {
                             }}
                         />
                         <Stack direction="row" spacing={2} sx={{ mt: 2 }} >
-                            <Button className={props.classes.modal_savebtn} onClick={handleClose2}>Save</Button>
-                            <Button className={props.classes.modal_cancelbtn} onClick={handleClose2} >Cancel</Button>
+                            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleClose2}>
+                                Save
+                            </Button>
+                            <Button variant="contained" sx={{ textTransform: 'none' }} onClick={handleClose2} color='error'>
+                               Cancel
+                            </Button>
                         </Stack>
                     </Box>
                 </Box>
@@ -139,22 +143,6 @@ const HandleOption = (props) => {
 
 const styles = {
 
-    modal_cancelbtn: {
-        "&.MuiButton-text": {
-            color: "grey"
-        },
-        "&.MuiButton-root": {
-            backgroundColor: 'rgb(224 230 234)'
-        },
-    },
-    modal_savebtn: {
-        "&.MuiButton-text": {
-            color: "#ffffff"
-        },
-        "&.MuiButton-root": {
-            backgroundColor: 'rgb(42 210 95)'
-        },
-    },
     modal_textarea: {
         width: '100%',
         border: '1px solid rgb(227 235 241)',
@@ -210,7 +198,6 @@ const styles = {
         color: 'black',
         padding: '10px 12px',
         textDecoration: 'none',
-        display: 'block',
         cursor: 'pointer',
     },
     hover_li: {

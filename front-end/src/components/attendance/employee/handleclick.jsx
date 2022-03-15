@@ -4,6 +4,9 @@ import { Box } from "@mui/system";
 import { Divider,Typography } from "@mui/material";
 import { IconButton, Popover } from "@mui/material";
 import { withStyles } from '@material-ui/styles';
+import RestoreIcon from '@mui/icons-material/Restore';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 
 const HandleOption = (props) => {
@@ -43,6 +46,7 @@ const HandleOption = (props) => {
             >
 
                 <Box style={styles.option_dropdown_content_li} className={props.classes.hover_li}>
+                <RestoreIcon />
                     <Typography variant="body1">
                         &nbsp;
                         Revert
@@ -50,12 +54,14 @@ const HandleOption = (props) => {
                 </Box>
 
                 <Box style={styles.option_dropdown_content_li} className={props.classes.hover_li}>
+                    <CheckIcon />
                     <Typography variant="body1">
                         &nbsp;
                         Approve
                     </Typography>
                 </Box>
                 <Box style={styles.option_dropdown_content_li} className={props.classes.hover_li}>
+                <CheckIcon />
                     <Typography variant="body1">
                         &nbsp;
                         Confirm
@@ -64,6 +70,7 @@ const HandleOption = (props) => {
 
                 <Divider />
                 <Box style={styles.option_dropdown_content_li} className={props.classes.hover_li}>
+                    <CloseIcon />
                     <Typography variant="body1">
                         &nbsp;
                         Reject
@@ -88,7 +95,7 @@ const styles = {
     option_dropdown_content_li: {
         color: 'black',
         padding: '5px 12px',
-        display: 'block',
+        display: 'flex',
         cursor: 'pointer',
     },
     hover_li: {

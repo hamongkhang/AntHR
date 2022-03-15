@@ -1,13 +1,18 @@
 import './App.css';
-import Attendance from './components/attendance';
-// import HandleOption from './components/attendance/myattendance/handleClick';
+import { Box } from '@mui/system';
 import ThemeProvider from './theme';
+import EmployeeAttend from './components/attendance/employee/page2';
+import MyAttend from './components/attendance/myattendance/page1';
+
 
 function App() {
   return (
-   <ThemeProvider>
-     <Attendance />
-   </ThemeProvider>
+    <ThemeProvider>
+      <Box sx={{ width: '100%', bgcolor: 'background.secondary' }}>
+        <EmployeeAttend />
+        <MyAttend />
+      </Box>
+    </ThemeProvider>
   );
 }
 
