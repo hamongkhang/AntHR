@@ -143,7 +143,23 @@ const Portal = (props) => {
            }
         });
     }
-
+    const onClickBlockHistory=(event,id)=>{
+        Swal.fire({
+            title: 'Delete this news?',
+            text: "Do you want to permanently delete this news?",
+            icon: 'warning',
+            marginTop:"200px",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Cance',
+            confirmButtonText: 'Delete'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                onBlock(id);
+            }
+          })
+    }
     useEffect(() => {
         if ($token) {
             getEmployees();
@@ -1098,7 +1114,7 @@ const Portal = (props) => {
                                         <Grid item xs={4} sm={8} md={12}>
                                             <Button 
                                                 type="submit"
-                                                //onClick={(event) => onAddNews(event)}
+                                                onClick={(event) => onClickBlockHistory(event,item.id)}
                                                 sx={{
                                                     height:40.5,
                                                     width:"100%",
