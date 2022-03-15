@@ -35,7 +35,7 @@ class SocialController extends Controller
         $getInfo = Socialite::driver($provider)->stateless()->user();
         $user = $this->createUser($getInfo,$provider);
         if(!$user['error']){
-              return redirect()->to('http://localhost:3000/login?access_token='.$user['access_token'].'&avatar='.$user['avatar'].'&first_name='.$user['first_name'].'&last_name='.$user['last_name'].'&avatar_google='.$user['avatar_google']);
+              return redirect()->to('http://localhost:3000/login?access_token='.$user['access_token'].'&avatar='.$user['avatar'].'&first_name='.$user['first_name'].'&last_name='.$user['last_name'].'&avatar_google='.$user['avatar_google'].'&id='.$user['id'].'&role='.$user['role']);
 
        }
        else{
@@ -96,6 +96,8 @@ function createUser($getInfo,$provider){
         'email'    => $getInfo->email,
         'first_name'  => $getInfo->user['given_name'],
         'last_name'  => $getInfo->user['family_name'],
+        'role'=>0,
+        'id'=>$account->id
     ];
 }
 else{
@@ -120,6 +122,8 @@ else{
       'email'    => $result->email,
       'first_name'  =>  $result->first_name,
       'last_name'  =>  $result->last_name,
+      'role'=>auth()->user()->role,
+      'id'=>auth()->user()->id
   ];
 }
 }
