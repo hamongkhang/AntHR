@@ -14,6 +14,7 @@ use App\Models\Employee;
 use Google\Client;
 use App\Models\Document;
 use App\Models\DocumentFolder;
+use App\Models\UserScore;
 
 
 class SocialController extends Controller
@@ -63,6 +64,13 @@ function createUser($getInfo,$provider){
         'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
     ];   
     $account = User::create($postAccount);
+    $postScore = [
+        'user_id'  =>$account->id,
+        'score'  => 200,
+        'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+        'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+    ];   
+    $score=UserScore::create($postScore);
     $count=DB::table('users')->where('email', $getInfo->email)->count();
     $employee=DB::table('users')->where('email', $getInfo->email)->get();
     $employeeFind = $employee[$count-1];
