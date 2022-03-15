@@ -111,7 +111,7 @@ Route::get('/present/getAllPresent', [App\Http\Controllers\PresentController::cl
 Route::get('/present/getOnePresent/{id}', [App\Http\Controllers\PresentController::class, 'getOnePresent'])->name('present.getOnePresent');
 Route::post('/present/updatePresent/{id}', [App\Http\Controllers\PresentController::class, 'updatePresent'])->name('present.updatePresent');
 Route::delete('/present/destroyPresent/{id}', [App\Http\Controllers\PresentController::class, 'destroyPresent'])->name('present.destroyPresent');
-Route::post('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
+Route::get('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
 Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
 
 

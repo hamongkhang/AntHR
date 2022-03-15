@@ -184,6 +184,40 @@ const  Gift=(props)=>{
            }
         });
     }
+    const onChangeStatus=(event,id)=>{
+        fetch(process.env.REACT_APP_API+'/present/changeStatus/'+id, {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+           if(data.error){
+                toast.error('Change status Failed.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+           else{
+                setRender(!render)
+                toast.success('Change status successfully.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+        });
+    }
     useEffect(() => {
         if($token){
             getPresents();
@@ -692,6 +726,9 @@ const  Gift=(props)=>{
                                                         padding: "24px",
                                                     }}
                                                 > 
+                                                {
+                                                    (item.status==1)?
+                                                    null:
                                                     <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
                                                     <Typography 
                                                         sx={{ 
@@ -702,18 +739,18 @@ const  Gift=(props)=>{
                                                       Sold out
                                                     </Typography> 
                                                     </Box>
+                                                }
                                                     <img 
                                                         style={{
                                                             height: "100%",
                                                             width: "100%",
                                                             marginBottom:"20px"
                                                         }} 
-                                                       // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                       src={process.env.REACT_APP_FILE+'/reward/food_item.jpg'}>
+                                                       src={process.env.REACT_APP_FILE+'/present/image/'+item.image}>
                                                     </img>
                                                     <Switch
-                                                        checked={checked}
-                                                        onChange={handleChange}
+                                                        defaultChecked={(item.status==1)?true:false}
+                                                        onChange={(event)=>onChangeStatus(event,item.id)}
                                                         inputProps={{ 'aria-label': 'controlled' }}
                                                         sx={{
                                                             float:"left",
