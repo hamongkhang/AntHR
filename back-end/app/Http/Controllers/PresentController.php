@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 use App\Models\Present;
 use App\Models\CartPresent;
 use App\Models\UserScore;
+use App\Models\PresentCategory;
 
 
 class PresentController extends Controller
@@ -97,16 +99,37 @@ class PresentController extends Controller
      */
     public function createPresent(Request $request){
         $validator = Validator::make($request->all(), [
-            'category_id' => 'required|integer|unique:present_category',
+            'category_id' => 'required',
             'name' => 'required',
-            'image' => '',
-            'price'=>'',
+            'image' => 'required',
+            'price'=>'required',
             'description'=>'required',
             'score'=>'required',
-k        ]);
+       ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
         }
+        $dataFind = DB::table('present_category')->where('id',$request->category_id)->first();
+        if(!$dataFind){
+            $postCategoryItem1 = [
+                'category'  => "Foods",
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $postCategoryItem2 = [
+                'category'  => "Vouchers",
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $postCategoryItem3 = [
+                'category'  => "Artifacts",
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $categoryItem1 = PresentCategory::create($postCategoryItem1);
+            $categoryItem2 = PresentCategory::create($postCategoryItem2);
+            $categoryItem3 = PresentCategory::create($postCategoryItem3);
+        }       
         $userFind = auth()->user();
         if($userFind->role===1){
             if ($request->hasFile('image'))

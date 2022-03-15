@@ -14,22 +14,120 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Switch from '@mui/material/Switch';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const  Gift=(props)=>{
     const [openAdd, setOpenAdd] =useState(false);
     const [openEdit, setOpenEdit] =useState(false);
     const [checked, setChecked] = React.useState(true);
-
-    const handleChange = (event) => {
-      setChecked(event.target.checked);
+    const $token = localStorage.getItem('access_token');
+    const id_user = localStorage.getItem('id');
+    const [render, setRender] = useState(false);
+    const navigate = useNavigate();
+    const [giftAdd, setGiftAdd]=useState({
+        category_id:'',
+        name:'',
+        image:'',
+        score:'',
+        price:'',
+        description:''
+    });
+    const [error, setError] = useState({
+        category_id:null,
+        name:null,
+        image:null,
+        score:null,
+        price:null,
+        description:null
+      });
+      const handleChangeSelect = (event) => {
+        setGiftAdd({...giftAdd,['category_id']:event.target.value});
+        console.log(giftAdd)
+      };
+      const handleChange = (event) => {
+        setChecked(event.target.checked);
+      };
+      const clickOpenAdd=()=>{
+          setOpenAdd(!openAdd);
+      }
+      const clickOpenEdit=()=>{
+          setOpenEdit(!openEdit);
+      }
+    const onChangeAddGift = (event) => {
+        let _name = event.target.name;
+        let _type = event.target.type;
+        let _value = event.target.value;
+        if(_type === "file"){
+            setGiftAdd({...giftAdd,['image']:event.target.files[0]});
+        }
+        else{
+            setGiftAdd({...giftAdd,[_name]:_value});
+        }
+      };
+      const onAddGift = (e) => {
+        const _formData = new FormData();
+        _formData.append('category_id', giftAdd.category_id);
+        _formData.append('name', giftAdd.name);
+        _formData.append('image', giftAdd.image);
+        _formData.append('score', giftAdd.score);
+        _formData.append('price', giftAdd.price);
+        _formData.append('description', giftAdd.description);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/present/createPresent', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+                if (json.error === 'You are not admin!!!') {
+                  toast.error(`You are not admin!!!`, {
+                      position: 'top-center',
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                  });
+                  setError('');
+              }else{
+                  setError(json.error);
+              }
+              }else{
+                setRender(!render);
+                toast.success(`Create gift successfully !!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });       
+                  setError('');
+                  setGiftAdd({
+                    category_id:'',
+                    name:'',
+                    image:'',
+                    score:'',
+                    price:'',
+                    description:''
+                });
+                  setOpenAdd(!openAdd);
+              }
+            });
     };
-    const clickOpenAdd=()=>{
-        setOpenAdd(!openAdd);
-    }
-    const clickOpenEdit=()=>{
-        setOpenEdit(!openEdit);
-    }
-
+    useEffect(() => {
+        if($token){
+            // getPoints();
+            // getEmployees();
+        }else{
+           navigate('/home');
+        }
+    }, [render])
     return (
     <Box 
       sx={{
@@ -50,7 +148,7 @@ const  Gift=(props)=>{
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     width: "80%",
-                    height:"70%",
+                    height:"75%",
                     bgcolor: 'background.paper',
                     border: '2px solid #ff9900',
                     boxShadow: 24,
@@ -76,8 +174,8 @@ const  Gift=(props)=>{
                     </Grid>
                     <Grid item xs={4} sm={4} md={6}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
                         id="name"
                         name="name"
                         label="Name *"
@@ -86,7 +184,7 @@ const  Gift=(props)=>{
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={4} md={6}>
@@ -95,21 +193,21 @@ const  Gift=(props)=>{
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            //value={age}
                             label="Age"
                             sx={{marginTop:"5px",height:"40px",padding:"8.5px 14px"}}
-                            //onChange={handleChange}
+                            onChange={(event)=>handleChangeSelect(event)}
                         >
-                            <MenuItem value={10}>Food</MenuItem>
-                            <MenuItem value={20}>Voucher</MenuItem>
-                            <MenuItem value={30}>Artifacts</MenuItem>
+                            <MenuItem value={1}>Food</MenuItem>
+                            <MenuItem value={2}>Voucher</MenuItem>
+                            <MenuItem value={3}>Artifacts</MenuItem>
                         </Select>
                     </FormControl>
+                    <span className="errorNotify">{error.category_id?error.category_id[0]:null}</span>
                     </Grid>
                     <Grid item xs={4} sm={2} md={4}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.price?error.price[0]:null}
+                        error={error.price?true:false}
                         id="price"
                         name="price"
                         label="Price *"
@@ -118,14 +216,14 @@ const  Gift=(props)=>{
                         type={'number'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={2} md={4
                     }>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.score?error.score[0]:null}
+                        error={error.score?true:false}
                         id="score"
                         name="score"
                         label="Score *"
@@ -134,7 +232,7 @@ const  Gift=(props)=>{
                         type={'number'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={4} md={4}>
@@ -145,13 +243,14 @@ const  Gift=(props)=>{
                         label="Image" 
                         variant="outlined" 
                         InputLabelProps={{ shrink: true}}   
-                       // onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddGift(event)}
                         />
+                        <span className="errorNotify">{error.image?error.image[0]:null}</span>
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.description?error.description[0]:null}
+                        error={error.description?true:false}
                         id="description"
                         name="description"
                         label="Description *"
@@ -160,13 +259,13 @@ const  Gift=(props)=>{
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeAddGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={8} md={4}>
                         <Button 
                             type="submit"
-                            //onClick={(event) => onAddNews(event)}
+                            onClick={(event) => onAddGift(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -183,7 +282,6 @@ const  Gift=(props)=>{
                         <Button 
                             type="submit"
                             onClick={()=>clickOpenAdd()}
-                            //onClick={(event) => onAddNews(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
