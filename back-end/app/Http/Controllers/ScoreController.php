@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Models\UserScore;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\ScoreSetup;
 
 
 class ScoreController extends Controller
@@ -24,26 +25,28 @@ class ScoreController extends Controller
 
     public function createScore(Request $request){
         $validator = Validator::make($request->all(), [
-            'score' => 'required',
+            'score' => 'required|numeric|min:1',
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
         }
-        $userFind = auth()->user();
-        $employeeFind=DB::table('employee')->where('user_id',$userFind->id)->first();
-        if($userFind->role===1){
-        $author=$employeeFind->last_name.' '.$employeeFind->first_name;    
-        $postArray = [
-            'name'  => $request->name,
-            'description'=>$request->description,
-            'share'=>1,
-            'sum'=>0,
-            'author'=>$author,
-            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
-            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
-        ];
-        $folder = DocumentFolder::create($postArray);
-        return Response()->json(array("Create folder successfully!"=> 1,"data"=>$postArray ));
+        if(auth()->user()->role===1){
+            $scoreFind= DB::table('score_setup')->get();
+            if(count($scoreFind)>0){
+                $scoreSetup=ScoreSetup::find($scoreFind[0]->id);
+                $scoreSetup->score=$request->score;
+                $scoreSetup->updated_at=Carbon::now('Asia/Ho_Chi_Minh');
+                $scoreSetup->save();
+                return Response()->json(array("Create folder successfully!"=> 1,"data"=>$scoreSetup ));
+            }else{
+                $postArray = [
+                    'score'  => $request->score,
+                    'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                    'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+                ];
+                $folder = ScoreSetup::create($postArray);
+                return Response()->json(array("Create folder successfully!"=> 1,"data"=>$folder ));
+            }
     }else{
         return response()->json(["error" => "You are not admin!!!"],401);
     }

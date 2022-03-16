@@ -110,6 +110,7 @@ const Point = (props) => {
                   progress: undefined,
               });       
                 setError('');
+                setScore({score:""});
                 setOpenModal(!openModal);
                 setRender(!render);
             }
@@ -171,8 +172,8 @@ const Point = (props) => {
                     </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                     <TextField
-                        helperText={error.name?error.name[0]:null}
-                        error={error.name?true:false}
+                        helperText={error.score?error.score[0]:null}
+                        error={error.score?true:false}
                         id="score"
                         name="score"
                         label="Score *"
