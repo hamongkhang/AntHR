@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 use App\Models\UserScore;
+use App\Models\Employee;
+use App\Models\User;
 
 
 class ScoreController extends Controller
@@ -18,7 +20,30 @@ class ScoreController extends Controller
     public function __construct() {
         $this->middleware('auth:api', ['except' => []]);
     }
-
+    public function getUserPoints(){
+        $dataFind = DB::table('user_score')->get();
+        $data=[];
+        for ($i=0;$i<count($dataFind);$i++){
+            $EmployeeFind= DB::table('employee')->where('user_id',$dataFind[$i]->user_id)->first();
+            $userFind= DB::table('users')->where('id',$dataFind[$i]->user_id)->first();
+            $postData=[
+                        'id'=> $dataFind[$i]->id,
+                        'first_name'=> $EmployeeFind->first_name,
+                        'last_name' => $EmployeeFind->last_name,
+                        'email' => $EmployeeFind->email,
+                        'role'=>$userFind->role,
+                        'user_id' => $EmployeeFind->user_id,
+                        'avatar' => $EmployeeFind->avatar,
+                        'score' => $dataFind[$i]->score,
+                        'score_spent' => $dataFind[$i]->score_spent,
+                        'gift' => $dataFind[$i]->gift,
+                        'created_at' => $dataFind[$i]->created_at,
+                        'updated_at' => $dataFind[$i]->updated_at,
+                    ];
+            array_push($data,$postData);
+        }
+        return Response()->json(array("Get present successfully!"=> 1,"data"=>$data ));
+    }
      /**
      * @SWG\GET(
      *     path="/api/score/getOneScore/id",

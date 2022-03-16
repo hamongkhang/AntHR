@@ -24,15 +24,26 @@ import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 const Point = (props) => {
-    const $token = localStorage.getItem('access_token');
-    const role =localStorage.getItem('role');
-    const id_user = localStorage.getItem('id');
+    const $token=localStorage.getItem('access_token');
+    const [userPoints, setUserPoints]= useState([]);
     const [render, setRender] = useState(false);
     const navigate = useNavigate();
+    const getDirectory = () =>{
+        fetch(process.env.REACT_APP_API+'/employee/getUserPoints', {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+        })
+        .then(response => response.json())
+        .then(data =>  {
+            setUserPoints(data.data.reverse());
+        });
+    }
+    console.log(userPoints)
     useEffect(() => {
-        if ($token) {
-        } else {
-            navigate('/home');
+        if($token){
+          getDirectory();
+        }else{
+           navigate('/home');
         }
     }, [render])
     return (
@@ -65,30 +76,125 @@ const Point = (props) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody> 
-                                    {/* {!search?
-                                        folders.length?
-                                        folders.map((item,index)=>{
-                                            return( */}
+                                    {
+                                        userPoints.length?
+                                        userPoints.map((item,index)=>{
+                                           if(item.role!=1){
+                                            return(
                                            <TableRow
                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                            >
-                                               <TableCell align="left">dhuihsa</TableCell>
-                                               <TableCell align="left">ahsgcccccc cccc cccccc ccc ccccc cccccc ccc cccc chsgcccccc cccc cccccc ccc ccccc cccccc ccc cccc cccccc cc cccccc c ccc  cccccccc ccc cccccc cchsgcccccc cccc cccccc ccc ccccc cccccc ccc cccc cccccc cc cccccc c ccc  cccccccc ccc cccccc ccccccc cc cccccc c ccc  cccccccc ccc cccccc cccc ccccj</TableCell>
+                                               <TableCell align="left" sx={{width:"250px",}}>
+                                                   <Box sx={{display:"flex"}}>
+                                                    <img 
+                                                        style={{
+                                                            height: "50px",
+                                                            width: "50px",
+                                                            objectFit: 'cover',
+                                                            borderRadius: "100%",
+                                                            marginRight:"10px"
+                                                        }} 
+                                                        src={
+                                                            item.avatar
+                                                            ?
+                                                                (item.avatar.search('https://') != -1)
+                                                                ?
+                                                                    item.avatar
+                                                                :
+                                                                    process.env.REACT_APP_FILE+'/avatar/'+item.avatar
+                                                            :
+                                                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                                        }
+                                                    >
+                                                    </img>
+                                                    <Box sx={{textOverflow:"ellipsis",overflow: "hidden",}}>
+                                                        <Typography
+                                                            sx={{ 
+                                                                color:"rgb(105, 129, 148)",
+                                                                fontSize:"18px"
+                                                            }} 
+                                                        >
+                                                            {item.last_name?item.last_name:" - "} {item.first_name?item.first_name:" - "}
+                                                        </Typography>
+                                                        <Typography
+                                                            sx={{ 
+                                                                color:"rgb(105, 129, 148)",
+                                                                fontSize:"12px"
+                                                            }} 
+                                                        >
+                                                            {item.email?item.email:" - "} | {item.phone?item.phone:" - "}
+                                                        </Typography>
+                                                    </Box>
+                                                   </Box>
+                                               </TableCell>
+                                               <TableCell align="left" sx={{color:"rgb(105, 129, 148)"}}>
+                                                   <Box sx={{display:"flex"}}>
+                                                   <Box
+                                                        sx={{
+                                                            backgroundColor:"#1976d2",
+                                                            borderRadius:"2px",
+                                                            marginBottom:"10px",
+                                                            height:"20px",
+                                                            marginRight:"10px",
+                                                            width:item.score?item.score/5:"1px"
+                                                        }}
+                                                   >
+                                                   </Box>
+                                                   <Box>
+                                                       {item.score?item.score+" points":"0 point"}
+                                                   </Box>
+                                                   </Box>
+                                                   <Box sx={{display:"flex"}}>
+                                                   <Box
+                                                        sx={{
+                                                            backgroundColor:"#f44336",
+                                                            borderRadius:"2px",
+                                                            marginBottom:"10px",
+                                                            height:"20px",
+                                                            marginRight:"10px",
+                                                            width:item.score_spent?item.score_spent/5:"1px"
+                                                        }}
+                                                   >
+                                                   </Box>
+                                                   <Box>
+                                                       {item.score_spent?item.score_spent+" points":"0 point"}
+                                                   </Box>
+                                                   </Box>
+                                                   <Box sx={{display:"flex"}}>
+                                                   <Box
+                                                        sx={{
+                                                            backgroundColor:"#388e3c",
+                                                            borderRadius:"2px",
+                                                            height:"20px",
+                                                            marginRight:"10px",
+                                                            width:item.gift?item.gift/5:"1px"
+                                                        }}
+                                                   >
+                                                   </Box>
+                                                   <Box>
+                                                       {item.gift?item.gift+" points":"0 point"}
+                                                   </Box>
+                                                   </Box>
+                                               </TableCell>
                                            </TableRow> 
-                                                {/* )})
+                                         )}else{
+                                             return(
+                                                 null
+                                             )
+                                         }})
                                         :
                                         <Typography
-                                        align="center"
-                                        variant="h4" 
-                                        sx={{ 
-                                          mb: 1.5,
-                                          color:"rgb(105, 129, 148)",
-                                        }} 
-                                        color="text.secondary" 
-                                      >
-                                       No data found
-                                      </Typography>
-                                        } */}
+                                            align="center"
+                                            variant="h4" 
+                                            sx={{ 
+                                                mb: 1.5,
+                                                color:"rgb(105, 129, 148)",
+                                            }} 
+                                            color="text.secondary" 
+                                        >
+                                            No data found
+                                        </Typography>
+                                        }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
