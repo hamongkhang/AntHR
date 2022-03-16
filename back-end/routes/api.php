@@ -119,6 +119,7 @@ Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentControl
 ////////////////////////////////////// Score APIs //////////////////////////////////////////////////////////////////////////////
 Route::get('/score/getOneScore', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
 Route::get('/employee/getUserPoints', [App\Http\Controllers\ScoreController::class, 'getUserPoints'])->name('score.getUserPoints');
+Route::post('/score/createScore', [App\Http\Controllers\ScoreController::class, 'createScore'])->name('score.createScore');
 
 
 ////////////////////////////////////// Cart Present APIs //////////////////////////////////////////////////////////////////////////////

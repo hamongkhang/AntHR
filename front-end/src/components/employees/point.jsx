@@ -26,6 +26,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
+import Modal from '@mui/material/Modal';
 
 const Point = (props) => {
     const $token=localStorage.getItem('access_token');
@@ -34,6 +35,12 @@ const Point = (props) => {
     const navigate = useNavigate();
     const [search,setSearch]=useState(false);
     const [searchPoints,setSearchPoints]=useState([]);
+    const [openModal,setOpenModal]=useState(false);
+    const [error, setError] = useState({score:null});
+    const [score, setScore] = useState({score:""});
+    const clickOpenModal=()=>{
+        setOpenModal(!openModal);
+    }
     const getDirectory = () =>{
         fetch(process.env.REACT_APP_API+'/employee/getUserPoints', {
             method: "GET",
@@ -60,6 +67,54 @@ const Point = (props) => {
         }
         setSearchPoints(a);
     }    
+    const onChangeAddScore = (event) => {
+        let _name = event.target.name;
+        let _type = event.target.type;
+        let _value = event.target.value;
+        setScore({...score,[_name]:_value});
+    };
+    const onClickAddScore = (e) => {
+      const _formData = new FormData();
+      _formData.append('score', score.score);
+      const requestOptions = {
+          method: 'POST',
+          body: _formData,
+          headers: {"Authorization": `Bearer `+$token}
+      };
+      fetch(process.env.REACT_APP_API+'/score/createScore', requestOptions)
+          .then((res) => res.json())
+          .then((json) => {
+            if(json.error){
+              if (json.error === 'You are not admin!!!') {
+                toast.error(`You are not admin!!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                setError('');
+            }else{
+                setError(json.error);
+            }
+            }else{
+              toast.success(`Create score successfully !!!`, {
+                  position: 'top-center',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+              });       
+                setError('');
+                setOpenModal(!openModal);
+                setRender(!render);
+            }
+          });
+    };
     useEffect(() => {
         if($token){
           getDirectory();
@@ -77,6 +132,93 @@ const Point = (props) => {
                 backgroundColor:"white"
             }}
         >
+        <Modal
+            open={openModal}
+            onClose={()=>clickOpenModal()}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box 
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: "40%",
+                    height:"40%",
+                    bgcolor: 'background.paper',
+                    border: '2px solid #ff9900',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius:"10px"
+                }}
+            >
+                <Grid
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    columns={{ xs: 4, sm: 8, md: 12 }}
+                >
+                    <Grid item xs={4} sm={8} md={12}>
+                    <Typography 
+                         sx={{ 
+                            fontWeight:"bold",
+                            color:"rgb(35, 54, 78)"
+                        }} 
+                        variant="h6"
+                    >
+                        Set Points
+                    </Typography>
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={12}>
+                    <TextField
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
+                        id="score"
+                        name="score"
+                        label="Score *"
+                        variant="outlined"
+                        size='small'
+                        type={'number'}
+                        sx={{marginTop:'5px',width:"100%"}}
+                        InputLabelProps={{ shrink: true}}
+                        onChange={(event) => onChangeAddScore(event)}
+                    />
+                    </Grid>
+                    <Grid item xs={4} sm={8} md={4}>
+                        <Button 
+                            type="submit"
+                            onClick={(event) => onClickAddScore(event)}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"#FFFF66", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Publish
+                        </Button>
+                    </Grid> 
+                    <Grid item xs={4} sm={8} md={2}>
+                        <Button 
+                            type="submit"
+                            onClick={()=>clickOpenModal()}
+                            sx={{
+                                height:40.5,
+                                width:"100%",
+                                border:"1px solid #ff9900",
+                                backgroundColor:"rgb(204, 204, 204)", 
+                                color:"#ff9900"
+                            }}
+                            size='medium' 
+                        >
+                            Cancel
+                        </Button>
+                    </Grid> 
+                </Grid>
+            </Box>
+        </Modal>
             <Grid
                     container
                     spacing={{ xs: 2, md: 3 }}
@@ -114,7 +256,7 @@ const Point = (props) => {
                             <Grid item xs={4} sm={3} md={3}>
                                 <Button 
                                     type="submit"
-                                   // onClick={(event) => clickOpenAdd(event)}
+                                    onClick={(event) => clickOpenModal(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
@@ -124,7 +266,7 @@ const Point = (props) => {
                                     }}
                                     size='medium' 
                                 >
-                                    <AddIcon/>  New Folder
+                                    <AddIcon/>  Set Points
                                 </Button>
                             </Grid>
                             </Grid>

@@ -20,6 +20,38 @@ class ScoreController extends Controller
     public function __construct() {
         $this->middleware('auth:api', ['except' => []]);
     }
+
+
+    public function createScore(Request $request){
+        $validator = Validator::make($request->all(), [
+            'score' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        $userFind = auth()->user();
+        $employeeFind=DB::table('employee')->where('user_id',$userFind->id)->first();
+        if($userFind->role===1){
+        $author=$employeeFind->last_name.' '.$employeeFind->first_name;    
+        $postArray = [
+            'name'  => $request->name,
+            'description'=>$request->description,
+            'share'=>1,
+            'sum'=>0,
+            'author'=>$author,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+        ];
+        $folder = DocumentFolder::create($postArray);
+        return Response()->json(array("Create folder successfully!"=> 1,"data"=>$postArray ));
+    }else{
+        return response()->json(["error" => "You are not admin!!!"],401);
+    }
+    }
+
+
+
+
     public function getUserPoints(){
         $dataFind = DB::table('user_score')->get();
         $data=[];
