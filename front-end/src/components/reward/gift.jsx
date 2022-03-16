@@ -20,10 +20,12 @@ import Swal from 'sweetalert2';
 const  Gift=(props)=>{
     const [openAdd, setOpenAdd] =useState(false);
     const [openEdit, setOpenEdit] =useState(false);
-    const [checked, setChecked] = React.useState(true);
+    const [checked, setChecked] = React.useState(0);
     const $token = localStorage.getItem('access_token');
     const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
+    const [search, setSearch] = useState(false);
+    const [searchGift, setSearchGift] = useState([]);
     const [file, setFile] = useState(null);
     const [presents, setPresents] =useState([]);
     const navigate = useNavigate();
@@ -50,8 +52,43 @@ const  Gift=(props)=>{
       const handleChangeSelectEdit = (event) => {
         setGiftEdit({...giftEdit,['category_id']:event.target.value});
       };
-      const handleChange = (event) => {
-        setChecked(event.target.checked);
+      const handleChangeChecked = (event,mess) => {
+          var a=[];
+          if(mess==0){
+              setChecked(0);
+              setSearch(false);
+          }else if (mess==1){
+              setChecked(1);
+              setSearch(true);
+              for(var i=0;i<presents.length;i++){
+                  if(presents[i].category_id==1){
+                    a.push(presents[i]);
+                  }else{
+                    setSearchGift([]);
+                }
+              }
+          }else if (mess==2){
+            setChecked(2);
+            setSearch(true);
+            for(var i=0;i<presents.length;i++){
+                if(presents[i].category_id==2){
+                  a.push(presents[i]);
+                }else{
+                  setSearchGift([]);
+              }
+            }
+          }else{
+            setChecked(3);
+            setSearch(true);
+            for(var i=0;i<presents.length;i++){
+                if(presents[i].category_id==3){
+                  a.push(presents[i]);
+                }else{
+                  setSearchGift([]);
+              }
+            }
+        }
+        setSearchGift(a);
       };
       const clickOpenAdd=()=>{
           setOpenAdd(!openAdd);
@@ -692,7 +729,7 @@ const  Gift=(props)=>{
                                         </Box> 
                                     </Grid>
                                     <Grid item xs={1} sm={2} md={4}  display={{ xs: "none", md: "block", sm: "none"}}></Grid>
-                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}}>
+                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}} onClick={(event)=>handleChangeChecked(event,0)}>
                                         <img 
                                             style={{
                                                 height: "70px",
@@ -700,10 +737,9 @@ const  Gift=(props)=>{
                                                 objectFit: 'cover',
                                                 borderRadius: "100%",
                                                 marginBottom:"5px",
-                                                border:"2px solid #e65100",
-                                                backgroundColor:"#ffb74d"
+                                                border:(checked==0)?"2px solid #ffea00":"2px solid #e65100",
+                                                backgroundColor:(checked==0)?"rgb(42, 210, 95)":"#ffb74d",
                                             }} 
-                                            // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
                                             src={process.env.REACT_APP_FILE+'/reward/gold.png'}>
                                         </img>
                                         <Typography
@@ -716,7 +752,7 @@ const  Gift=(props)=>{
                                             All gifts
                                         </Typography>
                                         </Grid>
-                                        <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}}>
+                                        <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}} onClick={(event)=>handleChangeChecked(event,1)}>
                                         <img 
                                             style={{
                                                 height: "70px",
@@ -724,10 +760,9 @@ const  Gift=(props)=>{
                                                 objectFit: 'cover',
                                                 borderRadius: "100%",
                                                 marginBottom:"5px",
-                                                border:"2px solid #e65100",
-                                                backgroundColor:"#ffb74d"
+                                                border:(checked==1)?"2px solid #ffea00":"2px solid #e65100",
+                                                backgroundColor:(checked==1)?"rgb(42, 210, 95)":"#ffb74d",
                                             }} 
-                                            // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
                                             src={process.env.REACT_APP_FILE+'/reward/food.png'}>
                                         </img>
                                         <Typography
@@ -740,7 +775,7 @@ const  Gift=(props)=>{
                                             Food
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}}>
+                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}} onClick={(event)=>handleChangeChecked(event,2)}>
                                         <img 
                                             style={{
                                                 height: "70px",
@@ -748,10 +783,9 @@ const  Gift=(props)=>{
                                                 objectFit: 'cover',
                                                 borderRadius: "100%",
                                                 marginBottom:"5px",
-                                                border:"2px solid #e65100",
-                                                backgroundColor:"#ffb74d"
+                                                border:(checked==2)?"2px solid #ffea00":"2px solid #e65100",
+                                                backgroundColor:(checked==2)?"rgb(42, 210, 95)":"#ffb74d",
                                             }} 
-                                            // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
                                             src={process.env.REACT_APP_FILE+'/reward/gift.png'}>
                                         </img>
                                         <Typography
@@ -764,7 +798,7 @@ const  Gift=(props)=>{
                                             Artifacts
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}}>
+                                    <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}} onClick={(event)=>handleChangeChecked(event,3)}>
                                         <img 
                                             style={{
                                                 height: "70px",
@@ -772,10 +806,9 @@ const  Gift=(props)=>{
                                                 objectFit: 'cover',
                                                 borderRadius: "100%",
                                                 marginBottom:"5px",
-                                                border:"2px solid #e65100",
-                                                backgroundColor:"#ffb74d"
+                                                border:(checked==3)?"2px solid #ffea00":"2px solid #e65100",
+                                                backgroundColor:(checked==3)?"rgb(42, 210, 95)":"#ffb74d",
                                             }} 
-                                            // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
                                             src={process.env.REACT_APP_FILE+'/reward/vourcher.png'}>
                                         </img>
                                         <Typography
@@ -807,6 +840,7 @@ const  Gift=(props)=>{
                                     columns={{ xs: 4, sm: 9, md: 12 }}
                                 >
                                     {
+                                    !search?
                                         presents.length?
                                             presents.map((item,index)=>{
                                                 return(
@@ -939,6 +973,148 @@ const  Gift=(props)=>{
                                                     </Grid>
                                                 )})
                                             :null
+                                    :   searchGift.length?
+                                    searchGift.map((item,index)=>{
+                                        return(
+                                            <Grid item xs={4} sm={3} md={3}>
+                                            <Box
+                                            sx={{
+                                                backgroundColor:"white",
+                                                boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
+                                                border:"1px solid rgb(235, 240, 244)",
+                                                alignItems: 'center',
+                                                textAlign: 'center',
+                                                width: "100%",
+                                                borderRadius: '5px',
+                                                padding: "24px",
+                                            }}
+                                        > 
+                                        {
+                                            (item.status==1)?
+                                            null:
+                                            <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
+                                            <Typography 
+                                                sx={{ 
+                                                    color:"rgb(35, 54, 78)",
+                                                    fontSize:"12px",
+                                                }} 
+                                            >
+                                              Sold out
+                                            </Typography> 
+                                            </Box>
+                                        }
+                                            <img 
+                                                style={{
+                                                    height: "180px",
+                                                    width: "100%",
+                                                    marginBottom:"20px"
+                                                }} 
+                                               src={process.env.REACT_APP_FILE+'/present/image/'+item.image}>
+                                            </img>
+                                            {(item.status==1)?
+                                            <Switch
+                                                defaultChecked={true}
+                                                onChange={(event)=>onChangeStatus(event,item.id)}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                sx={{
+                                                    float:"left",
+                                                }}
+                                            />:
+                                            <Switch
+                                                defaultChecked={false}
+                                                onChange={(event)=>onChangeStatus(event,item.id)}
+                                                inputProps={{ 'aria-label': 'controlled' }}
+                                                sx={{
+                                                    float:"left",
+                                                }}
+                                            />
+                                            }
+                                            <br></br><br></br><br></br>
+                                            <Typography 
+                                                sx={{ 
+                                                    fontWeight:"bold",
+                                                    color:"rgb(35, 54, 78)"
+                                                }} 
+                                                variant="h6"
+                                            >
+                                              {item.name?item.name:null}
+                                            </Typography> 
+                                            <Typography 
+                                                sx={{ 
+                                                    color:"rgb(35, 54, 78)",
+                                                    fontWeight: "400",
+                                                    fontSize: "14px",
+                                                    lineheight: "20px",
+                                                    color:"rgb(95, 125, 149)"
+                                                }} 
+                                            >
+                                              {item.price?item.price:" - "} đồng
+                                            </Typography>    
+                                            <Typography 
+                                                sx={{ 
+                                                    fontWeight: "bold",
+                                                    fontSize: "24px",
+                                                    lineheight: "20px",
+                                                    color:"red",
+                                                }} 
+                                            >
+                                                {item.score?item.score:" - "} points
+                                            </Typography> 
+                                            <Typography 
+                                                sx={{ 
+                                                    color:"rgb(35, 54, 78)",
+                                                    fontWeight: "400",
+                                                    fontSize: "14px",
+                                                    lineheight: "20px",
+                                                    color:"rgb(95, 125, 149)"
+                                                }} 
+                                            >
+                                              {item.description?item.description:" - "}
+                                            </Typography>    
+                                            <Button 
+                                                type="submit"
+                                                onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                sx={{
+                                                    height:40.5,
+                                                    width:"100%",
+                                                    border:"1px solid #ff9900",
+                                                    backgroundColor:"#FFFF66", 
+                                                    color:"#ff9900",
+                                                    marginTop:"10px"
+                                                }}
+                                                size='medium' 
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button 
+                                                type="submit"
+                                                onClick={(event) => onClickDeleteGift(event,item.id)}
+                                                sx={{
+                                                    height:40.5,
+                                                    width:"100%",
+                                                    border:"1px solid #ff9900",
+                                                    backgroundColor:"red", 
+                                                    color:"#ff9900",
+                                                    marginTop:"10px"
+                                                }}
+                                                size='medium' 
+                                            >
+                                                Delete
+                                            </Button>
+                                            </Box> 
+                                            </Grid>
+                                        )})
+                                    :<Typography
+                                    align="center"
+                                    variant="h4" 
+                                    sx={{ 
+                                      mb: 1.5,
+                                      color:"rgb(105, 129, 148)",
+                                    }} 
+                                    color="text.secondary" 
+                                  >
+                                   No data found
+                                  </Typography>
                                     }
                                 </Grid>
                             </Box>
