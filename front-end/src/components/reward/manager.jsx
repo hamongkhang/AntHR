@@ -94,6 +94,40 @@ const Manager = (props) => {
              }
           });
     }
+    const onConfirmEmployee=(event,id)=>{
+        fetch(process.env.REACT_APP_API+'/cart_present/changeStatusClient/'+id, {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+          .then(response => response.json())
+          .then(data =>  {
+             if(data.error){
+                    toast.error('Public Failed.', {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+                    });
+             }
+             else{
+                  setRender(!render)
+                  toast.success('Public successfully.', {
+                      position: "bottom-right",
+                      autoClose: 3000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      theme: "colored"
+                  });
+             }
+          });
+    }
     const onBlockCart=(event,id)=>{
         Swal.fire({
             title: 'Delete this order?',
@@ -494,24 +528,25 @@ const Manager = (props) => {
                                         spacing={{ xs: 2, md: 3 }}
                                         columns={{ xs: 4, sm: 8, md: 12 }}
                                     >
-                                        <Grid item xs={2} sm={8} md={12}>
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                }}
-                                            >
-                                                <Typography
-                                                    sx={{
-                                                        color: "red",
-                                                        fontWeight: "bold",
-                                                        fontSize: "20px",
-
-                                                    }}
-                                                >
-                                                    500 points
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
+                                      <Grid item xs={2} sm={8} md={12}>
+                                                        <Box
+                                                            sx={{
+                                                                display: "flex",
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                sx={{
+                                                                    color: "red",
+                                                                    fontWeight: "bold",
+                                                                    fontSize: "20px",
+            
+                                                                }}
+                                                            >
+                                                                {item.present_score?item.present_score
+                                                                :null} Points
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
                                         <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
@@ -531,7 +566,6 @@ const Manager = (props) => {
                                 <Button 
                                     type="submit"
                                     disabled={true}
-                                    //onClick={(event) => onAddNews(event)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
@@ -548,7 +582,7 @@ const Manager = (props) => {
                             <Grid item xs={4} sm={8} md={12}>
                                 <Button 
                                     type="submit"
-                                 //   onClick={(event) => onConfirmEmployee(event,item.id)}
+                                    onClick={(event) => onConfirmEmployee(event,item.id)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
