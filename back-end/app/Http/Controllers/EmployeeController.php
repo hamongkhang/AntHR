@@ -25,6 +25,7 @@ use App\Models\Address;
 use App\Models\Code;
 use App\Models\Role;
 use App\Models\Bank;
+use App\Models\ScoreSetup;
 
 
 
@@ -121,9 +122,15 @@ class EmployeeController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $scoreFind= DB::table('score_setup')->get();
+        if(count($scoreFind)>0){
+            $scoreSetup=$scoreFind[0]->score;
+        }else{
+            $scoreSetup=500;
+        }
         $postScore = [
             'user_id'  =>$employeeFind->id,
-            'score'  => 200,
+            'score'  => $scoreSetup,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   
