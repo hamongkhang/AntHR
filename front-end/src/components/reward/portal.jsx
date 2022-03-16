@@ -198,7 +198,7 @@ const Portal = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -429,7 +429,7 @@ const Portal = (props) => {
                                                     width:"100%",
                                                     border:"1px solid #ff9900",
                                                     backgroundColor:"red", 
-                                                    color:"#ff9900"
+                                                    color:"white"
                                                 }}
                                                 size='medium' 
                                             >
@@ -909,7 +909,7 @@ const Portal = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -1124,7 +1124,7 @@ const Portal = (props) => {
                                                     width:"100%",
                                                     border:"1px solid #ff9900",
                                                     backgroundColor:"red", 
-                                                    color:"#ff9900",
+                                                    color:"white",
                                                 }}
                                                 size='medium' 
                                             >
