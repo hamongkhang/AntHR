@@ -283,7 +283,61 @@ const Point = (props) => {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Employees</TableCell>
-                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Points</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>
+                                                <Grid
+                                                    container
+                                                    spacing={{ xs: 2, md: 3 }}
+                                                    columns={{ xs: 4, sm: 8, md: 12 }}
+                                                    sx={{alignItems:"center"}}
+                                                >
+                                                    <Grid item xs={4} sm={8} md={6}>
+                                                        <Box sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}> 
+                                                            Points
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs={4} sm={8} md={6}>
+                                                            <Box sx={{display:"flex",alignItems:"center",float:"right"}}>
+                                                                <Box
+                                                                    sx={{
+                                                                        backgroundColor:"#388e3c",
+                                                                        borderRadius:"2px",
+                                                                        height:"10px",
+                                                                        marginRight:"5px",
+                                                                        width:"10px"
+                                                                    }}
+                                                                >
+                                                                </Box>
+                                                                <Box sx={{fontSize:"10px"}}>Redemption Points</Box>
+                                                            </Box>
+                                                            <Box sx={{display:"flex",alignItems:"center",float:"right",marginRight:"30px"}}>
+                                                                <Box
+                                                                    sx={{
+                                                                        backgroundColor:"#f44336",
+                                                                        borderRadius:"2px",
+                                                                        height:"10px",
+                                                                        marginRight:"5px",
+                                                                        width:"10px"
+                                                                    }}
+                                                                >
+                                                                </Box>
+                                                                <Box sx={{fontSize:"10px"}}>Spent Points</Box>
+                                                            </Box>
+                                                            <Box sx={{display:"flex",alignItems:"center",float:"right",marginRight:"30px"}}>
+                                                                <Box
+                                                                    sx={{
+                                                                        backgroundColor:"#1976d2",
+                                                                        borderRadius:"2px",
+                                                                        height:"10px",
+                                                                        marginRight:"5px",
+                                                                        width:"10px"
+                                                                    }}
+                                                                >
+                                                                </Box>
+                                                                <Box sx={{fontSize:"10px"}}>Recognition Points</Box>
+                                                            </Box>
+                                                    </Grid>
+                                                </Grid>   
+                                            </TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody> 
