@@ -387,7 +387,7 @@ const Manager = (props) => {
                                                     width:"100%",
                                                     border:"1px solid #ff9900",
                                                     backgroundColor:"red", 
-                                                    color:"#ff9900"
+                                                    color:"white"
                                                 }}
                                                 size='medium' 
                                             >
@@ -977,7 +977,7 @@ const Manager = (props) => {
                                         width:"100%",
                                         border:"1px solid #ff9900",
                                         backgroundColor:"red", 
-                                        color:"##ff9900"
+                                        color:"white"
                                     }}
                                     size='medium' 
                                 >
@@ -1160,7 +1160,7 @@ const Manager = (props) => {
                                     width:"100%",
                                     border:"1px solid #ff9900",
                                     backgroundColor:"red", 
-                                    color:"##ff9900"
+                                    color:"white"
                                 }}
                                 size='medium' 
                             >
