@@ -333,6 +333,64 @@ const  Gift=(props)=>{
            }
         });
     }
+    const clickExchangeGift=(event,id)=>{
+        fetch(process.env.REACT_APP_API+'/present/exchangePresent/'+id, {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+           if(data.error){
+               if(data.error==='Service not supported !!!'){
+                toast.error('This gift is currently sold out !!!', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+                }else if(data.error==='Not enough score !!!'){
+                    toast.error('Not enough score !!!', {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+                    });
+                }else{
+                    toast.error('Exchange failed !!!', {
+                        position: "bottom-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "colored"
+                    });
+                }
+            }
+           else{
+                setRender(!render)
+                toast.success('Exchange successfully.', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "colored"
+                });
+           }
+        });
+    }
     const getFileEdit=(event)=>{
         document.getElementById("fileEdit").click();
     }
@@ -962,7 +1020,7 @@ const  Gift=(props)=>{
                                                     </Button>:
                                                     <Button 
                                                     type="submit"
-                                                    onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                    onClick={(event)=>clickExchangeGift(event,item.id)}
                                                     sx={{
                                                         height:40.5,
                                                         width:"100%",
@@ -1114,7 +1172,7 @@ const  Gift=(props)=>{
                                             :
                                             <Button 
                                                 type="submit"
-                                                onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                onClick={(event)=>clickExchangeGift(event,item.id)}
                                                 sx={{
                                                     height:40.5,
                                                     width:"100%",
