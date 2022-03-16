@@ -50,7 +50,7 @@ const Header = (props) => {
                     path:'employees/directory'
                 },
                 {
-                    value:'Poins',
+                    value:'Points',
                     path:'employees/points'
                 }
 

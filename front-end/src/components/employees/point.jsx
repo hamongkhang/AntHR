@@ -22,12 +22,18 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
 
 const Point = (props) => {
     const $token=localStorage.getItem('access_token');
     const [userPoints, setUserPoints]= useState([]);
     const [render, setRender] = useState(false);
     const navigate = useNavigate();
+    const [search,setSearch]=useState(false);
+    const [searchPoints,setSearchPoints]=useState([]);
     const getDirectory = () =>{
         fetch(process.env.REACT_APP_API+'/employee/getUserPoints', {
             method: "GET",
@@ -38,7 +44,22 @@ const Point = (props) => {
             setUserPoints(data.data.reverse());
         });
     }
-    console.log(userPoints)
+    const onChangeSearch=(e)=>{
+        if(e.target.value!=""){
+          setSearch(true);
+        }else{
+          setSearch(false);
+        }
+        var a=[];
+        for(var i=0;i<userPoints.length;i++){
+            if((userPoints[i].first_name.indexOf(e.target.value)!=-1)||(userPoints[i].last_name.indexOf(e.target.value)!=-1)){
+              a.push(userPoints[i]);
+            }else{
+                setSearchPoints([]);
+          }
+        }
+        setSearchPoints(a);
+    }    
     useEffect(() => {
         if($token){
           getDirectory();
@@ -61,6 +82,54 @@ const Point = (props) => {
                     spacing={{ xs: 2, md: 3 }}
                     columns={{ xs: 4, sm: 8, md: 12 }}
             >
+                 <Grid item xs={4} sm={8} md={12}>
+                        <Box
+                            sx={{
+                                borderBottom:"1px solid rgb(227, 235, 241)",
+                                padding:"20px"
+                            }}
+                        >
+                            <Grid
+                                container
+                                spacing={{ xs: 2, md: 3 }}
+                                columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                            <Grid item xs={4} sm={3} md={4}>
+                                <Paper
+                                    component="form"
+                                    sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "100%" }}
+                                >
+                                    <InputBase
+                                        sx={{ ml: 1, flex: 1 }}
+                                        placeholder="Search By Name ...."
+                                        inputProps={{ 'aria-label': 'search by name...' }}
+                                        onChange={(event)=>onChangeSearch(event)}
+                                    />
+                                        <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                            <SearchIcon />
+                                        </IconButton>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={4} sm={2} md={5}></Grid>
+                            <Grid item xs={4} sm={3} md={3}>
+                                <Button 
+                                    type="submit"
+                                   // onClick={(event) => clickOpenAdd(event)}
+                                    sx={{
+                                        height:40.5,
+                                        width:"100%",
+                                        border:"1px solid #ff9900",
+                                        backgroundColor:"#FFFF66", 
+                                        color:"#ff9900"
+                                    }}
+                                    size='medium' 
+                                >
+                                    <AddIcon/>  New Folder
+                                </Button>
+                            </Grid>
+                            </Grid>
+                        </Box>
+                    </Grid>
                     <Grid item xs={4} sm={8} md={12}>
                         <Box
                             sx={{
@@ -76,7 +145,7 @@ const Point = (props) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody> 
-                                    {
+                                    {!search?
                                         userPoints.length?
                                         userPoints.map((item,index)=>{
                                            if(item.role!=1){
@@ -194,7 +263,125 @@ const Point = (props) => {
                                         >
                                             No data found
                                         </Typography>
-                                        }
+                                         :    
+                                         searchPoints.length?
+                                         searchPoints.map((item,index)=>{
+                                            if(item.role!=1){
+                                                return(
+                                               <TableRow
+                                                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                               >
+                                                   <TableCell align="left" sx={{width:"250px",}}>
+                                                       <Box sx={{display:"flex"}}>
+                                                        <img 
+                                                            style={{
+                                                                height: "50px",
+                                                                width: "50px",
+                                                                objectFit: 'cover',
+                                                                borderRadius: "100%",
+                                                                marginRight:"10px"
+                                                            }} 
+                                                            src={
+                                                                item.avatar
+                                                                ?
+                                                                    (item.avatar.search('https://') != -1)
+                                                                    ?
+                                                                        item.avatar
+                                                                    :
+                                                                        process.env.REACT_APP_FILE+'/avatar/'+item.avatar
+                                                                :
+                                                                    process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                                            }
+                                                        >
+                                                        </img>
+                                                        <Box sx={{textOverflow:"ellipsis",overflow: "hidden",}}>
+                                                            <Typography
+                                                                sx={{ 
+                                                                    color:"rgb(105, 129, 148)",
+                                                                    fontSize:"18px"
+                                                                }} 
+                                                            >
+                                                                {item.last_name?item.last_name:" - "} {item.first_name?item.first_name:" - "}
+                                                            </Typography>
+                                                            <Typography
+                                                                sx={{ 
+                                                                    color:"rgb(105, 129, 148)",
+                                                                    fontSize:"12px"
+                                                                }} 
+                                                            >
+                                                                {item.email?item.email:" - "} | {item.phone?item.phone:" - "}
+                                                            </Typography>
+                                                        </Box>
+                                                       </Box>
+                                                   </TableCell>
+                                                   <TableCell align="left" sx={{color:"rgb(105, 129, 148)"}}>
+                                                       <Box sx={{display:"flex"}}>
+                                                       <Box
+                                                            sx={{
+                                                                backgroundColor:"#1976d2",
+                                                                borderRadius:"2px",
+                                                                marginBottom:"10px",
+                                                                height:"20px",
+                                                                marginRight:"10px",
+                                                                width:item.score?item.score/5:"1px"
+                                                            }}
+                                                       >
+                                                       </Box>
+                                                       <Box>
+                                                           {item.score?item.score+" points":"0 point"}
+                                                       </Box>
+                                                       </Box>
+                                                       <Box sx={{display:"flex"}}>
+                                                       <Box
+                                                            sx={{
+                                                                backgroundColor:"#f44336",
+                                                                borderRadius:"2px",
+                                                                marginBottom:"10px",
+                                                                height:"20px",
+                                                                marginRight:"10px",
+                                                                width:item.score_spent?item.score_spent/5:"1px"
+                                                            }}
+                                                       >
+                                                       </Box>
+                                                       <Box>
+                                                           {item.score_spent?item.score_spent+" points":"0 point"}
+                                                       </Box>
+                                                       </Box>
+                                                       <Box sx={{display:"flex"}}>
+                                                       <Box
+                                                            sx={{
+                                                                backgroundColor:"#388e3c",
+                                                                borderRadius:"2px",
+                                                                height:"20px",
+                                                                marginRight:"10px",
+                                                                width:item.gift?item.gift/5:"1px"
+                                                            }}
+                                                       >
+                                                       </Box>
+                                                       <Box>
+                                                           {item.gift?item.gift+" points":"0 point"}
+                                                       </Box>
+                                                       </Box>
+                                                   </TableCell>
+                                               </TableRow> 
+                                             )}else{
+                                                 return(
+                                                     null
+                                                 )
+                                             }})
+                                         :
+                                         <Typography
+                                         align="center"
+                                         variant="h4" 
+                                         sx={{ 
+                                           mb: 1.5,
+                                           color:"rgb(105, 129, 148)",
+                                         }} 
+                                         color="text.secondary" 
+                                       >
+                                        No data found
+                                       </Typography>
+                                         }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
