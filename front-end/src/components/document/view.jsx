@@ -675,43 +675,59 @@ const uploadGoogleDrive=(event)=>{
                                            <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
                                            <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                            <TableCell>
-                                               <Grid
-                                                   container
-                                                   spacing={{ xs: 2, md: 3 }}
-                                                   columns={{ xs: 6, sm: 9, md: 12 }}
-                                               >
-                                                   <Grid item xs={2} sm={1} md={3}></Grid>
-                                                   <Grid item xs={2} sm={3} md={3}>
-                                                       <Box
-                                                           onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
-                                                           sx={{
-                                                               backgroundColor:"rgb(224, 230, 234)",
-                                                               paddingTop:"5px",
-                                                               paddingBottom:"5px",
-                                                               borderRadius:"3px",
-                                                               textAlign:"center",
-                                                           }}
-                                                       >
-                                                           <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
-                                                       </Box>
-                                                   </Grid>
-                                                   <Grid item xs={2} sm={3} md={3}>
-                                                       <Box
-                                                           onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
-                                                           sx={{
-                                                               backgroundColor:"rgb(224, 230, 234)",
-                                                               paddingTop:"5px",
-                                                               paddingBottom:"5px",
-                                                               borderRadius:"3px",
-                                                               textAlign:"center",
-                                                           }}
-                                                       >
-                                                           <DeleteOutlinedIcon sx={{color:"red"}}  />
-                                                       </Box>
-                                                   </Grid>
-                                                   <Grid item xs={2} sm={1} md={3}></Grid>
-                                               </Grid>
-                                           </TableCell>
+                                                    <Grid
+                                                        container
+                                                        spacing={{ xs: 2, md: 3 }}
+                                                        columns={{ xs: 6, sm: 8, md: 12 }}
+                                                    >
+                                                         <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                                <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>EditDocumentShow(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                               <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                                <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
+                                                    </Grid>
+                                                </TableCell>
                                                     </TableRow>
                                                 )})
                                         :
