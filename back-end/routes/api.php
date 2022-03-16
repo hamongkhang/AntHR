@@ -122,8 +122,9 @@ Route::get('/score/getOneScore', [App\Http\Controllers\ScoreController::class, '
 
 ////////////////////////////////////// Cart Present APIs //////////////////////////////////////////////////////////////////////////////
 Route::delete('/cart_present/destroyCartPresent/{id}', [App\Http\Controllers\CartPresentController::class, 'destroyCartPresent'])->name('cart_present.destroyCartPresent');
-Route::post('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusAdmin'])->name('cart_present.changeStatusAdmin');
-Route::post('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
+Route::get('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusAdmin'])->name('cart_present.changeStatusAdmin');
+Route::get('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
+Route::get('/cart_present/getAllCartPresent', [App\Http\Controllers\CartPresentController::class, 'getAllCartPresent'])->name('cart_present.getAllCartPresent');
 
 
 ////////////////////////////////////// Google Drive APIs //////////////////////////////////////////////////////////////////////////////
