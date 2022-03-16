@@ -839,7 +839,7 @@ const  Gift=(props)=>{
                                                 }
                                                     <img 
                                                         style={{
-                                                            height: "100%",
+                                                            height: "180px",
                                                             width: "100%",
                                                             marginBottom:"20px"
                                                         }} 
