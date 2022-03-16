@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 
 const Portal = (props) => {
     const $token = localStorage.getItem('access_token');
+    const role =localStorage.getItem('role');
     const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
     const [employees, setEmployees]= useState([]);
@@ -181,6 +182,7 @@ const Portal = (props) => {
                 spacing={{ xs: 2, md: 3 }}
                 columns={{ xs: 4, sm: 9, md: 12 }}
             >
+            {(role==1)?
                 <Grid item xs={4} sm={3} md={3} className="scrollReward" display={{ xs: "none", md: "block", sm: "block", position: 'fixed',overflowY:"auto",height:"800px",paddingBottom:"800px"}}>
                     <Box
                         sx={{
@@ -440,6 +442,7 @@ const Portal = (props) => {
                             :null
                     }
                 </Grid>
+            :null}
                 <Grid item xs={4} sm={3} md={3} display={{ xs: "none", md: "block", sm: "block"}} />
                 <Grid item xs={4} sm={3} md={6} sx={{position:'relative'}}>
                     {praise.length?
@@ -889,6 +892,7 @@ const Portal = (props) => {
                         :null
                     }
                 </Grid>
+            {(role==1)?
                <Grid item xs={4} sm={3} md={3}  className="scrollReward2" 
                display={{ xs: "none", md: "block", sm: "block",overflowY:"auto",height:"800px",paddingBottom:"800px",position:"fixed",right:"30px"}}
                >
@@ -1133,6 +1137,7 @@ const Portal = (props) => {
                             :null
                     }
                 </Grid>
+            :null}
             </Grid>
         </Box>
     );
