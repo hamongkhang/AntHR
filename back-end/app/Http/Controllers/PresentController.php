@@ -312,7 +312,7 @@ class PresentController extends Controller
      */
 public function updatePresent($id,Request $request){
     $validator = Validator::make($request->all(), [
-        'category_id' => 'integer|unique:present_category',
+        'category_id' => 'integer',
         'name' => '',
         'image' => '',
         'price'=>'',
@@ -372,6 +372,8 @@ public function updatePresent($id,Request $request){
                     $nameFile = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                     $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'present'.DIRECTORY_SEPARATOR.'image', $nameFile);
                     $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'present'.'/'.'image'.'/'.$nameFile;
+                }else{
+                    $nameFile =$present->image;
                 }
         }
             $present->name=$name;    

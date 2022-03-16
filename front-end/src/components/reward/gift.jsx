@@ -24,6 +24,7 @@ const  Gift=(props)=>{
     const $token = localStorage.getItem('access_token');
     const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
+    const [file, setFile] = useState(null);
     const [presents, setPresents] =useState([]);
     const navigate = useNavigate();
     const [giftAdd, setGiftAdd]=useState({
@@ -33,7 +34,7 @@ const  Gift=(props)=>{
         score:'',
         price:'',
         description:''
-    });
+    });const [giftEdit, setGiftEdit]=useState({});
     const [error, setError] = useState({
         category_id:null,
         name:null,
@@ -46,6 +47,9 @@ const  Gift=(props)=>{
         setGiftAdd({...giftAdd,['category_id']:event.target.value});
         console.log(giftAdd)
       };
+      const handleChangeSelectEdit = (event) => {
+        setGiftEdit({...giftEdit,['category_id']:event.target.value});
+      };
       const handleChange = (event) => {
         setChecked(event.target.checked);
       };
@@ -53,10 +57,28 @@ const  Gift=(props)=>{
           setOpenAdd(!openAdd);
           setError('');
       }
-      const clickOpenEdit=()=>{
+      const clickOpenEdit=(event,id)=>{
           setOpenEdit(!openEdit);
           setError('');
+          for(var i=0;i<presents.length;i++){
+            if(presents[i].id===id){
+                setGiftEdit(presents[i]);
+            }
+        }
       }
+      const onChangeEditGift = (event) => {
+        let _name = event.target.name;
+        let _type = event.target.type;
+        let _value = event.target.value;
+        if(_type === "file"){
+            setGiftEdit({...giftEdit,['image']:event.target.files[0]});
+            setFile(event.target.files[0]);
+            console.log(file)
+        }
+        else{
+            setGiftEdit({...giftEdit,[_name]:_value});
+        }
+      };
     const onChangeAddGift = (event) => {
         let _name = event.target.name;
         let _type = event.target.type;
@@ -120,6 +142,61 @@ const  Gift=(props)=>{
                     description:''
                 });
                   setOpenAdd(!openAdd);
+              }
+            });
+    };
+    const onEditGift = (e) => {
+        const _formData = new FormData();
+        _formData.append('category_id', giftEdit.category_id);
+        _formData.append('name', giftEdit.name);
+        _formData.append('image', giftEdit.image);
+        _formData.append('score', giftEdit.score);
+        _formData.append('price', giftEdit.price);
+        _formData.append('description', giftEdit.description);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/present/updatePresent/'+giftEdit.id, requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+                if (json.error === 'You are not admin!!!') {
+                  toast.error(`You are not admin!!!`, {
+                      position: 'top-center',
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                  });
+                  setError('');
+              }else{
+                  setError(json.error);
+              }
+              }else{
+                setRender(!render);
+                toast.success(`Update gift successfully !!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });       
+                  setError('');
+                  setGiftAdd({
+                    category_id:'',
+                    name:'',
+                    image:'',
+                    score:'',
+                    price:'',
+                    description:''
+                });
+                  setOpenEdit(!openEdit);
               }
             });
     };
@@ -217,6 +294,9 @@ const  Gift=(props)=>{
                 });
            }
         });
+    }
+    const getFileEdit=(event)=>{
+        document.getElementById("fileEdit").click();
     }
     useEffect(() => {
         if($token){
@@ -408,7 +488,7 @@ const  Gift=(props)=>{
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     width: "80%",
-                    height:"70%",
+                    height:"80%",
                     bgcolor: 'background.paper',
                     border: '2px solid #ff9900',
                     boxShadow: 24,
@@ -434,17 +514,18 @@ const  Gift=(props)=>{
                     </Grid>
                     <Grid item xs={4} sm={4} md={6}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.name?error.name[0]:null}
+                        error={error.name?true:false}
                         id="name"
                         name="name"
+                        value={giftEdit.name}
                         label="Name *"
                         variant="outlined"
                         size='small'
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={4} md={6}>
@@ -453,78 +534,95 @@ const  Gift=(props)=>{
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
-                            //value={age}
                             label="Age"
+                            value={giftEdit.category_id}
                             sx={{marginTop:"5px",height:"40px",padding:"8.5px 14px"}}
-                            //onChange={handleChange}
+                            onChange={(event)=>handleChangeSelectEdit(event)}
                         >
-                            <MenuItem value={10}>Food</MenuItem>
-                            <MenuItem value={20}>Voucher</MenuItem>
-                            <MenuItem value={30}>Artifacts</MenuItem>
+                            <MenuItem value={1}>Food</MenuItem>
+                            <MenuItem value={2}>Voucher</MenuItem>
+                            <MenuItem value={3}>Artifacts</MenuItem>
                         </Select>
                     </FormControl>
+                    <span className="errorNotify">{error.category_id?error.category_id[0]:null}</span>
                     </Grid>
                     <Grid item xs={4} sm={2} md={4}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.price?error.price[0]:null}
+                        error={error.price?true:false}
                         id="price"
                         name="price"
                         label="Price *"
+                        value={giftEdit.price}
                         variant="outlined"
                         size='small'
                         type={'number'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={2} md={4
                     }>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.score?error.score[0]:null}
+                        error={error.score?true:false}
                         id="score"
                         name="score"
+                        value={giftEdit.score}
                         label="Score *"
                         variant="outlined"
                         size='small'
                         type={'number'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={4} md={4}>
                         <TextField 
-                        id="file" 
+                        id="fileEdit" 
                         type="file" 
                         name="file"
+                        sx={{display:"none"}}
                         label="Image" 
                         variant="outlined" 
                         InputLabelProps={{ shrink: true}}   
-                       // onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditGift(event)}
                         />
+                        <img 
+                            onClick={(event)=>getFileEdit(event)}
+                            style={{
+                                height: "100px",
+                                width: "100%",
+                                marginBottom:"20px",
+                                border:"1px solid grey"
+                            }} 
+                            src={file?URL.createObjectURL(file):process.env.REACT_APP_FILE+'/present/image/'+giftEdit.image} 
+                            >
+                        </img>
+                        <span className="errorNotify">{error.image?error.image[0]:null}</span>
                     </Grid>
-                    <Grid item xs={4} sm={8} md={12}>
+                     <Grid item xs={4} sm={8} md={12}>
                     <TextField
-                        //helperText={error.title?error.title[0]:null}
-                        //error={error.title?true:false}
+                        helperText={error.description?error.description[0]:null}
+                        error={error.description?true:false}
                         id="description"
                         name="description"
+                        value={giftEdit.description}
                         label="Description *"
                         variant="outlined"
                         size='small'
                         type={'text'}
                         sx={{marginTop:'5px',width:"100%"}}
                         InputLabelProps={{ shrink: true}}
-                        //onChange={(event) => onChangeAddNews(event)}
+                        onChange={(event) => onChangeEditGift(event)}
                     />
                     </Grid>
                     <Grid item xs={4} sm={8} md={4}>
                         <Button 
                             type="submit"
-                            //onClick={(event) => onAddNews(event)}
+                            onClick={(event) => onEditGift(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -541,7 +639,6 @@ const  Gift=(props)=>{
                         <Button 
                             type="submit"
                             onClick={()=>clickOpenEdit()}
-                            //onClick={(event) => onAddNews(event)}
                             sx={{
                                 height:40.5,
                                 width:"100%",
@@ -748,14 +845,24 @@ const  Gift=(props)=>{
                                                         }} 
                                                        src={process.env.REACT_APP_FILE+'/present/image/'+item.image}>
                                                     </img>
+                                                    {(item.status==1)?
                                                     <Switch
-                                                        defaultChecked={(item.status==1)?true:false}
+                                                        defaultChecked={true}
+                                                        onChange={(event)=>onChangeStatus(event,item.id)}
+                                                        inputProps={{ 'aria-label': 'controlled' }}
+                                                        sx={{
+                                                            float:"left",
+                                                        }}
+                                                    />:
+                                                    <Switch
+                                                        defaultChecked={false}
                                                         onChange={(event)=>onChangeStatus(event,item.id)}
                                                         inputProps={{ 'aria-label': 'controlled' }}
                                                         sx={{
                                                             float:"left",
                                                         }}
                                                     />
+                                                    }
                                                     <br></br><br></br><br></br>
                                                     <Typography 
                                                         sx={{ 
