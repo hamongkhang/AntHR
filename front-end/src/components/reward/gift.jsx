@@ -22,6 +22,7 @@ const  Gift=(props)=>{
     const [openEdit, setOpenEdit] =useState(false);
     const [checked, setChecked] = React.useState(0);
     const $token = localStorage.getItem('access_token');
+    const role = localStorage.getItem('role');
     const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
     const [search, setSearch] = useState(false);
@@ -711,7 +712,8 @@ const  Gift=(props)=>{
                                     spacing={{ xs: 2, md: 3 }}
                                     columns={{ xs: 4, sm: 8, md: 12 }}
                                 >
-                                    <Grid item xs={1} sm={8} md={12}  display={{ xs: "none", md: "block", sm: "none"}}>
+                                      <Grid item xs={1} sm={8} md={12}  display={{ xs: "none", md: "block", sm: "none"}}>
+                                    {(role==1)?
                                         <Box
                                             sx={{
                                             boxShadow: 'rgb(95 125 149 / 40%) 0px 4px 13px 0px',
@@ -727,6 +729,8 @@ const  Gift=(props)=>{
                                                 <AddCircleOutlineOutlinedIcon sx={{fontSize:40,color:"white"}} />
                                             </IconButton>
                                         </Box> 
+                                    :null
+                                    }
                                     </Grid>
                                     <Grid item xs={1} sm={2} md={4}  display={{ xs: "none", md: "block", sm: "none"}}></Grid>
                                     <Grid item xs={1} sm={2} md={1} sx={{marginTop:"-40px"}} onClick={(event)=>handleChangeChecked(event,0)}>
@@ -879,7 +883,8 @@ const  Gift=(props)=>{
                                                         }} 
                                                        src={process.env.REACT_APP_FILE+'/present/image/'+item.image}>
                                                     </img>
-                                                    {(item.status==1)?
+                                                    {(role==1)?
+                                                    (item.status==1)?
                                                     <Switch
                                                         defaultChecked={true}
                                                         onChange={(event)=>onChangeStatus(event,item.id)}
@@ -896,7 +901,7 @@ const  Gift=(props)=>{
                                                             float:"left",
                                                         }}
                                                     />
-                                                    }
+                                                    :null}
                                                     <br></br><br></br><br></br>
                                                     <Typography 
                                                         sx={{ 
@@ -938,7 +943,8 @@ const  Gift=(props)=>{
                                                         }} 
                                                     >
                                                       {item.description?item.description:" - "}
-                                                    </Typography>    
+                                                    </Typography>   
+                                                    {(role==1)? 
                                                     <Button 
                                                         type="submit"
                                                         onClick={(event)=>clickOpenEdit(event,item.id)}
@@ -953,7 +959,23 @@ const  Gift=(props)=>{
                                                         size='medium' 
                                                     >
                                                         Edit
-                                                    </Button>
+                                                    </Button>:
+                                                    <Button 
+                                                    type="submit"
+                                                    onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                    sx={{
+                                                        height:40.5,
+                                                        width:"100%",
+                                                        border:"1px solid #ff9900",
+                                                        backgroundColor:"#FFFF66", 
+                                                        color:"#ff9900",
+                                                        marginTop:"10px"
+                                                    }}
+                                                    size='medium' 
+                                                >
+                                                    Exchange
+                                                </Button>}
+                                                    {(role==1)?
                                                     <Button 
                                                         type="submit"
                                                         onClick={(event) => onClickDeleteGift(event,item.id)}
@@ -968,7 +990,7 @@ const  Gift=(props)=>{
                                                         size='medium' 
                                                     >
                                                         Delete
-                                                    </Button>
+                                                    </Button>:null}
                                                     </Box> 
                                                     </Grid>
                                                 )})
@@ -1011,7 +1033,8 @@ const  Gift=(props)=>{
                                                 }} 
                                                src={process.env.REACT_APP_FILE+'/present/image/'+item.image}>
                                             </img>
-                                            {(item.status==1)?
+                                            
+                                            {(role==1)?(item.status==1)?
                                             <Switch
                                                 defaultChecked={true}
                                                 onChange={(event)=>onChangeStatus(event,item.id)}
@@ -1028,6 +1051,7 @@ const  Gift=(props)=>{
                                                     float:"left",
                                                 }}
                                             />
+                                            :null
                                             }
                                             <br></br><br></br><br></br>
                                             <Typography 
@@ -1070,7 +1094,8 @@ const  Gift=(props)=>{
                                                 }} 
                                             >
                                               {item.description?item.description:" - "}
-                                            </Typography>    
+                                            </Typography>   
+                                            {(role==1)? 
                                             <Button 
                                                 type="submit"
                                                 onClick={(event)=>clickOpenEdit(event,item.id)}
@@ -1086,6 +1111,23 @@ const  Gift=(props)=>{
                                             >
                                                 Edit
                                             </Button>
+                                            :
+                                            <Button 
+                                                type="submit"
+                                                onClick={(event)=>clickOpenEdit(event,item.id)}
+                                                sx={{
+                                                    height:40.5,
+                                                    width:"100%",
+                                                    border:"1px solid #ff9900",
+                                                    backgroundColor:"#FFFF66", 
+                                                    color:"#ff9900",
+                                                    marginTop:"10px"
+                                                }}
+                                                size='medium' 
+                                            >
+                                                Exchange
+                                            </Button>}
+                                            {(role==1)?
                                             <Button 
                                                 type="submit"
                                                 onClick={(event) => onClickDeleteGift(event,item.id)}
@@ -1100,7 +1142,7 @@ const  Gift=(props)=>{
                                                 size='medium' 
                                             >
                                                 Delete
-                                            </Button>
+                                            </Button>:null}
                                             </Box> 
                                             </Grid>
                                         )})
