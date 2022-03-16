@@ -113,7 +113,7 @@ class PraiseController extends Controller
             return response()->json(['error'=>$validator->errors()], 400);     
         }
         $scoreUser = DB::table('user_score')->where('user_id',auth()->user()->id)->first();
-        if($scoreUser>=$request->score){
+        if($scoreUser->score>=$request->score){
             $userFind = auth()->user();
             if ($request->hasFile('image'))
             {
