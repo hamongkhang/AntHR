@@ -626,6 +626,11 @@ const Manager = (props) => {
                             <HistoryOutlinedIcon/> History
                         </Typography>
                     </Box> 
+                    {
+                        orders.length?
+                            orders.map((item,index)=>{
+                                if(item.status==2){
+                                    return(
                     <Box
                         sx={{
                             boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
@@ -645,47 +650,75 @@ const Manager = (props) => {
                                 alignItems: 'center',
                             }}
                         >
-                            <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
-                                <img
-                                    style={{
-                                        height: "40px",
-                                        width: "40px",
-                                        objectFit: 'cover',
-                                        borderRadius: "100%",
-                                        float: "right",
-                                        border: "2px solid #2196f3",
-                                    }}
-                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                    src={process.env.REACT_APP_FILE + '/avatar/avatar.png'}>
-                                </img>
+                           <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
+                            {item.avatar?
+                                                                (item.avatar.search('https://') !== -1)?
+                                                                        <img
+                                                                        style={{
+                                                                            height: "40px",
+                                                                            width: "40px",
+                                                                            objectFit: 'cover',
+                                                                            borderRadius: "100%",
+                                                                            float: "right",
+                                                                            border: "2px solid #2196f3",
+                                                                        }}
+                                                                        src={item.avatar}
+                                                                        >
+                                                                    </img>
+                                                                    :
+                                                                        <img
+                                                                        style={{
+                                                                            height: "40px",
+                                                                            width: "40px",
+                                                                            objectFit: 'cover',
+                                                                            borderRadius: "100%",
+                                                                            float: "right",
+                                                                            border: "2px solid #2196f3",
+                                                                        }}
+                                                                        src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar}
+                                                                        >
+                                                                    </img>
+                                                          :
+                                                            <img
+                                                                style={{
+                                                                        height: "40px",
+                                                                        width: "40px",
+                                                                        objectFit: 'cover',
+                                                                        borderRadius: "100%",
+                                                                        float: "right",
+                                                                        border: "2px solid #2196f3",
+                                                                }}
+                                                                src={process.env.REACT_APP_FILE+'/avatar/avatar.png'}
+                                                            >
+                                                            </img>
+                                                        }
                             </Grid>
                             <Grid item xs={3} sm={5} md={9}>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                    }}
-                                >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontSize: '10px',
-                                    }}
-                                >
-                                    2 phút trước
-                                </Typography>
+                            <Typography
+                                                sx={{
+                                                    color: "rgb(35, 54, 78)",
+                                                    fontWeight: "bold",
+                                                    fontSize: "12px",
+                                                }}
+                                            >
+                                                {item.last_name+" "+item.first_name} <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> {item.present_name}
+                                            </Typography>
+                                            <Typography
+                                                sx={{
+                                                    color: "rgb(35, 54, 78)",
+                                                    fontSize: '10px',
+                                                }}
+                                            >
+                                                {moment(item.updated_at).fromNow()}
+                                            </Typography>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
-                                <img
-                                                    style={{
-                                                        height: "100%",
-                                                        width: "100%",
-                                                    }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
+                            <img
+                                                                style={{
+                                                                    height: "100%",
+                                                                    width: "100%",
+                                                                }}
+                                                                src={process.env.REACT_APP_FILE+'/present/image/'+item.present_image}>
                                                 </img>
                             </Grid>
                             <Grid item xs={4} sm={8} md={12}>
@@ -697,24 +730,25 @@ const Manager = (props) => {
                                         spacing={{ xs: 2, md: 3 }}
                                         columns={{ xs: 4, sm: 8, md: 12 }}
                                     >
-                                        <Grid item xs={2} sm={8} md={12}>
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                }}
-                                            >
-                                                <Typography
-                                                    sx={{
-                                                        color: "red",
-                                                        fontWeight: "bold",
-                                                        fontSize: "20px",
-
-                                                    }}
-                                                >
-                                                    500 points
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
+                                      <Grid item xs={2} sm={8} md={12}>
+                                                        <Box
+                                                            sx={{
+                                                                display: "flex",
+                                                            }}
+                                                        >
+                                                            <Typography
+                                                                sx={{
+                                                                    color: "red",
+                                                                    fontWeight: "bold",
+                                                                    fontSize: "20px",
+            
+                                                                }}
+                                                            >
+                                                                {item.present_score?item.present_score
+                                                                :null} Points
+                                                            </Typography>
+                                                        </Box>
+                                                    </Grid>
                                         <Grid item xs={2} sm={8} md={12}>
                                                 <Typography
                                                     sx={{
@@ -723,7 +757,7 @@ const Manager = (props) => {
                                                         fontSize: "12px",
                                                     }}
                                                 >
-                                                    Employee received a gift
+                                                   You can delete to clear up storage
                                                 </Typography>
                                         </Grid>
                                     </Grid>
@@ -732,7 +766,7 @@ const Manager = (props) => {
                             <Grid item xs={4} sm={8} md={12}>
                                 <Button 
                                     type="submit"
-                                    //onClick={(event) => onAddNews(event)}
+                                    onClick={(event) => onBlockCart(event,item.id)}
                                     sx={{
                                         height:40.5,
                                         width:"100%",
@@ -747,248 +781,9 @@ const Manager = (props) => {
                             </Grid>
                         </Grid>
                     </Box> 
-                    <Box
-                        sx={{
-                            boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
-                            border: "1.5px solid #e0e0e0",
-                            borderRadius: '10px',
-                            padding: "10px",
-                            marginRight:"10px",
-                            backgroundColor:"white",
-                            marginBottom:"10px",
-                        }}
-                    >
-                        <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                            sx={{
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
-                                <img
-                                    style={{
-                                        height: "40px",
-                                        width: "40px",
-                                        objectFit: 'cover',
-                                        borderRadius: "100%",
-                                        float: "right",
-                                        border: "2px solid #2196f3",
-                                    }}
-                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                    src={process.env.REACT_APP_FILE + '/avatar/avatar.png'}>
-                                </img>
-                            </Grid>
-                            <Grid item xs={3} sm={5} md={9}>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                    }}
-                                >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontSize: '10px',
-                                    }}
-                                >
-                                    2 phút trước
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <img
-                                                    style={{
-                                                        height: "100%",
-                                                        width: "100%",
-                                                    }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
-                                                </img>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Box sx={{
-                                    alignItems: 'center',
-                                }}>
-                                    <Grid
-                                        container
-                                        spacing={{ xs: 2, md: 3 }}
-                                        columns={{ xs: 4, sm: 8, md: 12 }}
-                                    >
-                                        <Grid item xs={2} sm={8} md={12}>
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                }}
-                                            >
-                                                <Typography
-                                                    sx={{
-                                                        color: "red",
-                                                        fontWeight: "bold",
-                                                        fontSize: "20px",
-
-                                                    }}
-                                                >
-                                                    500 points
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={2} sm={8} md={12}>
-                                                <Typography
-                                                    sx={{
-                                                        color: "rgb(35, 54, 78)",
-                                                        fontWeight: "italic",
-                                                        fontSize: "12px",
-                                                    }}
-                                                >
-                                                    Employee received a gift
-                                                </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Button 
-                                    type="submit"
-                                    //onClick={(event) => onAddNews(event)}
-                                    sx={{
-                                        height:40.5,
-                                        width:"100%",
-                                        border:"1px solid #ff9900",
-                                        backgroundColor:"red", 
-                                        color:"##ff9900"
-                                    }}
-                                    size='medium' 
-                                >
-                                    Delete
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box> 
-                    <Box
-                        sx={{
-                            boxShadow: 'rgb(95 125 149 / 20%) 0px 4px 13px 0px',
-                            border: "1.5px solid #e0e0e0",
-                            borderRadius: '10px',
-                            padding: "10px",
-                            marginRight:"10px",
-                            backgroundColor:"white",
-                            marginBottom:"10px",
-                        }}
-                    >
-                        <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                            sx={{
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid item xs={1} sm={2} md={3} display={{ xs: "none", md: "block", sm: "block" }}>
-                                <img
-                                    style={{
-                                        height: "40px",
-                                        width: "40px",
-                                        objectFit: 'cover',
-                                        borderRadius: "100%",
-                                        float: "right",
-                                        border: "2px solid #2196f3",
-                                    }}
-                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                    src={process.env.REACT_APP_FILE + '/avatar/avatar.png'}>
-                                </img>
-                            </Grid>
-                            <Grid item xs={3} sm={5} md={9}>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                    }}
-                                >
-                                    Hà Mộng Khang <span style={{ fontSize: "12px", fontWeight: "normal" }}>đã đổi phần thưởng</span> Bún thịt nướng thơm ngon nứt mũi
-                                </Typography>
-                                <Typography
-                                    sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontSize: '10px',
-                                    }}
-                                >
-                                    2 phút trước
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <img
-                                                    style={{
-                                                        height: "100%",
-                                                        width: "100%",
-                                                    }}
-                                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                                    src={process.env.REACT_APP_FILE + '/reward/food_item.jpg'}>
-                                                </img>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Box sx={{
-                                    alignItems: 'center',
-                                }}>
-                                    <Grid
-                                        container
-                                        spacing={{ xs: 2, md: 3 }}
-                                        columns={{ xs: 4, sm: 8, md: 12 }}
-                                    >
-                                        <Grid item xs={2} sm={8} md={12}>
-                                            <Box
-                                                sx={{
-                                                    display: "flex",
-                                                }}
-                                            >
-                                                <Typography
-                                                    sx={{
-                                                        color: "red",
-                                                        fontWeight: "bold",
-                                                        fontSize: "20px",
-
-                                                    }}
-                                                >
-                                                    500 points
-                                                </Typography>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={2} sm={8} md={12}>
-                                                <Typography
-                                                    sx={{
-                                                        color: "rgb(35, 54, 78)",
-                                                        fontWeight: "italic",
-                                                        fontSize: "12px",
-                                                    }}
-                                                >
-                                                    Employee received a gift
-                                                </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={4} sm={8} md={12}>
-                                <Button 
-                                    type="submit"
-                                    //onClick={(event) => onAddNews(event)}
-                                    sx={{
-                                        height:40.5,
-                                        width:"100%",
-                                        border:"1px solid #ff9900",
-                                        backgroundColor:"red", 
-                                        color:"##ff9900"
-                                    }}
-                                    size='medium' 
-                                >
-                                    Delete
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </Box> 
+                       )}})
+                       :null
+                   }
                 </Grid>
                 :null}
             </Grid>
