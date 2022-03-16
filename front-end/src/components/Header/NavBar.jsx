@@ -194,10 +194,16 @@ const NavBar = (props) => {
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight:600
                         }}>Profile</Typography>
+                        <Typography sx={{
+                            display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none', 
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight:600
+                        }}>Information</Typography>
                     </Box>
                     <Box justifyContent='space-around' sx={{ 
                         width: 1, 
-                        display:window.location.pathname.search('profile') != -1?'none':'flex',
+                        display:
+                        window.location.pathname.search('profile') != -1 || window.location.pathname.search('employees/detail') != -1?'none':'flex',
                         }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {
