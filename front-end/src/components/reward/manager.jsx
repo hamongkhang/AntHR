@@ -217,7 +217,7 @@ const Manager = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -418,7 +418,7 @@ const Manager = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -620,7 +620,7 @@ const Manager = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -823,7 +823,7 @@ const Manager = (props) => {
                     >
                         <Typography
                             sx={{
-                                color: "rgb(35, 54, 78)",
+                                color: "white",
                                 fontWeight: "bold",
                                 fontSize: "14px",
                             }}
@@ -1006,7 +1006,7 @@ const Manager = (props) => {
                 >
                     <Typography
                         sx={{
-                            color: "rgb(35, 54, 78)",
+                            color: "white",
                             fontWeight: "bold",
                             fontSize: "14px",
                         }}

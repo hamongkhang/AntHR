@@ -925,7 +925,7 @@ const  Gift=(props)=>{
                                                     <Box sx={{position:"absolute",backgroundColor:"red",borderRadius:"15px",padding:"5px",marginTop:"5px",marginLeft:"5px"}}>
                                                     <Typography 
                                                         sx={{ 
-                                                            color:"rgb(35, 54, 78)",
+                                                            color:"white",
                                                             fontSize:"12px",
                                                         }} 
                                                     >
@@ -1042,7 +1042,7 @@ const  Gift=(props)=>{
                                                             width:"100%",
                                                             border:"1px solid #ff9900",
                                                             backgroundColor:"red", 
-                                                            color:"#ff9900",
+                                                            color:"white",
                                                             marginTop:"10px"
                                                         }}
                                                         size='medium' 
@@ -1194,7 +1194,7 @@ const  Gift=(props)=>{
                                                     width:"100%",
                                                     border:"1px solid #ff9900",
                                                     backgroundColor:"red", 
-                                                    color:"#ff9900",
+                                                    color:"white",
                                                     marginTop:"10px"
                                                 }}
                                                 size='medium' 
