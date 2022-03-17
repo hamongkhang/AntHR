@@ -43,6 +43,7 @@ const options5 = [
 const Employee = (props) => {
   const [show, setShow] = useState(false);
   const $token = localStorage.getItem('access_token');
+  const id = localStorage.getItem('id');
   const [employees, setEmployees] = useState([]);
   const [users, setUsers] = useState([]);
   const [render, setRender] = useState(false);
@@ -261,7 +262,7 @@ const   ExportUser = (event) =>{
        window.location.href = process.env.REACT_APP_API+"/employee/exportEmployee";            
 }
  const employeeDetail = (item) =>{
-    navigate(`/home/employees/detail/${item.id}`)
+    navigate(`/home/employees/detail/${item.user_id}`)
   }
   useEffect(() => {
     if ($token) {
@@ -457,16 +458,17 @@ const   ExportUser = (event) =>{
                     {
                       employees.length ?
                         employees.map((item, index) => {
+                          if(item.user_id!=id){
                           return (
-                            <tr onClick={()=>employeeDetail(item)} style={{ cursor: 'pointer' }}>
-                              <td>
+                            <tr style={{ cursor: 'pointer' }}>
+                              <td onClick={()=>employeeDetail(item)}> 
                                 {item.avatar
                                   ?
                                   (item.avatar.search('https://') != -1)
                                     ?
                                     <img style={{ marginRight: "5px" }} src={item.avatar} className="employeeAvt" />
                                     :
-                                    <img style={{ marginRight: "5px" }} src={process.env.REACT_APP_FILE + '/avatar/' + item.avatar} className="employeeAvt" />
+                                    <img style={{ marginRight: "5px" }}  src={process.env.REACT_APP_FILE + '/avatar/' + item.avatar} className="employeeAvt" />
                                   :
                                   <img style={{ marginRight: "5px" }} src={process.env.REACT_APP_FILE + '/avatar/avatar.png'} className="employeeAvt" />
                                 }
@@ -566,7 +568,7 @@ const   ExportUser = (event) =>{
                                                         </Grid>
                         </td>
                             </tr>
-                          )
+                          )}
                         }) : null
                     }
                   </tbody>
