@@ -23,6 +23,8 @@ const Portal = (props) => {
     const [employees, setEmployees]= useState([]);
     const [users, setUsers]= useState([]);
     const [praise, setPraise]= useState([]);
+    const [like, setLike]= useState([]);
+    const [comment, setComment]= useState([]);
     const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
     const getEmployees = () =>{
@@ -36,6 +38,26 @@ const Portal = (props) => {
               setEmployees(data.data[1].reverse());
         });
     }
+    const getLike = () =>{
+        fetch(process.env.REACT_APP_API+'/praise/getAllLike', {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+              setLike(data.data.reverse());
+        });
+    }
+        const getComment= () =>{
+            fetch(process.env.REACT_APP_API+'/praise/getAllComment', {
+                method: "GET",
+                headers: {"Authorization": `Bearer `+$token}
+              })
+            .then(response => response.json())
+            .then(data =>  {
+                  setComment(data.data.reverse());
+            });
+        }
     const getPraise = () =>{
         fetch(process.env.REACT_APP_API+'/praise/getAllPraise', {
             method: "GET",
@@ -56,9 +78,6 @@ const Portal = (props) => {
             setPraise1(data.data);     
         });
     }
-    console.log(praise)
-    console.log(praise1)
-
     const onPublicPraise=(event,id)=>{
         fetch(process.env.REACT_APP_API+'/praise/changeStatus/'+id, {
             method: "GET",
@@ -165,6 +184,8 @@ const Portal = (props) => {
         if ($token) {
             getEmployees();
             getPraise();
+            getLike();
+            getComment();
             getPraise2();
         } else {
             navigate('/home');
