@@ -19,6 +19,7 @@ import Manager from "../reward/manager";
 import Documents from "../document";
 import DocumentView from "../document/view";
 import CheckGoogleDrive from "../document/check_google";
+import Point from "../employees/point";
 
 const drawerWidth = 240;
 
@@ -86,6 +87,7 @@ const Home = (props) => {
                         <Route path="employees" element={<Employee />} />
                         <Route path="employees/manage-employees" element={<Employee />} />
                         <Route path="employees/directory" element={<Directory />} />
+                        <Route path="employees/points" element={<Point />} />
 
                         <Route path="reward%20gate" element={<Commendation />} />
                         <Route path="reward-gate/recognition-portal" element={<Portal />} />

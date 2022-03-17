@@ -153,6 +153,8 @@ export default function NewHeader(props) {
                   />
                 </Search>
               </Grid>
+              {(props.role==1)
+              ?
               <Grid item xs={4} sm={4} md={2}>
                 <Button 
                 onClick={()=>sendData()}
@@ -168,6 +170,9 @@ export default function NewHeader(props) {
                   Create News
                 </Button>
               </Grid> 
+              :
+              null
+            }
               </Grid>
           </Toolbar>
       </AppBar>

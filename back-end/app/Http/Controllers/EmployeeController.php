@@ -25,6 +25,7 @@ use App\Models\Address;
 use App\Models\Code;
 use App\Models\Role;
 use App\Models\Bank;
+use App\Models\ScoreSetup;
 
 
 
@@ -36,7 +37,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['exportEmployee']]);
+        $this->middleware('auth:api', ['except' => ['exportEmployee','createAccount']]);
     }
 
          /**
@@ -121,9 +122,15 @@ class EmployeeController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $scoreFind= DB::table('score_setup')->get();
+        if(count($scoreFind)>0){
+            $scoreSetup=$scoreFind[0]->score;
+        }else{
+            $scoreSetup=500;
+        }
         $postScore = [
             'user_id'  =>$employeeFind->id,
-            'score'  => 200,
+            'score'  => $scoreSetup,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   
@@ -219,8 +226,8 @@ class EmployeeController extends Controller
             ], 201);
        }else{
         return response()->json([
-            'error'=>1,
-            'description'=>'No one account',
+            'code'=>1,
+            'error'=>'No one account',
         ], 401);
        }
     }

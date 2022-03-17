@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
 import TextField from '@mui/material/TextField';
 import { Button, getPaginationItemUtilityClass } from '@mui/material';
 import Modal from '@mui/material/Modal';
@@ -19,6 +18,7 @@ import { toast } from 'react-toastify';
 
 const  Commendation=(props)=>{
     const $token=localStorage.getItem('access_token');
+    const id=localStorage.getItem('id');
     const first_name=localStorage.getItem('first_name');
     const last_name=localStorage.getItem('last_name');
     const [myScore, setMyScore] =useState([]);
@@ -224,6 +224,7 @@ const  Commendation=(props)=>{
                     {
                         employees.length?
                           employees.map((item,index)=>{
+                              if(item.user_id!=id){
                             return(<>
                                     <Grid item xs={2} sm={2} md={3}>
                                         <Button 
@@ -259,7 +260,7 @@ const  Commendation=(props)=>{
                                     {item.email?item.email:" - "} |  {item.phone?item.phone:" - "}
                                     </Typography>
                                 </Grid></>
-                        )}):null
+                        )}}):null
                     }
                 </Grid>
             </Box>

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 use App\Models\UserScore;
+use App\Models\Employee;
+use App\Models\User;
+use App\Models\ScoreSetup;
 
 
 class ScoreController extends Controller
@@ -19,6 +22,63 @@ class ScoreController extends Controller
         $this->middleware('auth:api', ['except' => []]);
     }
 
+
+    public function createScore(Request $request){
+        $validator = Validator::make($request->all(), [
+            'score' => 'required|numeric|min:1',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        if(auth()->user()->role===1){
+            $scoreFind= DB::table('score_setup')->get();
+            if(count($scoreFind)>0){
+                $scoreSetup=ScoreSetup::find($scoreFind[0]->id);
+                $scoreSetup->score=$request->score;
+                $scoreSetup->updated_at=Carbon::now('Asia/Ho_Chi_Minh');
+                $scoreSetup->save();
+                return Response()->json(array("Create folder successfully!"=> 1,"data"=>$scoreSetup ));
+            }else{
+                $postArray = [
+                    'score'  => $request->score,
+                    'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                    'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+                ];
+                $folder = ScoreSetup::create($postArray);
+                return Response()->json(array("Create folder successfully!"=> 1,"data"=>$folder ));
+            }
+    }else{
+        return response()->json(["error" => "You are not admin!!!"],401);
+    }
+    }
+
+
+
+
+    public function getUserPoints(){
+        $dataFind = DB::table('user_score')->get();
+        $data=[];
+        for ($i=0;$i<count($dataFind);$i++){
+            $EmployeeFind= DB::table('employee')->where('user_id',$dataFind[$i]->user_id)->first();
+            $userFind= DB::table('users')->where('id',$dataFind[$i]->user_id)->first();
+            $postData=[
+                        'id'=> $dataFind[$i]->id,
+                        'first_name'=> $EmployeeFind->first_name,
+                        'last_name' => $EmployeeFind->last_name,
+                        'email' => $EmployeeFind->email,
+                        'role'=>$userFind->role,
+                        'user_id' => $EmployeeFind->user_id,
+                        'avatar' => $EmployeeFind->avatar,
+                        'score' => $dataFind[$i]->score,
+                        'score_spent' => $dataFind[$i]->score_spent,
+                        'gift' => $dataFind[$i]->gift,
+                        'created_at' => $dataFind[$i]->created_at,
+                        'updated_at' => $dataFind[$i]->updated_at,
+                    ];
+            array_push($data,$postData);
+        }
+        return Response()->json(array("Get present successfully!"=> 1,"data"=>$data ));
+    }
      /**
      * @SWG\GET(
      *     path="/api/score/getOneScore/id",
