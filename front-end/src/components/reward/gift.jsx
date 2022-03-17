@@ -23,7 +23,6 @@ const  Gift=(props)=>{
     const [checked, setChecked] = React.useState(0);
     const $token = localStorage.getItem('access_token');
     const role = localStorage.getItem('role');
-    const id_user = localStorage.getItem('id');
     const [render, setRender] = useState(false);
     const [search, setSearch] = useState(false);
     const [searchGift, setSearchGift] = useState([]);

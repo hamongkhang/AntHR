@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -25,23 +24,18 @@ const Portal = (props) => {
     const [showComment, setShowComment] = useState(false);
     const [render, setRender] = useState(false);
     const [employees, setEmployees]= useState([]);
-    const [users, setUsers]= useState([]);
     const [praise, setPraise]= useState([]);
     const [like, setLike]= useState([]);
     const [comment, setComment]= useState([]);
     const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
-    const [errorComment, setErrorComment] = useState({
-        praise_id:null,
-        messeger:null,
-      });
       const [addComment, setAddComment] = useState({
         praise_id:"",
         messeger:"",
       });
     const sumLike=(id)=>{
         var sum=0;
-        for(var i=0;i<like.length;i++){
+        for(var i=0;i<like.lengh;i++){
             if(like[i].praise_id===id){
                 sum=sum+1;
             }
@@ -105,9 +99,7 @@ const Portal = (props) => {
             .then((res) => res.json())
             .then((json) => {
               if(json.error){
-                  setErrorComment(json.error);
               }else{
-                    setErrorComment('');
                     setRender(!render);
               }
             });
@@ -119,7 +111,6 @@ const Portal = (props) => {
           })
         .then(response => response.json())
         .then(data =>  {
-              setUsers(data.data[0].reverse());
               setEmployees(data.data[1].reverse());
         });
     }
