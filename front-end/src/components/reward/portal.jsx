@@ -35,12 +35,23 @@ const Portal = (props) => {
         praise_id:"",
         messeger:"",
       });
-      const [errorLike, setErrorLike] = useState({
-        praise_id:null,
-      });
-      const [addLike, setAddLike] = useState({
-        praise_id:'',
-      });
+    const sumLike=(id)=>{
+        var sum=0;
+        for(var i=0;i<like.length;i++){
+            if(like[i].praise_id===id){
+                sum=sum+1;
+            }
+        }
+        return sum;
+    }
+    const checkLike=(id)=>{
+        for(var i=0;i<like.length;i++){
+            if((like[i].user_id==id_user)&&(like[i].praise_id==id)){
+               return true;
+            }
+        }
+        return false;
+    }
     const onChangeAddComment=(event)=>{
         setAddComment({...addComment,["messeger"]:event.target.value});
     }
@@ -59,18 +70,7 @@ const Portal = (props) => {
             .then((res) => res.json())
             .then((json) => {
               if(json.error){
-                  setErrorLike(json.error);
               }else{
-                toast.success(`Congratulations, Successfully !!!`, {
-                    position: 'top-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });       
-                    setErrorLike('');
                     setRender(!render);
               }
             });
@@ -99,7 +99,7 @@ const Portal = (props) => {
                     draggable: true,
                     progress: undefined,
                 });       
-                    setErrorLike('');
+                    setErrorComment('')
                     setRender(!render);
               }
             });
@@ -981,7 +981,18 @@ const Portal = (props) => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
-                                            <ThumbUpOutlinedIcon onClick={(event)=>onChangeAddLike(event,item.id)} id="icon_like" sx={{ marginRight: "10px" }} />
+                                            <Box sx={{display:"flex"}}>
+                                                {
+                                                    checkLike(item.id)
+                                                  ?
+
+                                                  <ThumbUpOutlinedIcon id="icon_like" sx={{ marginRight: "10px", color:"blue" }} />
+                                                  :
+                                                  <ThumbUpOutlinedIcon onClick={(event)=>onChangeAddLike(event,item.id)} id="icon_like" sx={{ marginRight: "10px" }} />
+
+                                                }
+                                                <Typography sx={{fontSize:"14px",color:"rgb(35, 54, 78)"}}>{(sumLike(item.id)!=0)?sumLike(item.id):null}</Typography>
+                                            </Box>
                                             <ChatBubbleOutlineOutlinedIcon onClick={(event)=>onClickAddComment(event,item.id)} id="icon_comment" />
                                         </Grid>
                                     </Grid>

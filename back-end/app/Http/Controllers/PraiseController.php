@@ -196,16 +196,12 @@ class PraiseController extends Controller
 
     public function getAllLike(){
         $userFind = auth()->user();
-        if($userFind->role===1){
-            $data=DB::table('like')->get();
-        } 
+           $data=DB::table('like')->get();
         return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
     }
     public function getAllComment(){
         $userFind = auth()->user();
-        if($userFind->role===1){
             $data=DB::table('comment')->get();
-        } 
         return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
     }
     public function createComment(Request $request){
