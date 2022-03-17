@@ -19,6 +19,7 @@ import Manager from "../reward/manager";
 import Documents from "../document";
 import DocumentView from "../document/view";
 import CheckGoogleDrive from "../document/check_google";
+import EmployeeDetail from '../employees/employeeDetail';
 import Point from "../employees/point";
 
 const drawerWidth = 240;
@@ -44,6 +45,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
 const Home = (props) => {
     const { setReRender, checkLoggedIn } = props;
     const [open, setOpen] = React.useState(false);
+    const [employee, setEmployee] = React.useState('');
     const navigate = useNavigate();
     const { width } = useWindowDimensions();
     const handleDrawerOpen = () => {
@@ -87,6 +89,7 @@ const Home = (props) => {
                         <Route path="employees" element={<Employee />} />
                         <Route path="employees/manage-employees" element={<Employee />} />
                         <Route path="employees/directory" element={<Directory />} />
+                        <Route path="employees/detail/:id" element={<EmployeeDetail/>} />
                         <Route path="employees/points" element={<Point />} />
 
                         <Route path="reward%20gate" element={<Commendation />} />

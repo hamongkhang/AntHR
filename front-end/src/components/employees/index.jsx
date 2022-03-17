@@ -1,6 +1,6 @@
-import React, {useState,useEffect} from "react";
-import {Navbar,Container,Button,Row,Col,Table,Modal,Form} from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Navbar, Container, Button, Row, Col, Table, Modal, Form } from "react-bootstrap";
+import { useNavigate, Link } from 'react-router-dom';
 import dots from "../../images/dots.png";
 import download from "../../images/download.png";
 import setting from "../../images/setting.png";
@@ -40,109 +40,95 @@ const options5 = [
   },
 ];
 
-const Employee=()=>{
-  const [show,setShow]=useState(false);
-  const $token=localStorage.getItem('access_token');
-  const [employees, setEmployees]= useState([]);
-  const [users, setUsers]= useState([]);
+const Employee = (props) => {
+  const [show, setShow] = useState(false);
+  const $token = localStorage.getItem('access_token');
+  const [employees, setEmployees] = useState([]);
+  const [users, setUsers] = useState([]);
   const [render, setRender] = useState(false);
 
   const changeStatus = (id) => {
-  fetch(process.env.REACT_APP_API+"/account/blockAccount/"+id, {
+    fetch(process.env.REACT_APP_API + "/account/blockAccount/" + id, {
       method: "GET",
-      headers: {"Authorization": `Bearer `+$token}
+      headers: { "Authorization": `Bearer ` + $token }
     })
-  .then(response => response.json())
-  .then(data =>  {
-      if(data.error){
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
           toast.error('Change status failed.', {
-              position: "bottom-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored"
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
           });
 
-      }
-      else{
+        }
+        else {
           setRender(!render)
           toast.success('Change status successfully.', {
-           position: "bottom-right",
-           autoClose: 3000,
-           hideProgressBar: false,
-           closeOnClick: true,
-           pauseOnHover: true,
-           draggable: true,
-           progress: undefined,
-           theme: "colored"
-       });
-      }
-  });
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
+          });
+        }
+      });
   };
-  const handleModal=()=>{
+  const handleModal = () => {
     setShow(!show);
   }
   const navigate = useNavigate();
-  const getEmployees = () =>{
-    fetch(process.env.REACT_APP_API+'/employee/getAllEmployee', {
-        method: "GET",
-        headers: {"Authorization": `Bearer `+$token}
-      })
-    .then(response => response.json())
-    .then(data =>  {
-          setUsers(data.data[0].reverse());
-          setEmployees(data.data[1].reverse());
-    });
-}
-const [error, setError] = useState({
-  first_name:null,
-  last_name:null,
-  email:null
-});
-const [addEmployee, setAddEmployee] = useState({
-  first_name:'',
-  last_name:'',
-  email:'',
-});
-const aonChangeaddEmployee = (event) => {
-  let _name = event.target.name;
-  let _type = event.target.type;
-  let _value = event.target.value;
-  setAddEmployee({...addEmployee,[_name]:_value});
-};
-const onAddEmployee = (e) => {
-  const _formData = new FormData();
-  _formData.append('first_name', addEmployee.first_name);
-  _formData.append('last_name', addEmployee.last_name);
-  _formData.append('email', addEmployee.email);
-  const requestOptions = {
+  const getEmployees = () => {
+    fetch(process.env.REACT_APP_API + '/employee/getAllEmployee', {
+      method: "GET",
+      headers: { "Authorization": `Bearer ` + $token }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setUsers(data.data[0].reverse());
+        setEmployees(data.data[1].reverse());
+      });
+  }
+  const [error, setError] = useState({
+    first_name: null,
+    last_name: null,
+    email: null
+  });
+  const [addEmployee, setAddEmployee] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+  });
+  const aonChangeaddEmployee = (event) => {
+    let _name = event.target.name;
+    let _type = event.target.type;
+    let _value = event.target.value;
+    setAddEmployee({ ...addEmployee, [_name]: _value });
+  };
+  const onAddEmployee = (e) => {
+    const _formData = new FormData();
+    _formData.append('first_name', addEmployee.first_name);
+    _formData.append('last_name', addEmployee.last_name);
+    _formData.append('email', addEmployee.email);
+    const requestOptions = {
       method: 'POST',
       body: _formData,
-      headers: {"Authorization": `Bearer `+$token}
-  };
-  fetch(process.env.REACT_APP_API+'/employee/createEmployee', requestOptions)
+      headers: { "Authorization": `Bearer ` + $token }
+    };
+    fetch(process.env.REACT_APP_API + '/employee/createEmployee', requestOptions)
       .then((res) => res.json())
       .then((json) => {
-        if(json.error){
+        if (json.error) {
           if (json.error === 'account login is not admin') {
             toast.error(`You are not admin!!!`, {
-                position: 'top-center',
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-            });
-            setError('');
-        }else{
-            setError(json.error);
-        }
-        }else{
-          toast.success(`Create employee successfully !!!`, {
               position: 'top-center',
               autoClose: 5000,
               hideProgressBar: false,
@@ -150,16 +136,30 @@ const onAddEmployee = (e) => {
               pauseOnHover: true,
               draggable: true,
               progress: undefined,
-          });       
+            });
             setError('');
-            setShow(!show);
-            setRender(!render)
+          } else {
+            setError(json.error);
           }
+        } else {
+          toast.success(`Create employee successfully !!!`, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          setError('');
+          setShow(!show);
+          setRender(!render)
+        }
       });
-};
-const deleteEmployee=(event,id,first,last)=>{
-  Swal.fire({
-      title: 'Delete "'+last+' '+first+'" Employee?',
+  };
+  const deleteEmployee = (event, id, first, last) => {
+    Swal.fire({
+      title: 'Delete "' + last + ' ' + first + '" Employee?',
       text: "Do you want to permanently delete this employee?",
       icon: 'warning',
       showCancelButton: true,
@@ -169,40 +169,40 @@ const deleteEmployee=(event,id,first,last)=>{
       confirmButtonText: 'Delete'
     }).then((result) => {
       if (result.isConfirmed) {
-          onDelete(id);
+        onDelete(id);
       }
     })
-}
-const onDelete = (id) =>{
-  fetch(process.env.REACT_APP_API+'/employee/destroyEmployee/'+id, {
+  }
+  const onDelete = (id) => {
+    fetch(process.env.REACT_APP_API + '/employee/destroyEmployee/' + id, {
       method: "DELETE",
-      headers: {"Authorization": `Bearer `+$token}
+      headers: { "Authorization": `Bearer ` + $token }
     })
-  .then(response => response.json())
-  .then(data =>  {
-     if(data.error){
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
           toast.error('Delete Failed.', {
-              position: "bottom-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored"
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
           });
-     }
-     else{
+        }
+        else {
           setRender(!render)
           toast.success('Deleted successfully.', {
-              position: "bottom-right",
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "colored"
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored"
           });
      }
   });
@@ -260,126 +260,128 @@ const onDecentralization = (id) =>{
 const   ExportUser = (event) =>{
        window.location.href = process.env.REACT_APP_API+"/employee/exportEmployee";            
 }
+ const employeeDetail = (item) =>{
+    navigate(`/home/employees/detail/${item.id}`)
+  }
   useEffect(() => {
-    if($token){
+    if ($token) {
       getEmployees();
-    }else{
-       navigate('/home');
+    } else {
+      navigate('/home');
     }
-}, [render])
-    return (
-      <div maxWidth="100%" style={{height: '100vh'}}>
-        <Modal
-          size="lg"
-          style={{
-            marginTop:"200px"
-          }}
-          show={show}
-          onHide={() =>handleModal() }
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>New Profile</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form>
-              <Row>
-                <Form.Group
-                  as={Col}
-                  className="mb-3"
-                  controlId="formGroupFname"
-                >
-                  <Form.Control
-                    type="text"
-                    name="first_name"
-                    placeholder="First Name"
-                    onChange={(event) => aonChangeaddEmployee(event)}
-                    style={{ fontSize: "14px" }}
-                  />
-                </Form.Group>
-                <Form.Group
-                  as={Col}
-                  className="mb-3"
-                  controlId="formGroupLname"
-                >
-                  <Form.Control
-                    type="text"
-                    name="last_name"
-                    onChange={(event) => aonChangeaddEmployee(event)}
-                    placeholder="Last Name"
-                    style={{ fontSize: "14px" }}
-                  />
-                </Form.Group>
-                <Form.Group
-                  as={Col}
-                  className="mb-3"
-                  controlId="formGroupEmail"
-                >
-                  <Form.Control
-                    type="email"
-                    onChange={(event) => aonChangeaddEmployee(event)}
-                    name="email"
-                    placeholder="Email"
-                    style={{ fontSize: "14px" }}
-                  />
-                </Form.Group>
-              </Row>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-            onClick={(event)=>onAddEmployee(event)}
-              style={{
-                backgroundColor: "#FFFF66",
-                borderColor: "#ff9900",
-                color: "#ff9900",
-                fontSize: "14px",
-              }}
-            >
-              Create
-            </Button>
-            <Button
-              onClick={() =>handleModal()}
-              style={{
-                backgroundColor: "#CCCCCC",
-                borderColor: "#CCCCCC",
-                color: "#000000",
-                fontSize: "14px",
-              }}
-            >
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+  }, [render])
+  return (
+    <div maxWidth="100%" style={{ height: '100vh' }}>
+      <Modal
+        size="lg"
+        style={{
+          marginTop: "200px"
+        }}
+        show={show}
+        onHide={() => handleModal()}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>New Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Form.Group
+                as={Col}
+                className="mb-3"
+                controlId="formGroupFname"
+              >
+                <Form.Control
+                  type="text"
+                  name="first_name"
+                  placeholder="First Name"
+                  onChange={(event) => aonChangeaddEmployee(event)}
+                  style={{ fontSize: "14px" }}
+                />
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                className="mb-3"
+                controlId="formGroupLname"
+              >
+                <Form.Control
+                  type="text"
+                  name="last_name"
+                  onChange={(event) => aonChangeaddEmployee(event)}
+                  placeholder="Last Name"
+                  style={{ fontSize: "14px" }}
+                />
+              </Form.Group>
+              <Form.Group
+                as={Col}
+                className="mb-3"
+                controlId="formGroupEmail"
+              >
+                <Form.Control
+                  type="email"
+                  onChange={(event) => aonChangeaddEmployee(event)}
+                  name="email"
+                  placeholder="Email"
+                  style={{ fontSize: "14px" }}
+                />
+              </Form.Group>
+            </Row>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={(event) => onAddEmployee(event)}
+            style={{
+              backgroundColor: "#FFFF66",
+              borderColor: "#ff9900",
+              color: "#ff9900",
+              fontSize: "14px",
+            }}
+          >
+            Create
+          </Button>
+          <Button
+            onClick={() => handleModal()}
+            style={{
+              backgroundColor: "#CCCCCC",
+              borderColor: "#CCCCCC",
+              color: "#000000",
+              fontSize: "14px",
+            }}
+          >
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
-        <Row>
-          <Navbar>
-            <Container fluid>
-              <Col
-                  style={{fontSize:"large", fontWeight:"bold"}}>All current employees.
-              </Col>
-              <Col xs lg="auto">
-                <Button
-                onClick={(event)=>ExportUser(event)}
-                 style={{
+      <Row>
+        <Navbar>
+          <Container fluid>
+            <Col
+              style={{ fontSize: "large", fontWeight: "bold" }}>All current employees.
+            </Col>
+            <Col xs lg="auto">
+              <Button
+                onClick={(event) => ExportUser(event)}
+                style={{
                   backgroundColor: "#CCCCCC",
                   borderColor: "#CCCCCC",
                   color: "black",
                   fontSize: "14px"
                 }}
-                >
-                  <img style={{
-                marginTop:"-4px"
+              >
+                <img style={{
+                  marginTop: "-4px"
                 }} src={download} className="employeeIcon" /> Download csv
-                </Button>
-                {"  "}
-                <Button
-                  onClick={() =>handleModal()}
-                  style={{
-                    backgroundColor: "#FFFF66",
-                    borderColor: "#ff9900",
-                    color: "#ff9900",
-                    fontSize: "14px",
-
+              </Button>
+              {"  "}
+              <Button
+                onClick={() => handleModal()}
+                style={{
+                  backgroundColor: "#FFFF66",
+                  borderColor: "#ff9900",
+                  color: "#ff9900",
+                  fontSize: "14px",
                   }}
                 >
                   {" "}
@@ -453,60 +455,60 @@ const   ExportUser = (event) =>{
                     </thead>
                     <tbody>
                     {
-                      employees.length?
-                        employees.map((item,index)=>{
-                          return(
-                            <tr>
+                      employees.length ?
+                        employees.map((item, index) => {
+                          return (
+                            <tr onClick={()=>employeeDetail(item)} style={{ cursor: 'pointer' }}>
                               <td>
                                 {item.avatar
                                   ?
                                   (item.avatar.search('https://') != -1)
                                     ?
-                                    <img style={{marginRight:"5px"}} src={item.avatar} className="employeeAvt" />
+                                    <img style={{ marginRight: "5px" }} src={item.avatar} className="employeeAvt" />
                                     :
-                                      <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/'+item.avatar} className="employeeAvt" />
+                                    <img style={{ marginRight: "5px" }} src={process.env.REACT_APP_FILE + '/avatar/' + item.avatar} className="employeeAvt" />
                                   :
-                                    <img style={{marginRight:"5px"}} src={process.env.REACT_APP_FILE+'/avatar/avatar.png'} className="employeeAvt" />
+                                  <img style={{ marginRight: "5px" }} src={process.env.REACT_APP_FILE + '/avatar/avatar.png'} className="employeeAvt" />
                                 }
-                               {item.last_name+' '+item.first_name}
+                                {item.last_name + ' ' + item.first_name}
                               </td>
-                              <td>{item.email?item.email:"-"}</td>
-                              <td>{item.phone?item.phone:"-"}</td>
-                              <td> 
-                                {item.birthday?new Intl.DateTimeFormat('de-DE',{year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(item.birthday)):"-"}
+                              <td>{item.email ? item.email : "-"}</td>
+                              <td>{item.phone ? item.phone : "-"}</td>
+                              <td>
+                                {item.birthday ? new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.birthday)) : "-"}
                               </td>
-                              <td>{item.gender?item.gender:"-"}</td>
+                              <td>{item.gender ? item.gender : "-"}</td>
                               <td>
                                 <label class="switch">
-                                {
+                                  {
                                     users.length
-                                    ?
-                                      users.map((itemUser,index)=>{
-                                        if(itemUser.id===item.user_id){
-                                          if(itemUser.status==="active"){
+                                      ?
+                                      users.map((itemUser, index) => {
+                                        if (itemUser.id === item.user_id) {
+                                          if (itemUser.status === "active") {
                                             return (
                                               <Switch
-                                              onChange={()=>changeStatus(item.user_id)}
-                                              defaultChecked={true}  
-                                              inputProps={{
-                                                'aria-labelledby': 'switch-list-label-wifi',
-                                              }}
-                                            />
+                                                onChange={() => changeStatus(item.user_id)}
+                                                defaultChecked={true}
+                                                inputProps={{
+                                                  'aria-labelledby': 'switch-list-label-wifi',
+                                                }}
+                                              />
                                             );
-                                          }else{
+                                          } else {
                                             return (
                                               <Switch
-                                              onChange={()=>changeStatus(item.user_id)}
-                                              defaultChecked={false}  
-                                              inputProps={{
-                                                'aria-labelledby': 'switch-list-label-wifi',
-                                              }}
-                                            />
+                                                onChange={() => changeStatus(item.user_id)}
+                                                defaultChecked={false}
+                                                inputProps={{
+                                                  'aria-labelledby': 'switch-list-label-wifi',
+                                                }}
+                                              />
                                             );
                                           }
                                         }
                                       })
-                                    :null
+                                      : null
                                   }
                                 </label>
                               </td>
@@ -564,18 +566,18 @@ const   ExportUser = (event) =>{
                                                         </Grid>
                         </td>
                             </tr>
-                        )
-                      }):null
+                          )
+                        }) : null
                     }
-                    </tbody>
-                  </Table>
-                </div>
+                  </tbody>
+                </Table>
               </div>
-            </Container>
-          </Col>
-        </Row>
-      </div>
-    );
-  }
+            </div>
+          </Container>
+        </Col>
+      </Row>
+    </div>
+  );
+}
 
 export default Employee;
