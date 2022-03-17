@@ -13,6 +13,8 @@ use Illuminate\Support\Str;
 use App\Models\Praise;
 use App\Models\User;
 use App\Models\UserScore;
+use App\Models\Like;
+use App\Models\Comment;
 use Illuminate\Support\Facades\File;
 
 
@@ -190,6 +192,57 @@ class PraiseController extends Controller
             $data = DB::table('praise')->where('status',1)->get();
         } 
         return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+
+    public function getAllLike(){
+        $userFind = auth()->user();
+        if($userFind->role===1){
+            $data=DB::table('like')->get();
+        } 
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+    public function getAllComment(){
+        $userFind = auth()->user();
+        if($userFind->role===1){
+            $data=DB::table('comment')->get();
+        } 
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+    public function createComment(Request $request){
+        $validator = Validator::make($request->all(), [
+            'praise_id' => 'required',
+            'messeger' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        $userFind = auth()->user();
+        $postArray = [
+            'user_id'=>$userFind->id,
+            'praise_id'  => $request->praise_id,
+            'messeger'=>$request->messeger,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+        ];
+        $praise = Comment::create($postArray);
+        return Response()->json(array("Create comment successfully!"=> 1,"data"=>$praise ));
+    }
+    public function createLike(Request $request){
+        $validator = Validator::make($request->all(), [
+            'praise_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        $userFind = auth()->user();
+        $postArray = [
+            'user_id'=>$userFind->id,
+            'praise_id'  => $request->praise_id,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+        ];
+        $praise = Like::create($postArray);
+        return Response()->json(array("Create comment successfully!"=> 1,"data"=>$praise ));
     }
      /**
      * @SWG\GET(

@@ -883,8 +883,8 @@ const Portal = (props) => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
-                                            <ThumbUpOutlinedIcon sx={{ marginRight: "10px" }} />
-                                            <ChatBubbleOutlineOutlinedIcon />
+                                            <ThumbUpOutlinedIcon id="icon_like" sx={{ marginRight: "10px" }} />
+                                            <ChatBubbleOutlineOutlinedIcon id="icon_comment" />
                                         </Grid>
                                     </Grid>
                                 </Box>
