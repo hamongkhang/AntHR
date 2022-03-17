@@ -155,7 +155,6 @@ const NavBar = (props) => {
                                 onClick={handleProfileMenuOpen}
                                 color="inherit"
                             >
-                                {/* <AccountCircle /> */}
                                 <Avatar 
                                     src={
                                         localStorage.getItem('avatar')
