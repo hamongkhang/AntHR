@@ -31,7 +31,8 @@ import Swal from 'sweetalert2';
 
 const Documents=(props)=>{
     const navigate = useNavigate();
-    const $token=localStorage.getItem('access_token');
+    const $token=localStorage.getItem('access_token');    
+    const role=localStorage.getItem('role');
     const [openAdd, setOpenAdd] =useState(false);
     const [openEdit, setOpenEdit] =useState(false);
     const [folders, setFolders]= useState([]);
@@ -284,7 +285,9 @@ const onAddFolders = (e) => {
         }
     }, [render])
     return(
-        <Box 
+        (role==1)
+        ?
+            <Box 
             sx={{
                 maxWidth:"100%",
                 height:'100%',
@@ -684,27 +687,156 @@ const onAddFolders = (e) => {
                                                             </Grid>
                                                         </Grid>
                                                     </TableCell>
-                                                </TableRow>
+                                                    </TableRow>
                                                 )})
                                         :
                                         <Typography
-                                        align="center"
-                                        variant="h4" 
-                                        sx={{ 
-                                          mb: 1.5,
-                                          color:"rgb(105, 129, 148)",
-                                        }} 
-                                        color="text.secondary" 
-                                      >
-                                       No data found
-                                      </Typography>
-                                        }
+                                            align="center"
+                                            variant="h4" 
+                                            sx={{ 
+                                                mb: 1.5,
+                                                color:"rgb(105, 129, 148)",
+                                                align:"center"
+                                            }} 
+                                        >
+                                            No data found
+                                        </Typography>
+                                    }
                                     </TableBody>
                                 </Table>
                             </TableContainer>
                         </Box>
                     </Grid>
             </Grid>
+            </Box>
+        :
+        <Box 
+        sx={{
+            maxWidth:"100%",
+            height:'100%',
+            border:"1px solid rgb(227, 235, 241)",
+            borderRadius:"5px",
+            backgroundColor:"white"
+        }}
+    >
+        <Grid
+                container
+                spacing={{ xs: 2, md: 3 }}
+                columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+                <Grid item xs={4} sm={8} md={12}>
+                    <Box
+                        sx={{
+                            borderBottom:"1px solid rgb(227, 235, 241)",
+                            padding:"20px"
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                        <Grid item xs={4} sm={3} md={4}>
+                            <Paper
+                                component="form"
+                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "100%" }}
+                            >
+                                <InputBase
+                                    sx={{ ml: 1, flex: 1 }}
+                                    placeholder="Search By Name ...."
+                                    inputProps={{ 'aria-label': 'search by name...' }}
+                                    onChange={(event)=>onChangeSearch(event)}
+                                />
+                                    <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                                        <SearchIcon />
+                                    </IconButton>
+                            </Paper>
+                        </Grid>
+                        </Grid>
+                    </Box>
+                </Grid>
+                <Grid item xs={4} sm={8} md={12}>
+                    <Box
+                        sx={{
+                            padding:"20px"
+                        }}
+                    >
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Name</TableCell>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Created By</TableCell>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Created Date</TableCell>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Description</TableCell>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Number Of Files</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {!search?
+                                    folders.length?
+                                    folders.map((item,index)=>{
+                                        if(item.share==1){
+                                        return(
+                                       <TableRow
+                                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                       >
+                                           <TableCell component="th" scope="row">
+                                               <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
+                                                   <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
+                                               </Link>
+                                           </TableCell>
+                                           <TableCell align="right">{item.author?item.author:"-"}</TableCell>
+                                           <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
+                                               year: 'numeric', month: 'long', day: 'numeric' 
+                                           }).format(new Date(item.created_at)):"-"}</TableCell>
+                                           <TableCell align="right">{item.description?item.description:"-"}</TableCell>
+                                           <TableCell align="right">{item.sum?item.sum:0}</TableCell>
+                                       </TableRow>
+                                        )
+                                        }
+                                       }
+                                       ):null
+                                :    
+                                    searchDocuments.length?
+                                        searchDocuments.map((item,index)=>{
+                                            if(item.share==1){
+                                            return(
+                                                <TableRow
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell component="th" scope="row">
+                                                    <Link to={`view/${item.id}`} style={{color:"rgba(0, 0, 0, 0.87)", textDecoration: 'none' }}>
+                                                        <FolderIcon sx={{color:"rgb(79, 94, 113)"}} /> {item.name?item.name:"-"}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="right">{item.author?item.author:"-"}</TableCell>
+                                                <TableCell align="right">{item.created_at?new Intl.DateTimeFormat('de-DE', { 
+                                                    year: 'numeric', month: 'long', day: 'numeric' 
+                                                }).format(new Date(item.created_at)):"-"}</TableCell>
+                                                <TableCell align="right">{item.description?item.description:"-"}</TableCell>
+                                                <TableCell align="right">{item.sum?item.sum:0}</TableCell>
+                                                </TableRow>
+                                            )}})
+                                    :
+                                    <Typography
+                                        align="center"
+                                        variant="h4" 
+                                        sx={{ 
+                                            mb: 1.5,
+                                            color:"rgb(105, 129, 148)",
+                                            align:"center"
+                                        }} 
+                                    >
+                                        No data found
+                                    </Typography>
+                                }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </Grid>
+        </Grid>
         </Box>
     );
 }

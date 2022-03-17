@@ -72,6 +72,7 @@ const New=()=>{
       setResult(a)
       }      
       const $token=localStorage.getItem('access_token');
+      const role=localStorage.getItem('role');
       const [news, setNews]= useState([]);
       const [result, setResult]= useState([]);
       const [render, setRender] = useState(false);
@@ -97,13 +98,13 @@ const New=()=>{
     return(
         !show?
         <div style={{height: '100vh'}}>
-            <NewHeader parentCallback={callbackFunction}  parentCallback2={callbackFunction2} parentCallback3={callbackFunction3} parentCallback4={callbackFunction4}/>
+            <NewHeader role={role} parentCallback={callbackFunction}  parentCallback2={callbackFunction2} parentCallback3={callbackFunction3} parentCallback4={callbackFunction4}/>
             <div style={{ marginTop:"150px"}}>
               {!check?
                   news.length?
                     news.map((item,index)=>{
                       return(
-                        <NewBody data={item} token={$token} onRender={onClickRender} renderR={render}/>
+                        <NewBody role={role} data={item} token={$token} onRender={onClickRender} renderR={render}/>
                       )
                     }):
                 <Typography
@@ -119,7 +120,7 @@ const New=()=>{
               </Typography>
               :result.length?result.map((item,index)=>{
                 return(
-                  <NewBody data={item} token={$token} onRender={onClickRender} renderR={render}/>
+                  <NewBody role={role} data={item} token={$token} onRender={onClickRender} renderR={render}/>
                 )
               }):
               <Typography

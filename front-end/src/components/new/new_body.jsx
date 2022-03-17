@@ -129,6 +129,9 @@ export default function NewBody(props){
                                                 }).format(new Date(props.data.updated_at))} | Admin
                 </Typography>
               </Grid>
+              {
+                (props.role==1)
+                ?
               <Grid item xs={1} sm={1} md={1} sx={{display:"flex"}}>
               <IconButton aria-label="delete">
               <Link to={`edit/${props.data.id}`}>
@@ -139,6 +142,9 @@ export default function NewBody(props){
                 <DeleteIcon sx={{color:"red"}} onClick={(event)=>deleteNews(event,props.data.id,props.data.title)} />
               </IconButton>
               </Grid>
+              :
+              null
+              }
             </Grid>
     </Box>
   );

@@ -17,6 +17,8 @@ class CreateUserScoreTable extends Migration
             $table->increments('id')->nullable();
             $table->integer('user_id')->unsigned();
             $table->integer('score')->nullable();
+            $table->integer('score_spent')->nullable();
+            $table->integer('gift')->nullable();
             $table->timestamps();   
             $table->foreign('user_id')
             ->references('id')

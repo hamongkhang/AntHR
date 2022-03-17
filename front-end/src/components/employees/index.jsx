@@ -8,7 +8,11 @@ import Switch from '@mui/material/Switch';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Swal from 'sweetalert2';
-
+import Grid from "@mui/material/Grid";
+import Box from '@mui/material/Box';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 
 const options1 = [
   {
@@ -200,16 +204,65 @@ const Employee = (props) => {
             progress: undefined,
             theme: "colored"
           });
-        }
-      });
-  }
-  const ExportUser = (event) => {
-    window.location.href = process.env.REACT_APP_API + "/employee/exportEmployee";
-  }
-  const employeeDetail = (item) =>{
+     }
+  });
+}
+const decentralizationEmployee=(event,id,first,last)=>{
+  Swal.fire({
+      title: 'Grant admin rights to "'+last+' '+first+'" Employee?',
+      text: "Do you want to grant admin rights to this employee?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cance',
+      confirmButtonText: 'Accept'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          onDecentralization(id);
+      }
+    })
+}
+const onDecentralization = (id) =>{
+  fetch(process.env.REACT_APP_API+'/account/authoriseAccount/'+id, {
+      method: "GET",
+      headers: {"Authorization": `Bearer `+$token}
+    })
+  .then(response => response.json())
+  .then(data =>  {
+     if(data.error){
+          toast.error('Failed.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+     else{
+          setRender(!render)
+          toast.success('Create admin successfully.', {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "colored"
+          });
+     }
+  });
+}
+const   ExportUser = (event) =>{
+       window.location.href = process.env.REACT_APP_API+"/employee/exportEmployee";            
+}
+ const employeeDetail = (item) =>{
     navigate(`/home/employees/detail/${item.id}`)
   }
-
   useEffect(() => {
     if ($token) {
       getEmployees();
@@ -329,79 +382,78 @@ const Employee = (props) => {
                   borderColor: "#ff9900",
                   color: "#ff9900",
                   fontSize: "14px",
-
-                }}
-              >
-                {" "}
-                <i class="fa fa-plus" aria-hidden="true"></i> New Profile
-              </Button>
-              {"  "}
-              <Button
-                style={{
-                  backgroundColor: "#CCCCCC",
-                  borderColor: "#CCCCCC",
-                  fontSize: "14px",
-                }}
-              >
-                <img src={dots} className="employeeIcon" />
-              </Button>
-            </Col>
-          </Container>
-        </Navbar>
-      </Row>
-      <Row style={{ height: "100%" }}>
-        <Col className="mt-3">
-          <Container fluid>
-            <div className=" bobyEmployee " style={{ paddingRight: "20px", paddingLeft: "20px", backgroundColor: "white" }}>
-              <div className="headEmployee">
-                <select className="employeeOption">
-                  {options1.map((option) => (
-                    <option value={option.value1}>{option.label1}</option>
-                  ))}
-                </select>{" "}
-                <select className="employeeOption">
-                  {options2.map((option) => (
-                    <option value={option.value2}>{option.label2}</option>
-                  ))}
-                </select>{" "}
-                <select className="employeeOption">
-                  {options3.map((option) => (
-                    <option value={option.value3}>{option.label3}</option>
-                  ))}
-                </select>{" "}
-                <select className="employeeOption">
-                  {options4.map((option) => (
-                    <option value={option.value4}>{option.label4}</option>
-                  ))}
-                </select>{" "}
-                <select className="employeeOption">
-                  {options5.map((option) => (
-                    <option value={option.value5}>{option.label5}</option>
-                  ))}
-                </select>{" "}
-              </div>
-              <div className="table" style={{ paddingRight: "20px", backgroundColor: "white" }}>
-                <Table responsive="sm" className="tableEmployee">
-                  <thead>
-                    <tr>
-                      <th>
-                        Employee Name
-                      </th>
-                      <th>Email Address</th>
-                      <th>Phone Number</th>
-                      <th>Birthday</th>
-                      <th>Gender</th>
-                      <th>Account</th>
-                      <th>Join Date</th>
-                      <th>
-                        <img
-                          src={setting}
-                          className="employeeIcon searchIcon"
-                        />{" "}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                  }}
+                >
+                  {" "}
+                  <i class="fa fa-plus"  aria-hidden="true"></i> New Profile
+                </Button>
+                {"  "}
+                <Button
+                  style={{
+                    backgroundColor: "#CCCCCC",
+                    borderColor: "#CCCCCC",
+                    fontSize: "14px",
+                  }}
+                >
+                  <img src={dots} className="employeeIcon" />
+                </Button>
+              </Col>
+            </Container>
+          </Navbar>
+        </Row>
+        <Row style={{height:"100%" }}>
+          <Col className="mt-3">
+            <Container fluid>
+              <div className=" bobyEmployee " style={{ paddingRight: "20px",paddingLeft: "20px", backgroundColor:"white" }}>
+                <div className="headEmployee">
+                  <select className="employeeOption">
+                    {options1.map((option) => (
+                      <option value={option.value1}>{option.label1}</option>
+                    ))}
+                  </select>{" "}
+                  <select className="employeeOption">
+                    {options2.map((option) => (
+                      <option value={option.value2}>{option.label2}</option>
+                    ))}
+                  </select>{" "}
+                  <select className="employeeOption">
+                    {options3.map((option) => (
+                      <option value={option.value3}>{option.label3}</option>
+                    ))}
+                  </select>{" "}
+                  <select className="employeeOption">
+                    {options4.map((option) => (
+                      <option value={option.value4}>{option.label4}</option>
+                    ))}
+                  </select>{" "}
+                  <select className="employeeOption">
+                    {options5.map((option) => (
+                      <option value={option.value5}>{option.label5}</option>
+                    ))}
+                  </select>{" "}
+                </div>
+                <div className="table" style={{ paddingRight: "20px", backgroundColor:"white" }}>
+                  <Table responsive="sm" className="tableEmployee">
+                    <thead>
+                      <tr>
+                        <th>
+                          Employee Name
+                        </th>
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
+                        <th>Birthday</th>
+                        <th>Gender</th>
+                        <th>Account</th>
+                        <th>Join Date</th>
+                        <th style={{textAlign:"center"}}>
+                          <img
+                            src={setting}
+                            className="employeeIcon searchIcon"
+                          />{" "}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
                     {
                       employees.length ?
                         employees.map((item, index) => {
@@ -460,31 +512,59 @@ const Employee = (props) => {
                                   }
                                 </label>
                               </td>
-                              <td>
-                                {new Intl.DateTimeFormat('de-DE', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(item.created_at))}
-                              </td>
-                              <td>
-                                {" "}
-                                <div class="dropdown">
-                                  <span>
-                                    <img style={{ marginLeft: "6px" }} src={dots} className="employeeIcon" />
-                                  </span>
-                                  <div class="dropdown-content">
-                                    <Button
-                                      className="btnEmployee"
-                                      onClick={(event) => deleteEmployee(event, item.id, item.first_name, item.last_name)}
-                                      style={{
-                                        backgroundColor: "#FFFF66",
-                                        border: "solid 1px #ff9900",
-                                        color: "#ff9900",
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      Delete
-                                    </Button>
-                                  </div>
-                                </div>
-                              </td>
+                        <td>
+                        {new Intl.DateTimeFormat('de-DE',{year: 'numeric', month: 'long', day: 'numeric'}).format(new Date(item.created_at))}
+                        </td>
+                        <td>
+                          {" "}
+                          <Grid
+                                                            container
+                                                            spacing={{ xs: 2, md: 3 }}
+                                                            columns={{ xs: 4, sm: 8, md: 12 }}
+                                                        >
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
+                                                                    onClick={(event)=>decentralizationEmployee(event,item.user_id,item.first_name,item.last_name)}
+                                                                    sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                        float:"right"
+                                                                    }}
+                                                                >
+                                                                    {
+                                    users.length
+                                    ?
+                                      users.map((itemUser,index)=>{
+                                        if(itemUser.id===item.user_id){
+                                          if(itemUser.role){
+                                            return(
+                                              <AdminPanelSettingsIcon sx={{color:"blue"}}  />
+                                            );
+                                          }else{
+                                            return(
+                                              <GroupAddIcon sx={{color:"blue"}} />
+                                            );
+                                          }
+                                        }}):null}
+                                                                       
+                                                                </Box>
+                                                            </Grid>
+                                                            <Grid item xs={2} sm={4} md={6}>
+                                                                <Box
+                                onClick={(event)=>deleteEmployee(event,item.id,item.first_name,item.last_name)}
+                                sx={{
+                                                                        backgroundColor:"rgb(224, 230, 234)",
+                                                                        float:"left",
+                                                                        padding:"5px",
+                                                                        borderRadius:"3px",
+                                                                    }}
+                                                                >
+                                                                    <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                                </Box>
+                                                            </Grid>
+                                                        </Grid>
+                        </td>
                             </tr>
                           )
                         }) : null

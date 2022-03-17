@@ -7,7 +7,6 @@ body{
   .errorNotify{
     color: #d32f2f;
     font-size: small;
-    font-style: italic;
   }
   .fa,
   .fab,
@@ -387,8 +386,6 @@ body{
   .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
   }
   
@@ -460,4 +457,8 @@ body{
 .scrollReward2::-webkit-scrollbar { 
 width: 0 !important;
 display: none; 
+}
+#hoverClass:hover {
+  border: 1px solid #ff9900;
+  background-color:#FFFF66;
 }

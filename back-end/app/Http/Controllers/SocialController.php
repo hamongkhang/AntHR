@@ -14,6 +14,7 @@ use App\Models\Employee;
 use Google\Client;
 use App\Models\Document;
 use App\Models\DocumentFolder;
+use App\Models\UserScore;
 
 
 class SocialController extends Controller
@@ -35,7 +36,7 @@ class SocialController extends Controller
         $getInfo = Socialite::driver($provider)->stateless()->user();
         $user = $this->createUser($getInfo,$provider);
         if(!$user['error']){
-              return redirect()->to('http://localhost:3000/login?access_token='.$user['access_token'].'&avatar='.$user['avatar'].'&first_name='.$user['first_name'].'&last_name='.$user['last_name'].'&avatar_google='.$user['avatar_google']);
+              return redirect()->to('http://localhost:3000/login?access_token='.$user['access_token'].'&avatar='.$user['avatar'].'&first_name='.$user['first_name'].'&last_name='.$user['last_name'].'&avatar_google='.$user['avatar_google'].'&id='.$user['id'].'&role='.$user['role']);
 
        }
        else{
@@ -63,6 +64,19 @@ function createUser($getInfo,$provider){
         'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
     ];   
     $account = User::create($postAccount);
+    $scoreFind= DB::table('score_setup')->get();
+    if(count($scoreFind)>0){
+        $scoreSetup=$scoreFind[0]->score;
+    }else{
+        $scoreSetup=500;
+    }
+    $postScore = [
+        'user_id'  =>$account->id,
+        'score'  => $scoreSetup,
+        'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+        'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
+    ];   
+    $score=UserScore::create($postScore);
     $count=DB::table('users')->where('email', $getInfo->email)->count();
     $employee=DB::table('users')->where('email', $getInfo->email)->get();
     $employeeFind = $employee[$count-1];
@@ -96,6 +110,8 @@ function createUser($getInfo,$provider){
         'email'    => $getInfo->email,
         'first_name'  => $getInfo->user['given_name'],
         'last_name'  => $getInfo->user['family_name'],
+        'role'=>0,
+        'id'=>$account->id
     ];
 }
 else{
@@ -120,6 +136,8 @@ else{
       'email'    => $result->email,
       'first_name'  =>  $result->first_name,
       'last_name'  =>  $result->last_name,
+      'role'=>auth()->user()->role,
+      'id'=>auth()->user()->id
   ];
 }
 }
