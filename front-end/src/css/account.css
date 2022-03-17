@@ -462,3 +462,9 @@ display: none;
   border: 1px solid #ff9900;
   background-color:#FFFF66;
 }
+#icon_like:hover {
+  color:blue;
+}
+#icon_comment:hover {
+  color:#ff9900;
+}

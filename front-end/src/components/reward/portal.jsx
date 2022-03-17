@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
@@ -14,17 +13,97 @@ import ApprovalIcon from '@mui/icons-material/Approval';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Modal from '@mui/material/Modal';
+import SendIcon from '@mui/icons-material/Send';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 const Portal = (props) => {
     const $token = localStorage.getItem('access_token');
     const role =localStorage.getItem('role');
     const id_user = localStorage.getItem('id');
+    const [showComment, setShowComment] = useState(false);
     const [render, setRender] = useState(false);
     const [employees, setEmployees]= useState([]);
-    const [users, setUsers]= useState([]);
     const [praise, setPraise]= useState([]);
+    const [like, setLike]= useState([]);
+    const [comment, setComment]= useState([]);
     const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
+      const [addComment, setAddComment] = useState({
+        praise_id:"",
+        messeger:"",
+      });
+    const sumLike=(id)=>{
+        var sum=0;
+        for(var i=0;i<like.lengh;i++){
+            if(like[i].praise_id===id){
+                sum=sum+1;
+            }
+        }
+        return sum;
+    }
+    const sumComment=(id)=>{
+        var sum=0;
+        for(var i=0;i<comment.length;i++){
+            if(comment[i].praise_id===id){
+                sum=sum+1;
+            }
+        }
+        return sum;
+    }
+    const checkLike=(id)=>{
+        for(var i=0;i<like.length;i++){
+            if((like[i].user_id==id_user)&&(like[i].praise_id==id)){
+               return true;
+            }
+        }
+        return false;
+    }
+    const onChangeAddComment=(event)=>{
+        setAddComment({...addComment,["messeger"]:event.target.value});
+    }
+    const onClickAddComment=(event,id)=>{
+        setAddComment({...addComment,["praise_id"]:id});
+        setShowComment(!showComment);
+    }
+    const clickShowComment=()=>{
+        setShowComment(!showComment);
+    }
+    const onChangeAddLike = (e,id) => {
+        const _formData = new FormData();
+        _formData.append('praise_id', id);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/praise/createLike', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+              }else{
+                    setRender(!render);
+              }
+            });
+    };
+    const onAddComment = (e) => {
+        const _formData = new FormData();
+        _formData.append('praise_id', addComment.praise_id);
+        _formData.append('messeger', addComment.messeger);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/praise/createComment', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+              }else{
+                    setRender(!render);
+              }
+            });
+    };
     const getEmployees = () =>{
         fetch(process.env.REACT_APP_API+'/employee/getAllEmployee', {
             method: "GET",
@@ -32,10 +111,29 @@ const Portal = (props) => {
           })
         .then(response => response.json())
         .then(data =>  {
-              setUsers(data.data[0].reverse());
               setEmployees(data.data[1].reverse());
         });
     }
+    const getLike = () =>{
+        fetch(process.env.REACT_APP_API+'/praise/getAllLike', {
+            method: "GET",
+            headers: {"Authorization": `Bearer `+$token}
+          })
+        .then(response => response.json())
+        .then(data =>  {
+              setLike(data.data.reverse());
+        });
+    }
+        const getComment= () =>{
+            fetch(process.env.REACT_APP_API+'/praise/getAllComment', {
+                method: "GET",
+                headers: {"Authorization": `Bearer `+$token}
+              })
+            .then(response => response.json())
+            .then(data =>  {
+                  setComment(data.data);
+            });
+        }
     const getPraise = () =>{
         fetch(process.env.REACT_APP_API+'/praise/getAllPraise', {
             method: "GET",
@@ -56,9 +154,6 @@ const Portal = (props) => {
             setPraise1(data.data);     
         });
     }
-    console.log(praise)
-    console.log(praise1)
-
     const onPublicPraise=(event,id)=>{
         fetch(process.env.REACT_APP_API+'/praise/changeStatus/'+id, {
             method: "GET",
@@ -165,6 +260,8 @@ const Portal = (props) => {
         if ($token) {
             getEmployees();
             getPraise();
+            getLike();
+            getComment();
             getPraise2();
         } else {
             navigate('/home');
@@ -177,6 +274,190 @@ const Portal = (props) => {
                 height: '100vh',
                 borderRadius: '5px',
             }}>
+            <Modal
+                open={showComment}
+                onClose={()=>clickShowComment()}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+            <Box
+                 sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    width: "50%",
+                    height:"90%",
+                    bgcolor: 'background.paper',
+                    border: '2px solid #ff9900',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius:"10px",
+                }}
+            >
+                <Box>
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item xs={4} sm={8} md={4}>
+                            <Typography 
+                                sx={{ 
+                                    fontWeight:"bold",
+                                    color:"rgb(35, 54, 78)"
+                                }} 
+                                variant="h6"
+                            >
+                                Comment List
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={6}></Grid>
+                        <Grid item xs={4} sm={8} md={2}>
+                            <Button 
+                                type="submit"
+                                onClick={()=>clickShowComment()}
+                                sx={{
+                                    height:40.5,
+                                    width:"100%",
+                                    border:"1px solid #ff9900",
+                                    backgroundColor:"rgb(204, 204, 204)", 
+                                    color:"#ff9900"
+                                }}
+                                size='medium' 
+                            >
+                                Cancel
+                            </Button>
+                        </Grid>  
+                    </Grid>
+                </Box>
+                <Box sx={{ width: "100%",height:"75%",overflowY:"auto",marginTop:"10px",marginBottom:"20px"}}>
+                    {
+                            comment.length
+                        ?
+                            comment.map((itemComment,index)=>{
+                                if(itemComment.praise_id==addComment.praise_id){
+                                return(
+                                <Grid item xs={4} sm={8} md={12} sx={{marginBottom:"10px"}}>
+                                <Box>
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 3 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                        sx={{marginTop:"20px"}}
+                                    >
+                                        <Grid item xs={2} sm={3} md={2}>
+                                            {employees.map((itemEmployee,index)=>{
+                                                if(itemComment.user_id==itemEmployee.user_id){
+                                                    if(itemEmployee.avatar){
+                                                        if(itemEmployee.avatar.search('https://') !== -1){
+                                                            return(
+                                                                <img
+                                                                style={{
+                                                                    height: "40px",
+                                                                    width: "40px",
+                                                                    objectFit: 'cover',
+                                                                    borderRadius: "100%",
+                                                                    float: "right",
+                                                                }}
+                                                                src={itemEmployee.avatar}
+                                                                >
+                                                            </img>
+                                                            );
+                                                        }else{
+                                                            return(
+                                                                <img
+                                                                style={{
+                                                                    height: "40px",
+                                                                    width: "40px",
+                                                                    objectFit: 'cover',
+                                                                    borderRadius: "100%",
+                                                                    float: "right",
+                                                                }}
+                                                                src={process.env.REACT_APP_FILE+'/avatar/'+itemEmployee.avatar}
+                                                                >
+                                                            </img>
+                                                            );
+                                                        }
+                                                    }
+                                                    else{
+                                                        return(
+                                                            <img
+                                                            style={{
+                                                                height: "40px",
+                                                                width: "40px",
+                                                                objectFit: 'cover',
+                                                                borderRadius: "100%",
+                                                                float: "right",
+                                                            }}
+                                                            src={process.env.REACT_APP_FILE+'/avatar/avatar.png'}
+                                                            >
+                                                        </img>
+                                                        );
+                                                    }
+                                                }else{
+                                                    return(
+                                                        null
+                                                    )
+                                                }
+                                            })}
+                                        </Grid>
+                                        <Grid item xs={2} sm={5} md={10} sx={{paddingRight:"40px"}}>
+                                            <Box
+                                                sx={{
+                                                    boxShadow:"rgb(95 125 149 / 15%) 0px 1px 3px 0px",
+                                                    borderRadius:"5px",
+                                                    backgroundColor:"#eeeeee",
+                                                    border:"1px solid #e0e0e0",
+                                                    padding:"5px"
+                                                }}
+                                            >
+                                                <Typography sx={{fontWeight:"600px",fontSize:"14px",color:"rgb(79, 94, 113)",lineHeight:"24px"}}>{itemComment.messeger}</Typography>
+                                            </Box>
+                                        </Grid>
+                                    </Grid>
+                                </Box>
+                            </Grid>
+                            )}})
+                        :
+                            null
+                    }
+                </Box>
+                <Box>
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item xs={4} sm={8} md={9}>
+                            <TextareaAutosize
+                                aria-label="minimum height"
+                                minRows={2}
+                                placeholder="Message"
+                                onChange={(event) => onChangeAddComment(event)}
+                                style={{ width: "100%",border:"1px solid rgb(200, 200, 200)",borderRadius:"5px",paddingTop:"5px",paddingLeft:"10px" }}
+                            />
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={3}>
+                            <Button
+                                onClick={(event)=>onAddComment(event)}
+                                sx={{ 
+                                    height:47,
+                                    width:"100%",
+                                    border:"1px solid #ff9900",
+                                    backgroundColor:"#FFFF66", 
+                                    color:"#ff9900",
+                                    padding:"10px"
+                                }} 
+                                variant="contained" endIcon={<SendIcon />}
+                            >
+                                Send
+                            </Button>
+                        </Grid>  
+                    </Grid>
+                </Box>
+            </Box>
+            </Modal>
             <Grid
                 container
                 spacing={{ xs: 2, md: 3 }}
@@ -883,8 +1164,20 @@ const Portal = (props) => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
-                                            <ThumbUpOutlinedIcon sx={{ marginRight: "10px" }} />
-                                            <ChatBubbleOutlineOutlinedIcon />
+                                            <Box sx={{display:"flex"}}>
+                                                {
+                                                    checkLike(item.id)
+                                                  ?
+                                                    <ThumbUpOutlinedIcon id="icon_like" sx={{ marginRight: "10px", color:"blue" }} />
+                                                  :
+                                                    <ThumbUpOutlinedIcon onClick={(event)=>onChangeAddLike(event,item.id)} id="icon_like" sx={{ marginRight: "10px" }} />
+                                                }
+                                                <Typography sx={{fontSize:"14px",color:"rgb(35, 54, 78)"}}>{(sumLike(item.id)!=0)?sumLike(item.id):null}</Typography>
+                                            </Box>
+                                            <Box sx={{display:"flex"}}>
+                                                <ChatBubbleOutlineOutlinedIcon onClick={(event)=>onClickAddComment(event,item.id)} id="icon_comment" sx={{ marginRight: "10px" }} />
+                                                <Typography sx={{fontSize:"14px",color:"rgb(35, 54, 78)"}}>{(sumComment(item.id)!=0)?sumComment(item.id):null}</Typography>
+                                            </Box>
                                         </Grid>
                                     </Grid>
                                 </Box>

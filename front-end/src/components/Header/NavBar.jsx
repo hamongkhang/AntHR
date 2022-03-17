@@ -157,15 +157,15 @@ const NavBar = (props) => {
                             >
                                 <Avatar 
                                     src={
-                                        localStorage.getItem('avatar')
+                                        (localStorage.getItem('avatar')==="null")
+                                        ?
+                                            process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                        :
+                                            (localStorage.getItem('avatar').search('https://') != -1)
                                             ?
-                                                (localStorage.getItem('avatar').search('https://') != -1)
-                                                ?
-                                                    localStorage.getItem('avatar')
-                                                :
-                                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
+                                                localStorage.getItem('avatar')
                                             :
-                                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                                process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
                                     }
                                     sx={{ width: 24, height: 24 }} variant='circular'>
                                 </Avatar>
