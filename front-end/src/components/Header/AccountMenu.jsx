@@ -3,6 +3,9 @@ import { Menu, MenuItem, IconButton, Typography } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Link } from 'react-router-dom';
+import Grid from "@mui/material/Grid";
+import Box from '@mui/material/Box';
+import { Tabs, Tab, Badge, Container, Toolbar, Avatar } from "@mui/material";
 
 const AccountMenu = (props) => {
     const { menuId } = props
@@ -10,6 +13,11 @@ const AccountMenu = (props) => {
     const { handleMenuClose } = props
     const { anchorEl } = props
     const { handleLogout } = props
+    const $token=localStorage.getItem('access_token');
+    const email=localStorage.getItem('email');
+    const last_name=localStorage.getItem('last_name');
+    const first_name=localStorage.getItem('first_name');
+
     return (
         <Menu
             anchorEl={anchorEl}
@@ -54,28 +62,46 @@ const AccountMenu = (props) => {
             }}
         >
             <MenuItem onClick={handleMenuClose} to='profile/overview' component={Link}>
-                <IconButton
-                    size="small"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <Typography>My Account</Typography>
-            </MenuItem>
-            <MenuItem onClick={handleLogout}>
-                <IconButton
-                    size="small"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <LogoutIcon />
-                </IconButton>
-                <Typography>Logout</Typography>
+                    <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    
+                    >
+                    <Grid item xs={4} sm={8} md={12}>
+                        <Box sx={{textAlign:"center",paddingTop:"20px",paddingBottom:"10px",paddingLeft:"20px",paddingRight:"20px",borderBottom:"1.5px solid rgb(235, 240, 244)"}}>
+                        <img 
+                            style={{
+                                height: "60px",
+                                width: "60px",
+                                objectFit: 'cover',
+                                borderRadius: "100%",
+                                marginBottom:"20px"
+                            }}  
+                            src={
+                                localStorage.getItem('avatar')
+                                ?
+                                    (localStorage.getItem('avatar').search('https://') != -1)
+                                    ?
+                                        localStorage.getItem('avatar')
+                                    :
+                                        process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
+                                :
+                                     process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                }
+                        >
+                        </img>
+                        <Typography sx={{fontSize:"15px",lineHeight:"20px",fontWeight:"bold",color:"rgb(60, 82, 100)"}}>{last_name+" "+first_name}</Typography>
+                        <Typography sx={{fontSize:"14px",lineHeight:"20px",color:"rgb(95, 125, 149)"}}>{email}</Typography>
+                        </Box>
+                        <Box sx={{textAlign:"center",padding:"10px",borderBottom:"1.5px solid rgb(235, 240, 244)"}}>
+                            <Typography sx={{fontSize:"14px",lineHeight:"20px",color:"rgb(101, 114, 131)"}}>View Profile</Typography>
+                        </Box>
+                        <Box sx={{textAlign:"center",padding:"10px"}}>
+                            <Typography onClick={handleLogout} sx={{fontSize:"14px",lineHeight:"20px",color:"rgb(101, 114, 131)"}}>Log out</Typography>
+                        </Box>
+                    </Grid>
+            </Grid>
             </MenuItem>
         </Menu>
     )
