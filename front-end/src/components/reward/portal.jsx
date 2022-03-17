@@ -27,6 +27,83 @@ const Portal = (props) => {
     const [comment, setComment]= useState([]);
     const [praise1, setPraise1]= useState([]);
     const navigate = useNavigate();
+    const [errorComment, setErrorComment] = useState({
+        praise_id:null,
+        messeger:null,
+      });
+      const [addComment, setAddComment] = useState({
+        praise_id:"",
+        messeger:"",
+      });
+      const [errorLike, setErrorLike] = useState({
+        praise_id:null,
+      });
+      const [addLike, setAddLike] = useState({
+        praise_id:'',
+      });
+    const onChangeAddComment=(event)=>{
+        setAddComment({...addComment,["messeger"]:event.target.value});
+    }
+    const onClickAddComment=(event,id)=>{
+        setAddComment({...addComment,["praise_id"]:id});
+    }
+    const onChangeAddLike = (e,id) => {
+        const _formData = new FormData();
+        _formData.append('praise_id', id);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/praise/createLike', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+                  setErrorLike(json.error);
+              }else{
+                toast.success(`Congratulations, Successfully !!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });       
+                    setErrorLike('');
+                    setRender(!render);
+              }
+            });
+    };
+    const onAddComment = (e) => {
+        const _formData = new FormData();
+        _formData.append('praise_id', addComment.praise_id);
+        _formData.append('messeger', addComment.messeger);
+        const requestOptions = {
+            method: 'POST',
+            body: _formData,
+            headers: {"Authorization": `Bearer `+$token}
+        };
+        fetch(process.env.REACT_APP_API+'/praise/createComment', requestOptions)
+            .then((res) => res.json())
+            .then((json) => {
+              if(json.error){
+                  setErrorComment(json.error);
+              }else{
+                toast.success(`Congratulations, Successfully !!!`, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });       
+                    setErrorLike('');
+                    setRender(!render);
+              }
+            });
+    };
     const getEmployees = () =>{
         fetch(process.env.REACT_APP_API+'/employee/getAllEmployee', {
             method: "GET",
@@ -904,8 +981,8 @@ const Portal = (props) => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={4} sm={8} md={12}>
-                                            <ThumbUpOutlinedIcon id="icon_like" sx={{ marginRight: "10px" }} />
-                                            <ChatBubbleOutlineOutlinedIcon id="icon_comment" />
+                                            <ThumbUpOutlinedIcon onClick={(event)=>onChangeAddLike(event,item.id)} id="icon_like" sx={{ marginRight: "10px" }} />
+                                            <ChatBubbleOutlineOutlinedIcon onClick={(event)=>onClickAddComment(event,item.id)} id="icon_comment" />
                                         </Grid>
                                     </Grid>
                                 </Box>

@@ -310,15 +310,15 @@ const  Commendation=(props)=>{
                         marginLeft:"auto",
                     }} 
                     src={
-                        localStorage.getItem('avatar')
+                        (localStorage.getItem('avatar')==="null")
                             ?
+                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                            :
                                 (localStorage.getItem('avatar').search('https://') != -1)
                                 ?
                                     localStorage.getItem('avatar')
                                 :
                                     process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
-                            :
-                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
                     }>
                 </img>&ensp;&ensp;
                 <Typography 
@@ -567,15 +567,15 @@ const  Commendation=(props)=>{
                                         borderRadius: "100%",
                                     }} 
                                     src={
-                                        localStorage.getItem('avatar')
-                                            ?
-                                                (localStorage.getItem('avatar').search('https://') != -1)
-                                                ?
-                                                    localStorage.getItem('avatar')
-                                                :
-                                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
-                                            :
-                                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                        (localStorage.getItem('avatar')==="null")
+                            ?
+                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                            :
+                                (localStorage.getItem('avatar').search('https://') != -1)
+                                ?
+                                    localStorage.getItem('avatar')
+                                :
+                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
                                     }>
                                 </img>
                             </Grid>  

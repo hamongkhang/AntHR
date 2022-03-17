@@ -79,15 +79,15 @@ const AccountMenu = (props) => {
                                 marginBottom:"20px"
                             }}  
                             src={
-                                localStorage.getItem('avatar')
+                                (localStorage.getItem('avatar')==="null")
+                            ?
+                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                            :
+                                (localStorage.getItem('avatar').search('https://') != -1)
                                 ?
-                                    (localStorage.getItem('avatar').search('https://') != -1)
-                                    ?
-                                        localStorage.getItem('avatar')
-                                    :
-                                        process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
+                                    localStorage.getItem('avatar')
                                 :
-                                     process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
                                 }
                         >
                         </img>
@@ -97,9 +97,20 @@ const AccountMenu = (props) => {
                         <Box sx={{textAlign:"center",padding:"10px",borderBottom:"1.5px solid rgb(235, 240, 244)"}}>
                             <Typography sx={{fontSize:"14px",lineHeight:"20px",color:"rgb(101, 114, 131)"}}>View Profile</Typography>
                         </Box>
-                        <Box sx={{textAlign:"center",padding:"10px"}}>
-                            <Typography onClick={handleLogout} sx={{fontSize:"14px",lineHeight:"20px",color:"rgb(101, 114, 131)"}}>Log out</Typography>
-                        </Box>
+                    </Grid>
+            </Grid>
+            </MenuItem>
+            <MenuItem>
+            <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    
+                    >
+                    <Grid item xs={4} sm={8} md={12}>
+                        <Box sx={{textAlign:"center"}}>
+                    <Typography onClick={handleLogout} sx={{fontSize:"14px",lineHeight:"20px",alignItems:"center",color:"rgb(101, 114, 131)"}}>Log out</Typography>
+                    </Box>
                     </Grid>
             </Grid>
             </MenuItem>
