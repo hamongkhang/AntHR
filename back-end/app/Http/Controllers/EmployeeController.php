@@ -37,7 +37,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['exportEmployee']]);
+        $this->middleware('auth:api', ['except' => ['exportEmployee','createAccount']]);
     }
 
          /**
@@ -226,8 +226,8 @@ class EmployeeController extends Controller
             ], 201);
        }else{
         return response()->json([
-            'error'=>1,
-            'description'=>'No one account',
+            'code'=>1,
+            'error'=>'No one account',
         ], 401);
        }
     }
