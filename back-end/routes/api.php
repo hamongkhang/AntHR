@@ -140,6 +140,11 @@ Route::get('/google-drive/callback', [App\Http\Controllers\SocialController::cla
 Route::get('/google-drive/getGoogleDrive/{access_token_google_drive}', [App\Http\Controllers\SocialController::class, 'getGoogleDrive'])->name('google_document.getGoogleDrive');
 Route::get('/google-drive/{access_token_google_drive}/{id}/{folder_id}/uploadGoogleDrive', [App\Http\Controllers\SocialController::class, 'uploadGoogleDrive'])->name('google_document.uploadGoogleDrive');
 
+////////////////////////////////////// Company APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/company/getCompany', [App\Http\Controllers\CompanyController::class, 'getCompany'])->name('company.getCompany');
+Route::post('/company/updateCompany/{id}', [App\Http\Controllers\CompanyController::class, 'updateCompany'])->name('company.updateCompany');
+Route::post('/company/changeLogo/{id}', [App\Http\Controllers\CompanyController::class, 'changeLogo'])->name('company.changeLogo');
+
 
 
 

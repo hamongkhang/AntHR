@@ -21,6 +21,7 @@ import DocumentView from "../document/view";
 import CheckGoogleDrive from "../document/check_google";
 import EmployeeDetail from '../employees/employeeDetail';
 import Point from "../employees/point";
+import Company from '../company/Company';
 
 const drawerWidth = 240;
 
@@ -108,6 +109,8 @@ const Home = (props) => {
                         
                         <Route path="documents" element={<p>documents</p>}/>
                         <Route path="documents/:id" element={<p>documents detail</p>}/>
+
+                        <Route path="company" element={<Company></Company>}/>
                     </Routes>
                 </Main>
             </Box>
