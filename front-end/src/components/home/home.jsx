@@ -22,6 +22,7 @@ import CheckGoogleDrive from "../document/check_google";
 import EmployeeDetail from '../employees/employeeDetail';
 import Point from "../employees/point";
 import Company from '../company/Company';
+import Dashboard from '../dashboard';
 
 const drawerWidth = 240;
 
@@ -111,6 +112,7 @@ const Home = (props) => {
                         <Route path="documents/:id" element={<p>documents detail</p>}/>
 
                         <Route path="company" element={<Company></Company>}/>
+                        <Route path="/" element={<Dashboard/>}/>
                     </Routes>
                 </Main>
             </Box>

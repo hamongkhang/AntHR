@@ -133,7 +133,7 @@ const NavBar = (props) => {
                                 {
                                     tabs.map((tab) => {
                                         if (role == 1) {
-                                            return(
+                                            return (
                                                 <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
                                                     sx={{ color: 'white', fontWeight: '600', display: 'block' }}
                                                 ></Tab>
@@ -141,7 +141,7 @@ const NavBar = (props) => {
                                         }
                                         else {
                                             if (tab.value != 'employees') {
-                                                return(
+                                                return (
                                                     <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
                                                         sx={{ color: 'white', fontWeight: '600', display: 'block' }}
                                                     ></Tab>
@@ -228,13 +228,19 @@ const NavBar = (props) => {
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
                         }}>Company Information</Typography>
+                        <Typography sx={{
+                            display: window.location.pathname == '/home' != -1 ? 'block' : 'none',
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight: 600
+                        }}>Dashboard</Typography>
                     </Box>
                     <Box justifyContent='space-around' sx={{
                         width: 1,
                         display:
                             window.location.pathname.search('profile') != -1 ||
-                                window.location.pathname.search('employees/detail') != -1 ||
-                                window.location.pathname.search('/company') != -1 ? 'none' : 'flex',
+                            window.location.pathname.search('employees/detail') != -1 ||
+                            window.location.pathname.search('/company') != -1 ||
+                            window.location.pathname=='/home' ? 'none' : 'flex',
                     }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {
