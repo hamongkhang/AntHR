@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Avatar, Typography, Divider } from '@mui/material'
+import { Box, Grid, Paper, Avatar, Typography, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 import React, { useEffect } from 'react'
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -7,13 +7,22 @@ import TimingEvent from './TimingEvent';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import FactCheckIcon from '@mui/icons-material/FactCheck';
+import QRcode from './QRcode';
 
 const Dashboard = () => {
   const [firstIn, setFirstIn] = React.useState('');
   const [lastOut, setLastOut] = React.useState('');
   const [liveTime, setLiveTime] = React.useState(new Date());
+  const [open, setOpen] = React.useState(false);
   const date = new Date();
   const datestring = `Today: ${date.getDate()} - ${date.getMonth() + 1} - ${date.getFullYear()}`;
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   useEffect(() => {
     setInterval(() => setLiveTime(new Date()), 30000);
   }, []);
@@ -48,7 +57,7 @@ const Dashboard = () => {
           </Box>
           <Grid container columns={{ xs: 2, md: 4 }} sx={{ mr: 3 }}>
             <Grid item xs={2} md={2} sx={{ mb: 2, pt: 3, pl: 3 }}>
-              <Box sx={{ p: 2, borderRight:{md: '1px solid rgb(227, 235, 241)', xs:'none'}}}>
+              <Box sx={{ p: 2, borderRight: { md: '1px solid rgb(227, 235, 241)', xs: 'none' } }}>
                 <Box sx={{ display: 'flex' }} justifyContent='space-between'>
                   <Typography sx={{ ml: 2, color: 'black', fontSize: '16px', fontWeight: 600 }} variant='subtitle1'>Time-off</Typography>
                   <Typography sx={{ ml: 2, color: 'orange', fontSize: '13px' }} variant='subtitle1'>0 pending</Typography>
@@ -100,13 +109,19 @@ const Dashboard = () => {
           </Box>
           <Grid container columns={{ xs: 1, md: 2 }} sx={{ backgroundColor: 'rgb(238 243 246)', pt: 2 }}>
             <Grid item xs={1} md={1} sx={{ mb: 2, pl: 1 }} >
-              <Typography sx={{ mx: 3 }} variant='body2'>First in: {firstIn} </Typography>
+              <Typography sx={{ mx: 3 }} variant='body2'>First in: - : - : - </Typography>
             </Grid>
             <Grid item xs={1} md={1} sx={{ mb: 2, pl: 1 }}>
-              <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>Last out: {lastOut} </Typography>
+              <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>Last out: - : - : - </Typography>
             </Grid>
           </Grid>
-          <Timer firstIn={firstIn} lastOut={lastOut} setFirstIn={setFirstIn} setLastOut={setLastOut}></Timer>
+          <Button variant="contained" onClick={handleClickOpen}
+            sx={{ mt: 3, width: '100%' }}>
+            <Typography variant="body1" sx={{ fontSize: '20px', fontWeight: 500, color: 'white' }}>
+              Attendance
+            </Typography>
+          </Button>
+          {/* <Timer firstIn={firstIn} lastOut={lastOut} setFirstIn={setFirstIn} setLastOut={setLastOut}></Timer> */}
         </Paper>
         <Paper sx={{ mt: { xs: 3, md: 2 }, p: 1 }}>
           <Box sx={{ display: 'flex', m: 3 }} justifyContent='space-between'>
@@ -128,6 +143,31 @@ const Dashboard = () => {
           </Box>
         </Paper>
       </Box>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="draggable-dialog-title"
+        sx={{ p: 3 }}
+      >
+        <DialogTitle id="draggable-dialog-title">
+          QRCode
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your QR code is:
+          </DialogContentText>
+          <QRcode></QRcode>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#AEB6BF ', color: 'white', '&:hover': { backgroundColor: '#808B96' }, mb: 2, mr: 2 }}
+            onClick={handleClose}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }

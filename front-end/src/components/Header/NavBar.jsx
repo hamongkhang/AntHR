@@ -229,7 +229,7 @@ const NavBar = (props) => {
                             fontSize: 25, fontWeight: 600
                         }}>Company Information</Typography>
                         <Typography sx={{
-                            display: window.location.pathname == '/home' != -1 ? 'block' : 'none',
+                            display: window.location.pathname == '/home'? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
                         }}>Dashboard</Typography>

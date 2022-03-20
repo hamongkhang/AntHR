@@ -48,6 +48,15 @@ const LeftBoxInfor = (props) => {
                 <LanguageOutlinedIcon fontSize='small' />
                 <Typography sx={{ ml: 4, color: 'black' }} variant='body2'>GMT +07:00</Typography>
             </Box>
+            <Divider sx={{ mx: 3, my: 2 }} />
+            <Box sx={{ display: 'block', ml: 3, mt: 1 }}>
+                <Typography variant='subtitle1'>DEPARTMENT</Typography>
+                <Typography variant='body2' sx={{ color: 'black' }}>Department name</Typography>
+            </Box>
+            <Box sx={{ display: 'block', ml: 3, mt: 1 }}>
+                <Typography variant='subtitle1'>OFFICE</Typography>
+                <Typography variant='body2' sx={{ color: 'black' }}>Office name</Typography>
+            </Box>
             <Divider sx={{ mx: 3, mt: 2, mb: 20, lg: { mb: 10 }, display: { md: 'block', xs: 'none' } }} />
         </Item>
     )
