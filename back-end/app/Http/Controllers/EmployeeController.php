@@ -137,11 +137,11 @@ class EmployeeController extends Controller
         $score=UserScore::create($postScore);
         $employee = Employee::create($postEmployee);
         $dataSendMail = [
-            'description'=>'notiChangePasswordSuccess',
-            'title' => 'Cập nhật mật khẩu thành công',
-            'content'=>'Đổi mật khẩu thành công'
+            'description'=>'createNewEmployee',
+            'title' => ' Create a new employee',
+            'content'=>"You were created a successful employee's profile"
         ];
-         SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
+         SendEmail::dispatch($dataSendMail, auth()->user()->email)->delay(now());
         return response()->json([
             'message' => 'Create employee successfully',
             'user' => $employeeFind

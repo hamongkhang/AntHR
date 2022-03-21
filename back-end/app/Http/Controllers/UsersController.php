@@ -286,8 +286,8 @@ class UsersController extends Controller
         //Send mail notification Register account success
         $dataSendMail = [
             'description'=>'notiRegisterSuccess',
-            'title' => 'Đăng kí tài khoản thành công',
-            'content'=>"Chúc mừng bạn đã đăng kí tài khoản thành công tại AntHR của chúng tôi, truy cập trang web để có những bài học bổ ích."
+            'title' => ' Successful account registration',
+            'content'=>"Congratulations, you have successfully registered an account at our AntHR"
         ];
         SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
         return Response()->json(array("successfully"=> 1,"account"=>$postAccount));
@@ -440,9 +440,9 @@ class UsersController extends Controller
         // Mail send new code for new account register
         $dataSendMail = [
             'description'=>'getNewCode',
-            'title' => 'Mã xác nhận đăng kí',
-            'content'=>'Để xác nhận đăng kí, vui lòng nhập mã xác nhận ở bên dưới',
-            'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
+            'title' => ' Registration confirmation code',
+            'content'=>'To confirm,  Please enter using the code below',
+            'note'=>'note: The code has a distinction between uppercase and lowercase characters.',
             'code'=>$code
         ];
         SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
@@ -466,9 +466,9 @@ class UsersController extends Controller
           // Mail send new code for new account register
          $dataSendMail = [
             'description'=>'getNewCode',
-            'title' => 'Xác nhận email đăng kí',
-            'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-            'content'=>'Để xác nhận đăng kí, vui lòng nhập mã xác nhận ở bên dưới',
+            'title' => ' Confirm email',
+            'note'=>'note: The code has a distinction between uppercase and lowercase characters.',
+            'content'=>'To confirm,  Please enter using the code below',
             'code'=>$code
         ];
          SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
@@ -572,8 +572,8 @@ class UsersController extends Controller
         // Mail notification about change password success
          $dataSendMail = [
             'description'=>'notiChangePasswordSuccess',
-            'title' => 'Cập nhật mật khẩu thành công',
-            'content'=>'Đổi mật khẩu thành công'
+            'title' => ' Update Password Successful',
+            'content'=>'Change Password Successful'
         ];
          SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
         return response()->json([
@@ -629,13 +629,14 @@ class UsersController extends Controller
                     // Mail send code for account forgot password
                     $dataSendMail = [
                         'description'=>'getCodeForgot',
-                        'title' => 'Xác nhận thay đổi mật khẩu',
-                        'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-                        'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-                        'code'=>$code
+                        'title' => ' Confirm change password',
+                        'note'=>'Note: The code has a distinction between uppercase and lowercase characters.',
+                        'content'=>'To Confirm change password, Please enter using the code below ',
+                        'code'=>$code,
+                        'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
                     ];
                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
-                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email ));    
+                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email, 'code'=>$code ));    
                 }else{
                     $postArrayRes = [
                         'email'     => $request->email,
@@ -647,13 +648,14 @@ class UsersController extends Controller
                     // Mail send code for account forgot password
                      $dataSendMail = [
                         'description'=>'getCodeForgot',
-                        'title' => 'Xác nhận thay đổi mật khẩu',
-                        'note'=>'Chú ý: Mã có sự phân biệt kí tự hoa và kí tự thường.',
-                        'content'=>'Để xác nhận thay đổi mật khẩu, vui lòng nhập mã xác nhận ở bên dưới',
-                        'code'=>$code
+                        'title' => ' Confirm change password',
+                        'note'=>'Note: The code has a distinction between uppercase and lowercase characters.',
+                        'content'=>'TO Confirm change password, Please enter using the code below ',
+                        'code'=>$code,
+                        'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
                     ];
                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
-                   return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email ));
+                   return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email, 'code'=>$code ));
                 }
         }else{
             return response()->json([
@@ -728,8 +730,9 @@ class UsersController extends Controller
             // Mail notification for change password success for account forgot
             $dataSendMail = [
                 'description'=>'notiChangePasswordSuccess',
-                'title' => 'Xác nhận thay đổi mật khẩu',
-                'content'=>'Mật khẩu đã được thay đổi'
+                'title' => ' Confirm change password',
+                'content'=>'Password was changed',
+                'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
             ];
             SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
             return response()->json([

@@ -122,7 +122,7 @@
       }
       .btn.btn-primary{
           border-radius: 5px;
-          background: #17bebb;
+          background: 'rgb(255, 153, 0)';
           color: #ffffff;
       }
       .btn.btn-white{
@@ -259,14 +259,14 @@
   </style>
 </head>
 <body style="background-color: #f1f1f1;padding: 10vh;font-family: 'Poppins', sans-serif;">
-  <div style="background-color: white; width: 600px;height: 600px;margin: 0 auto; padding: 50px;">
+  <div style="background-color: white; width: 400px; height: 400px; margin: 0 auto; padding: 50px;">
       <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
           <tr>
           <td valign="top" class="bg_white" style="padding: 1em 2.5em 0 2.5em;">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                       <td class="logo" style="text-align: center;">
-                        <h1 style="color: #17bebb;">Email thông báo</h1>
+                        <h1 style="color: rgb(255, 153, 0);">[AntHR] Notification</h1>
                       </td>
                   </tr>
               </table>
@@ -278,18 +278,15 @@
                 <tr>
                     <td style="padding: 0 2.5em; text-align: center; padding-bottom: 3em;">
                         <div class="text">
-                           <h2>{{$data['title']}}</h2>
+                           <h3>{{$data['title']}}</h3>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td style="text-align: center;">
                     <div class="text-author">
-                        <img src="logo" alt="" style="width: 100px; max-width: 600px; height: auto; margin: auto; display: block;">
-                        <h3 class="name">Thông báo</h3>
+                        <img alt="" src="" style="width: 100px; max-width: 600px; height: auto; margin: auto; display: block;">
                         <span class="position">{{$data['content']}}</span>
-                        <p><a href="#" class="btn btn-primary">Truy cập</a></p>
-                        {{-- <p><a href="#" class="btn-custom">Ignore Request</a></p> --}}
                     </div>
                     </td>
                 </tr>

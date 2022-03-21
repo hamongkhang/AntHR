@@ -97,7 +97,7 @@
   <style>
 
       .primary{
-          background: #17bebb;
+          background: 'rgb(255, 153, 0)';
       }
       .bg_white{
           background: #ffffff;
@@ -122,7 +122,7 @@
       }
       .btn.btn-primary{
           border-radius: 5px;
-          background: #17bebb;
+          background: 'rgb(255, 153, 0)';
           color: #ffffff;
       }
       .btn.btn-white{
@@ -232,12 +232,11 @@
         width:300px;
         height:40px;
         border-radius: 5px;
-        border:solid grey;
-        background-color: darkorange;
-        color:red;
+        border:2px solid orange;
+        background-color: white;
       }
       .nut h1{
-        color:red;
+        color:orange;
       }
       .footer{
           border-top: 1px solid rgba(0,0,0,.05);
@@ -276,7 +275,7 @@
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                   <tr>
                       <td class="logo" style="text-align: center;">
-                        <h1 style="color: #17bebb;">Email xác nhận</h1>
+                        <h1 style="color: rgb(255, 153, 0);">[AntHR] Verification</h1>
                       </td>
                   </tr>
               </table>
@@ -295,12 +294,12 @@
                 <tr>
                     <td style="text-align: center;">
                     <div class="text-author">
-                        <img src="logo" alt="" style="width: 100px; max-width: 600px; height: auto; margin: auto; display: block;">
+                        <img alt="" src="" style="width: 100px; max-width: 600px; height: auto; margin: auto; display: block;">
                         <span class="position">{{$data['content']}}</span>
-                        <h3 class="name"><b>Mã xác nhận:<b></h3>
+                        <h3 class="name"><b>Verify code:<b></h3>
                         <p><div class="nut"><h1><b><i>{{$data['code']}}<i><b></h1></div></p>
                         <span class="position">{{$data['note']}}</span>
-                        <p><a href="" class="btn btn-primary">Nhập mã</a></p>
+                        <p><a href="" class="btn btn-primary">Enter code</a></p>
                         {{-- <p><a href="#" class="btn-custom">Ignore Request</a></p> --}}
                     </div>
                     </td>
