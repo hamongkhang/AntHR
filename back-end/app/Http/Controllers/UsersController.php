@@ -633,7 +633,7 @@ class UsersController extends Controller
                         'note'=>'Note: The code has a distinction between uppercase and lowercase characters.',
                         'content'=>'To Confirm change password, Please enter using the code below ',
                         'code'=>$code,
-                        'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
+                        'link'=>'http://localhost:3000/forgot-password'
                     ];
                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
                     return Response()->json(array("Successfully. Please check code your email!"=> 1,"email"=>$user->email, 'code'=>$code ));    
@@ -652,7 +652,7 @@ class UsersController extends Controller
                         'note'=>'Note: The code has a distinction between uppercase and lowercase characters.',
                         'content'=>'TO Confirm change password, Please enter using the code below ',
                         'code'=>$code,
-                        'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
+                        'link'=>'http://localhost:3000/forgot-password'
                     ];
                     SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
                    return Response()->json(array("Successfully. Please check code your email!"=> 1,"data"=>$request->email, 'code'=>$code ));
@@ -731,8 +731,7 @@ class UsersController extends Controller
             $dataSendMail = [
                 'description'=>'notiChangePasswordSuccess',
                 'title' => ' Confirm change password',
-                'content'=>'Password was changed',
-                'logo'=>'http://127.0.0.1:8000/upload/logo/logo1.png'
+                'content'=>'Password was changed'
             ];
             SendEmail::dispatch($dataSendMail, $data->email)->delay(now());
             return response()->json([

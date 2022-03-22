@@ -160,7 +160,7 @@ const NavBar = (props) => {
                                 color="inherit"
                                 sx={{ display: role == 1 ? 'block' : 'none' }}
                                 component={Link} to='/home/company'>
-                                <ApartmentIcon />
+                                <ApartmentIcon sx={{mb:'8px'}} />
                             </IconButton>
                             <IconButton
                                 size="large"
@@ -229,7 +229,7 @@ const NavBar = (props) => {
                             fontSize: 25, fontWeight: 600
                         }}>Company Information</Typography>
                         <Typography sx={{
-                            display: window.location.pathname == '/home'? 'block' : 'none',
+                            display: window.location.pathname == '/home' ? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
                         }}>Dashboard</Typography>
@@ -238,9 +238,9 @@ const NavBar = (props) => {
                         width: 1,
                         display:
                             window.location.pathname.search('profile') != -1 ||
-                            window.location.pathname.search('employees/detail') != -1 ||
-                            window.location.pathname.search('/company') != -1 ||
-                            window.location.pathname=='/home' ? 'none' : 'flex',
+                                window.location.pathname.search('employees/detail') != -1 ||
+                                window.location.pathname.search('/company') != -1 ||
+                                window.location.pathname == '/home' ? 'none' : 'flex',
                     }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {

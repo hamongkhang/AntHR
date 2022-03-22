@@ -138,13 +138,15 @@ class EmployeeController extends Controller
         $employee = Employee::create($postEmployee);
         $dataSendMail = [
             'description'=>'createNewEmployee',
-            'title' => ' Create a new employee',
-            'content'=>"You were created a successful employee's profile"
+            'title' => 'Active your account',
+            'content'=>"Please access link below to active your account",
+            'link'=>'http://localhost:3000/active_account',
+            'logo'=>'http://localhost:8000/upload/logo/logo1.png'
         ];
-         SendEmail::dispatch($dataSendMail, auth()->user()->email)->delay(now());
+         SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
         return response()->json([
             'message' => 'Create employee successfully',
-            'user' => $employeeFind
+            'user' => $employeeFind,
             ], 201);
         }else{
             return response()->json([
