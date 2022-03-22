@@ -1,0 +1,2828 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Education website with Swagger",
+        "description": "Getting started with Laravel and Swagger",
+        "termsOfService": "",
+        "contact": {
+            "email": "name@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/api/account/blockAccount/{id}": {
+            "get": {
+                "description": "Return a account's information",
+                "responses": {
+                    "200": {
+                        "description": "Block or Active account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Failed!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/account/authoriseAccount/": {
+            "post": {
+                "description": "Return a employee's information",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Account ID",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Account role",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Change authorise account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/account/userProfile": {
+            "get": {
+                "description": "Return a profile's information",
+                "responses": {
+                    "200": {
+                        "description": "Block or Active account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Failed!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_present/destroyCartPresent/{id}": {
+            "delete": {
+                "description": "Return cart present's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete cart present successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "user_id": {
+                                    "type": "integer"
+                                },
+                                "present_id": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_present/changeStatusAdmin/{id}": {
+            "get": {
+                "description": "Return cart present's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete cart present successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "user_id": {
+                                    "type": "integer"
+                                },
+                                "present_id": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/cart_present/changeStatusClient/{id}": {
+            "get": {
+                "description": "Return cart present's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete cart present successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "user_id": {
+                                    "type": "integer"
+                                },
+                                "present_id": {
+                                    "type": "integer"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/createDocument": {
+            "post": {
+                "description": "Return document's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document's name",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Document's size",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "folder_id",
+                        "in": "query",
+                        "description": "Document's folder",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create folder successfully",
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/updateDocument/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document's Name",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Document's size",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "folder_id",
+                        "in": "query",
+                        "description": "Document's folder",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/destroyDocument/{id}": {
+            "delete": {
+                "description": "Return document's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete document successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/downloadDocument/{id}": {
+            "get": {
+                "description": "Return document's information",
+                "responses": {
+                    "200": {
+                        "description": "Download document successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "text"
+                                },
+                                "folder_id": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/createFolder": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document folder's name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Document folder's description",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "share",
+                        "in": "query",
+                        "description": "Document folder's share",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create folder successfully",
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/getAllFolder": {
+            "get": {
+                "description": "Return all document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/getOneFolder/id": {
+            "get": {
+                "description": "Return one document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "size": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/updateFolder/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Document folder's Name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Document folder's description",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/destroyFolder/{id}": {
+            "delete": {
+                "description": "Return document folder's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/document/changeShare/{id}": {
+            "post": {
+                "description": "Return document folder's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Update folder successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "share": {
+                                    "type": "integer"
+                                },
+                                "sum": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/employee/createAccount/": {
+            "post": {
+                "description": "Return a account's information",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "> 8 char ",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "confirm_password",
+                        "in": "query",
+                        "description": "> 8 char and same password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Account's email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "send_mail",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create account successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one account!"
+                    }
+                }
+            }
+        },
+        "/api/employee/getOneEmployee/{id}": {
+            "get": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Get employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/employee/getAllEmployee/": {
+            "get": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Get employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "No one!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/employee/destroyEmployee/{id}": {
+            "delete": {
+                "description": "Return a employee's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete employee successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Delete failed!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/createNew": {
+            "post": {
+                "description": "Return new's informaion.",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "New's Title",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "New's Content",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "New's File",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "important",
+                        "in": "query",
+                        "description": "New's important",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create new successfully",
+                        "schema": {
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "content": {
+                                    "type": "string"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/getAllNew": {
+            "get": {
+                "description": "Return all news's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get news successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/getOneNew/id": {
+            "get": {
+                "description": "Return one new's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get new successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/updateNew/{id}": {
+            "post": {
+                "description": "Return new's informaion.",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "query",
+                        "description": "New's Title",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "New's Content",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "New's File",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "important",
+                        "in": "query",
+                        "description": "New's important",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update new successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/destroyNew/{id}": {
+            "delete": {
+                "description": "Return new's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete new successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/changeImportant/{id}": {
+            "post": {
+                "description": "Return new's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Update new successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/new/downloadNew/{id}": {
+            "get": {
+                "description": "Return new's information",
+                "responses": {
+                    "200": {
+                        "description": "Download document successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/praise/createPraise": {
+            "post": {
+                "description": "Return praise's informaion.",
+                "parameters": [
+                    {
+                        "name": "image",
+                        "in": "query",
+                        "description": "Praise's image",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "message",
+                        "in": "query",
+                        "description": "Praise's message",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "score",
+                        "in": "query",
+                        "description": "Praise's score",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "recipient",
+                        "in": "query",
+                        "description": "Praise's recipient",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "present",
+                        "in": "query",
+                        "description": "Praise's present",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "cheer",
+                        "in": "query",
+                        "description": "Praise's cheer",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Praise's status",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create new successfully",
+                        "schema": {
+                            "properties": {
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "message": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "present": {
+                                    "type": "text"
+                                },
+                                "recipient": {
+                                    "type": "integer"
+                                },
+                                "cheer": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/praise/getAllPraise": {
+            "get": {
+                "description": "Return all praise's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get praises successfully",
+                        "schema": {
+                            "properties": {
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "message": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "present": {
+                                    "type": "text"
+                                },
+                                "recipient": {
+                                    "type": "integer"
+                                },
+                                "cheer": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/praise/getOnePraise/id": {
+            "get": {
+                "description": "Return one praise's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get praise successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "message": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "present": {
+                                    "type": "text"
+                                },
+                                "recipient": {
+                                    "type": "integer"
+                                },
+                                "cheer": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/praise/destroyPraise/{id}": {
+            "delete": {
+                "description": "Return praise's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete praise successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "message": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "present": {
+                                    "type": "text"
+                                },
+                                "recipient": {
+                                    "type": "integer"
+                                },
+                                "cheer": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/praise/changeStatus/{id}": {
+            "post": {
+                "description": "Return praise's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Update praise successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "message": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "present": {
+                                    "type": "text"
+                                },
+                                "recipient": {
+                                    "type": "integer"
+                                },
+                                "cheer": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/createPresentCategory": {
+            "post": {
+                "description": "Return new's informaion.",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Category's Name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create present category successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/getAllCategory": {
+            "get": {
+                "description": "Return all present category's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get present category successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/getOneCategory/id": {
+            "get": {
+                "description": "Return one present category's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get present category successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "title": {
+                                    "type": "text"
+                                },
+                                "content": {
+                                    "type": "text"
+                                },
+                                "important": {
+                                    "type": "integer"
+                                },
+                                "file": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/updateCategory/{id}": {
+            "post": {
+                "description": "Return present category's informaion.",
+                "parameters": [
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Present category's Name",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update new successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/destroyCategory/{id}": {
+            "delete": {
+                "description": "Return present category's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete present category successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/createPresent": {
+            "post": {
+                "description": "Return present's informaion.",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "Present category's id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Present's Name",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "image",
+                        "in": "query",
+                        "description": "Present's Image",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "price",
+                        "in": "query",
+                        "description": "Present's Price",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "score",
+                        "in": "query",
+                        "description": "Present's Score",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Present's Description",
+                        "required": true,
+                        "type": "text"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Create present successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Error"
+                    },
+                    "401": {
+                        "description": "You are not admin!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/getAllPresent": {
+            "get": {
+                "description": "Return all present's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get present successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/getOnePresent/id": {
+            "get": {
+                "description": "Return one present's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get present successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/updatePresent/{id}": {
+            "post": {
+                "description": "Return present's informaion.",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "Present category's id",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Present's Name",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "image",
+                        "in": "query",
+                        "description": "Present's Image",
+                        "required": true,
+                        "type": "file"
+                    },
+                    {
+                        "name": "price",
+                        "in": "query",
+                        "description": "Present's Price",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "score",
+                        "in": "query",
+                        "description": "Present's Score",
+                        "required": true,
+                        "type": "text"
+                    },
+                    {
+                        "name": "description",
+                        "in": "query",
+                        "description": "Present's Description",
+                        "required": true,
+                        "type": "text"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update present successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/destroyPresent/{id}": {
+            "delete": {
+                "description": "Return present's information",
+                "responses": {
+                    "200": {
+                        "description": "Delete present successfully",
+                        "schema": {
+                            "properties": {
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/changeStatus/{id}": {
+            "post": {
+                "description": "Return present's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Update present successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    },
+                    "401": {
+                        "description": "You are not admin !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/present/exchangePresent/{id}": {
+            "get": {
+                "description": "Return present's information",
+                "responses": {
+                    "200": {
+                        "description": "Exchange present successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "category": {
+                                    "type": "integer"
+                                },
+                                "image": {
+                                    "type": "text"
+                                },
+                                "name": {
+                                    "type": "text"
+                                },
+                                "price": {
+                                    "type": "text"
+                                },
+                                "author": {
+                                    "type": "integer"
+                                },
+                                "description": {
+                                    "type": "text"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "status": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id !!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "/api/score/getOneScore/id": {
+            "get": {
+                "description": "Return one new's informaion.",
+                "responses": {
+                    "200": {
+                        "description": "Get score successfully",
+                        "schema": {
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "user_id": {
+                                    "type": "integer"
+                                },
+                                "score": {
+                                    "type": "text"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid id!!!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/users/login/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Your email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Your password(length>=8)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "access_token": {
+                                    "type": "string"
+                                },
+                                "token_type": {
+                                    "type": "string"
+                                },
+                                "expires_in": {
+                                    "type": "integer"
+                                },
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "email_verified_at": {
+                                    "type": "datetime"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized!"
+                    }
+                }
+            }
+        },
+        "api/users/checkDomain/": {
+            "post": {
+                "description": "Return a company's information",
+                "parameters": [
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "Company Domain",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "domain": {
+                                    "type": "string"
+                                },
+                                "size": {
+                                    "type": "integer"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "No one have domain!"
+                    }
+                }
+            }
+        },
+        "api/users/logout/": {
+            "post": {
+                "description": "Return a user's information",
+                "responses": {
+                    "200": {
+                        "description": "User successfully signed out"
+                    },
+                    "401": {
+                        "description": "No one login!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/users/refresh/": {
+            "post": {
+                "description": "Return a user's information",
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "access_token": {
+                                    "type": "string"
+                                },
+                                "token_type": {
+                                    "type": "string"
+                                },
+                                "expires_in": {
+                                    "type": "integer"
+                                },
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "email_verified_at": {
+                                    "type": "datetime"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized!"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/users/register/": {
+            "post": {
+                "description": "Return a account's information",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "6 char",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "role": {
+                                    "type": "integer"
+                                },
+                                "password": {
+                                    "type": "string"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "datetime"
+                                },
+                                "updated_at": {
+                                    "type": "datetime"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "No one have code"
+                    }
+                }
+            }
+        },
+        "api/users/getCode/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "first_name",
+                        "in": "query",
+                        "description": "max 255 char",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "last_name",
+                        "in": "query",
+                        "description": "max 255 char",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "min 8 char",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "domain",
+                        "in": "query",
+                        "description": "max 255 char",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "company_name",
+                        "in": "query",
+                        "description": "max 255 char",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "over_view",
+                        "in": "query",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully. Please check code your email!"
+                    },
+                    "401": {
+                        "description": "Missing Data"
+                    }
+                }
+            }
+        },
+        "api/users/userProfile/": {
+            "post": {
+                "description": "Return a user's information",
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "access_token": {
+                                    "type": "string"
+                                },
+                                "token_type": {
+                                    "type": "string"
+                                },
+                                "expires_in": {
+                                    "type": "integer"
+                                },
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "email_verified_at": {
+                                    "type": "datetime"
+                                },
+                                "status": {
+                                    "type": "string"
+                                },
+                                "created_at": {
+                                    "type": "timestamp"
+                                },
+                                "updated_at": {
+                                    "type": "timestamp"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/users/changePassword/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "current_password",
+                        "in": "query",
+                        "description": "Your old current password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "query",
+                        "description": "Your new password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password_confirmed",
+                        "in": "query",
+                        "description": "Your new password confirmed(length=8)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully changed password",
+                        "schema": {
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "user": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                },
+                "security": [
+                    {
+                        "api_key_security_example": []
+                    }
+                ]
+            }
+        },
+        "api/users/getCodeForgotPassword/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Your email",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully",
+                        "schema": {
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                }
+            }
+        },
+        "api/users/changePasswordForgot/": {
+            "post": {
+                "description": "Return a user's information",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "description": "Your code",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password",
+                        "in": "query",
+                        "description": "Your new password(length=8)",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "new_password_confirmed",
+                        "in": "query",
+                        "description": "Your new password confirmed(length=8)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User successfully changed password",
+                        "schema": {
+                            "properties": {
+                                "user": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Missing Data"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

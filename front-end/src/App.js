@@ -1,19 +1,45 @@
-import './App.css';
-import { Box } from '@mui/system';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import HomePages from './components/home';
+import Welcome from './components/Welcome';
 import ThemeProvider from './theme';
-import EmployeeAttend from './components/attendance/employee/page2';
-import MyAttend from './components/attendance/myattendance/page1';
 
+const loading = (
+    <svg viewBox="25 25 50 50" className="preloader">
+        <circle cx="50" cy="50" r="20"></circle>
+    </svg>
+);
 
 function App() {
-  return (
-    <ThemeProvider>
-      <Box sx={{ width: '100%', bgcolor: 'background.secondary' }}>
+    const [render, setRender] = useState(false);
+    const changeRender = () => {
+        setRender(!render);
+    };
+    return (
+        <>
+            <div className="max-w-screen-2xl my-0 mx-auto bg-gray-100">
+                <div className="my-0 mx-auto relative">
+                    <React.Suspense fallback={loading}>
+                    <Routes>
+                            {/* <Route path="/admin" exact component={LoginAdmin} />
+                            <Route path="/admin/:path" component={Admin} /> */}
+                                {/* <Route
+                                    path="/user-profile"
+                                    component={UserProfile}
+                                /> 
+                                    <ThemeProvider>
         <EmployeeAttend />
         <MyAttend />
-      </Box>
     </ThemeProvider>
-  );
+                                */}
+                                <Route path="/*" element={<HomePages changeRender={changeRender}/>} />
+                                <Route path="/" element={<Welcome></Welcome>} />
+                             </Routes>
+                    </React.Suspense>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default App;
