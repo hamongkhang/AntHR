@@ -31,20 +31,22 @@ class MailNotify extends Mailable
     public function build()
     {
         if($this->data['description'] == 'getNewCode'){
-            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[AntHR-CloverTeam]_Email xác nhận đăng kí');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[AntHR-CloverTeam]_Email register verification');
 
         }
         else if ($this->data['description'] == 'notiRegisterSuccess'){
-            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[AntHR-CloverTeam]_Thông báo đăng kí thành công');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[AntHR-CloverTeam]_Successful register');
 
         }
         else if ($this->data['description'] == 'notiChangePasswordSuccess'){
-            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[AntHR-CloverTeam]_Thông báo cập nhật tài khoản');
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[AntHR-CloverTeam]_Update account');
 
         }
         else if($this->data['description'] == 'getCodeForgot'){
-            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[AntHR-CloverTeam]_Email xác nhận thay đổi');
-
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailGetNewCode')->subject('[AntHR-CloverTeam]_Email confirm the change');
+        }
+        else if($this->data['description'] == 'createNewEmployee'){
+            return $this->from('anthrcloverteam@gmail.com')->view('mails.mailNotification')->subject('[AntHR-CloverTeam]_Email create new employee');
         }
     }
 }

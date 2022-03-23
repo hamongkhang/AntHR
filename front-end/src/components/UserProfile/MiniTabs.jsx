@@ -19,6 +19,10 @@ const MiniTabs = (props) => {
         >
           <Tab value="overview" label="Overview" to={`overview`} component={Link} />
           <Tab value="account" label="Account" to={`account`} component={Link} />
+          <Tab value="dependents" label="Dependents" to={`dependents`} component={Link} />
+          <Tab value="payroll" label="Payroll" to={`payroll`} component={Link} />
+          <Tab value="documents" label="Documents" to={`documents`} component={Link} />
+          <Tab value="qrcode" label="QRcode" to={`qrcode`} component={Link} />
         </Tabs>
       </ThemeProvider>
     </Box>

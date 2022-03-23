@@ -23,6 +23,8 @@ import EmployeeDetail from "../employees/employeeDetail";
 import Point from "../employees/point";
 import EmployeeAttend from "../attendance/employee/page2";
 import MyAttend from "../attendance/myattendance/page1";
+import Company from '../company/Company';
+import Dashboard from '../dashboard';
 
 const drawerWidth = 240;
 
@@ -110,14 +112,13 @@ const Home = (props) => {
               path="attendance/employees-attendance"
               element={<EmployeeAttend />}
             />
-
-            <Route path="documents" element={<p>documents</p>} />
-            <Route path="documents/:id" element={<p>documents detail</p>} />
+            <Route path="company" element={<Company></Company>} />
+            <Route path="/" element={<Dashboard />} />
           </Routes>
         </Main>
       </Box>
     </ThemeProvider>
   );
-};
+}
 
 export default Home;

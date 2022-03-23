@@ -9,6 +9,10 @@ import Address from './Overview/Address';
 import BankInfor from './Overview/BankInfor';
 import Account from './Account';
 import { toast } from 'react-toastify';
+import Payroll from './Payroll';
+import Document from './Documents';
+import QREmployee from './QRcode';
+import Dependents from './Dependents';
 
 toast.configure();
 
@@ -21,7 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const UserProfile = () => {
   const [tab, setTab] = useState('overview');
-  const [reRender, setRerender]= useState(false)
+  const [reRender, setRerender] = useState(false)
   const [employee, setEmployee] = useState(
     {
       first_name: '',
@@ -85,10 +89,10 @@ const UserProfile = () => {
         else {
           if (json.user[0] != null) {
             let e = {
-              avatar:'',
-              first_name: '',last_name: '',phone: '',email: '',birthday: '',gender: '',
-              postal_code: '',city: '',country: '',state: '',
-              name: '',user_name: '',user_number: ''
+              avatar: '',
+              first_name: '', last_name: '', phone: '', email: '', birthday: '', gender: '',
+              postal_code: '', city: '', country: '', state: '',
+              name: '', user_name: '', user_number: ''
             }
             e.avatar = json.user[0].avatar
             e.first_name = json.user[0].first_name
@@ -108,10 +112,10 @@ const UserProfile = () => {
         }
       });
   }
-  
+
   const updateBank = () => {
   }
-  
+
   useEffect(() => {
     getUser()
   }, [reRender])
@@ -119,14 +123,14 @@ const UserProfile = () => {
     <Box>
       <Box sx={{ display: { xs: 'block', md: 'grid' } }} gridTemplateColumns="repeat(12, 1fr)" gap={2}>
         <Box gridColumn="span 3">
-          <LeftBoxInfor 
-          Item={Item} 
-          avatar={employee.avatar} 
-          firstname = {employee.first_name}
-          lastname = {employee.last_name}
-          phone={employee.phone} 
-          email={employee.email}
-          setRerender={setRerender}/>
+          <LeftBoxInfor
+            Item={Item}
+            avatar={employee.avatar}
+            firstname={employee.first_name}
+            lastname={employee.last_name}
+            phone={employee.phone}
+            email={employee.email}
+            setRerender={setRerender} />
         </Box>
         <Box gridColumn="span 9" gap={2}>
           <Item sx={{ mt: { xs: 3, md: 0 } }}>
@@ -155,7 +159,11 @@ const UserProfile = () => {
                   updateBank={updateBank}
                 />
               </>} />
-            <Route path="account" element={<Account Item={Item} email={employee.email}/>} />
+            <Route path="account" element={<Account Item={Item} email={employee.email} />} />
+            <Route path="dependents" element={<Dependents Item={Item} first_name={employee.first_name} last_name={employee.last_name} />} />
+            <Route path="documents" element={<Document Item={Item} />} />
+            <Route path="payroll" element={<Payroll first_name={employee.first_name} last_name={employee.last_name} />} />
+            <Route path="qrcode" element={<QREmployee  />} />
           </Routes>
         </Box>
       </Box>
