@@ -7,6 +7,7 @@ import HandleOption from "./handleclick";
 import SelectDate from "./selectdate";
 import { DataGrid } from "@mui/x-data-grid";
 import { makeStyles } from "@material-ui/core/styles";
+import { color } from "@mui/system";
 
 const useStyles = makeStyles({
   hide_border: {
@@ -253,7 +254,11 @@ const MyAttend = () => {
               <Button
                 variant="contained"
                 style={styles.CheckAttend}
-                sx={{ textTransform: "none" }}
+                sx={{
+                  textTransform: "none",
+                  // color: "#ffff",
+                }}
+                // color="error"
               >
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
                   Click in 00h 00m 00s
@@ -277,7 +282,7 @@ const MyAttend = () => {
               style={styles.BoxSwapper}
               sx={{ ml: 2 }}
             >
-              <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
+              <Typography sx={{ fontWeight: 600, color: "primary.dark" }}>
                 Work Schedule
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>8h</Typography>
@@ -371,7 +376,6 @@ const styles = {
     hieght: "100%",
     border: "1px solid rgb(227 235 241)",
     borderRadius: "5px",
-    // marginTop: 90,
   },
   BoxBody: {
     marginTop: "40px",
