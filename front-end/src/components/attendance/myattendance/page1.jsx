@@ -21,197 +21,136 @@ const useStyles = makeStyles({
 });
 const columns = [
   {
-    field: "id",
-    headerName: "ID",
-    editable: false,
-    width: 100,
-  },
-  {
-    field: "date",
-    headerName: "Date",
-    type: "date",
+    field: "no", headerName: 'No.',
     editable: false,
     sortable: false,
-    width: 150,
+    width: 80,
   },
   {
-    field: "clockIn",
-    headerName: "Clock In",
-    width: 100,
-    sortable: false,
-    sortable: false,
-  },
-  {
-    field: "clockInLocation",
-    headerName: "Clock In Location",
+    field: 'date',
+    headerName: 'Date',
     width: 180,
-    editable: false,
+    editable: true,
     sortable: false,
   },
   {
-    field: "clockOut",
-    headerName: "Clock Out",
+    field: 'clock_in',
+    headerName: 'Clock In',
+    width: 100,
+    sortable: false,
+  },
+
+  {
+    field: 'clock_out',
+    headerName: 'Clock Out',
     width: 110,
-    editable: false,
+    editable: true,
     sortable: false,
   },
   {
-    field: "clockOutLocation",
-    headerName: "Clock Out Location",
-    width: 180,
-    editable: false,
-    sortable: false,
-  },
-  {
-    field: "workSchedule",
-    headerName: "Work Schedule",
+    field: 'work_schedule',
+    headerName: 'Work Schedule',
     width: 150,
-    editable: false,
+    editable: true,
     sortable: false,
   },
   {
-    field: "longgedTime",
-    headerName: "Longged Time",
+    field: 'logged_time',
+    headerName: 'Longged Time',
     width: 150,
-    editable: false,
+    editable: true,
     sortable: false,
   },
   {
-    field: "paidTime",
-    headerName: "Paid Time",
+    field: 'paid_time',
+    headerName: 'Paid Time',
     width: 150,
-    editable: false,
+    editable: true,
     sortable: false,
   },
-
   {
-    field: "deficit",
-    headerName: "Deficit",
+    field: 'deficit',
+    headerName: 'Deficit',
     width: 150,
-    editable: false,
+    editable: true,
     sortable: false,
   },
-
   {
-    field: "",
-    headerName: "",
+    field: 'note',
+    headerName: 'Note',
+    width: 150,
+    editable: true,
+    sortable: false,
+  },
+  {
+    field: '',
+    headerName: '',
     sortable: false,
     width: 100,
     renderCell: (params) => {
       return (
         <>
-          <HandleOption date={params.row.date} />
+          <HandleOption />
         </>
       );
     },
   },
 ];
+
 const rows = [
-  {
-    id: 1,
-    date: "05 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Jon",
-    clockOut: 35,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 2,
-    date: "2 July 2022 ",
-    clockIn: "-",
-    clockInLocation: "Cersei",
-    clockOut: 42,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 3,
-    date: "4 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Jaime",
-    clockOut: 45,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 4,
-    date: "8 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Arya",
-    clockOut: 16,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 5,
-    date: "3 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Daenerys",
-    clockOut: null,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 6,
-    date: "12 March 2022 ",
-    clockIn: "-",
-    clockInLocation: null,
-    clockOut: 150,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 7,
-    date: "9 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Ferrara",
-    clockOut: 44,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 8,
-    date: "9 March 2022 ",
-    clockIn: "-",
-    clockInLocation: "Ferrara",
-    clockOut: 44,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
+  { id: 1, name: 'khang ', avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU', clock_in: '-', clockInLocation: 'Jon', clock_out: 35, clockOutLocation: '-', work_schedule: '8h', logged_time: '0h', paid_time: '0h', deficit: '-8h' },
 ];
 
 const MyAttend = () => {
   const classes = useStyles();
-
+  const [infor, setInfor] = useState({
+    work_schedule: '0h',
+    paid_time:'0h',
+    logged_time:'0h',
+    deficit:'0h'
+  });
   const [tableData, setTableData] = useState([]);
+  const $token = localStorage.getItem('access_token');
 
+  const getMyAttendance = () => {
+    fetch(process.env.REACT_APP_API + "/attendance/getMyAttendance", {
+      method: "GET",
+      headers: { "Authorization": `Bearer ` + $token }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          setTableData(rows);
+
+        }
+        else {
+          data.attendances.map((a, index) => {
+            a.no = index + 1
+            let clock_in = new Date(a.clock_in)
+            let str = clock_in.getHours() + 'h ' + clock_in.getMinutes() + 'm'
+            a.clock_in = str
+            let date = new Date(a.date)
+            a.date = date.toDateString()
+            if (a.clock_out == null) {
+              a.clock_out = '-'
+            }
+            else {
+              let clock_out = new Date(a.clock_out)
+              str = clock_out.getHours() + 'h ' + clock_out.getMinutes() + 'm'
+              a.clock_out = str
+            }
+            a.logged_time == '' ? a.logged_time = '0h' : a.logged_time = a.logged_time
+            a.paid_time == '' ? a.paid_time = '0h' : a.paid_time = a.paid_time
+            a.deficit == '' ? a.deficit = '0h' : a.deficit = a.deficit
+            a.work_schedule = '8h'
+          })
+          setTableData(data.attendances);
+          setInfor(data.infor)
+        }
+      });
+  };
   useEffect(() => {
-    setTableData(rows);
+    getMyAttendance();
   }, []);
 
   return (
@@ -280,7 +219,7 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Work Schedule
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>8h</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.work_schedule}h</Typography>
             </Grid>
 
             <Grid
@@ -295,7 +234,7 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Logged Time
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>9h 33m</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.logged_time==''?'0h':infor.logged_time}</Typography>
             </Grid>
 
             <Grid
@@ -310,7 +249,7 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Paid Time
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>9h 33m</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.paid_time==''?'0h':infor.paid_time}</Typography>
             </Grid>
             <Grid
               item
@@ -324,14 +263,14 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Deficit
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>9h 33m</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.deficit}</Typography>
             </Grid>
-            <Grid item lg={2} md={2} sm={2} xs={6} style={styles.BoxSwapper}>
+            {/* <Grid item lg={2} md={2} sm={2} xs={6} style={styles.BoxSwapper}>
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Overtime
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>9h 33m</Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
 

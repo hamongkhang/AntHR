@@ -145,8 +145,12 @@ Route::get('/company/getCompany', [App\Http\Controllers\CompanyController::class
 Route::post('/company/updateCompany/{id}', [App\Http\Controllers\CompanyController::class, 'updateCompany'])->name('company.updateCompany');
 Route::post('/company/changeLogo/{id}', [App\Http\Controllers\CompanyController::class, 'changeLogo'])->name('company.changeLogo');
 
-
-
+////////////////////////////////////// Attendances APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/attendance/getAllAttendance', [App\Http\Controllers\AttendanceController::class, 'getAllAttendance'])->name('attendance.getAllAttendance');
+Route::post('/attendance/getOneAttendance', [App\Http\Controllers\AttendanceController::class, 'getOneAttendance'])->name('attendance.getOneAttendance');
+Route::get('/attendance/getMyAttendance', [App\Http\Controllers\AttendanceController::class, 'getMyAttendance'])->name('attendance.getMyAttendance');
+Route::post('/attendance/createAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'createAttendance'])->name('attendance.createAttendance');
+Route::post('/attendance/updateAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'updateAttendance'])->name('attendance.updateAttendance');
 
 
 
