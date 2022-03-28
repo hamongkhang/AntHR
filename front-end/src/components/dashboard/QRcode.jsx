@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react'
 import QRCode from "qrcode";
 import { Box } from "@mui/material";
 
-const QRcode = () => {
+const QRcode = (props) => {
+    const {text} = props;
     const [logo, setLogo] = useState("");
     const id = localStorage.getItem('id')
     useEffect(() => {
-        QRCode.toDataURL(id).then((data) => {
+        QRCode.toDataURL(`${id}_${text}`).then((data) => {
             setLogo(data);
         });
     }, []);
