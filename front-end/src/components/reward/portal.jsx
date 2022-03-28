@@ -197,7 +197,7 @@ const Portal = (props) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Cance",
+      cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -247,7 +247,7 @@ const Portal = (props) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Cance",
+      cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -771,7 +771,12 @@ const Portal = (props) => {
                             </Box>
                           </Grid>
                           <Grid item xs={4} sm={8} md={12}>
-                            <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              sx={{ mt: 2 }}
+                              justifyContent="center"
+                            >
                               <Button
                                 type="submit"
                                 onClick={(event) =>
@@ -779,6 +784,9 @@ const Portal = (props) => {
                                 }
                                 variant="contained"
                                 size="medium"
+                                sx={{
+                                  color: "#ffff",
+                                }}
                               >
                                 Publish
                               </Button>
@@ -1607,20 +1615,22 @@ const Portal = (props) => {
                             </Box>
                           </Grid>
                           <Grid item xs={4} sm={8} md={12}>
-                            <Button
-                              type="submit"
-                              onClick={(event) =>
-                                onClickBlockHistory(event, item.id)
-                              }
-                              sx={{
-                                width: "29%",
-                              }}
-                              variant="contained"
-                              color="error"
-                              size="medium"
-                            >
-                              Block
-                            </Button>
+                            <Stack direction="row" justifyContent="end">
+                              <Button
+                                type="submit"
+                                onClick={(event) =>
+                                  onClickBlockHistory(event, item.id)
+                                }
+                                sx={{
+                                  width: "29%",
+                                }}
+                                variant="contained"
+                                color="error"
+                                size="medium"
+                              >
+                                Block
+                              </Button>
+                            </Stack>
                           </Grid>
                         </Grid>
                       </Box>

@@ -196,6 +196,7 @@ const Point = (props) => {
                   onClick={(event) => onClickAddScore(event)}
                   variant="contained"
                   size="medium"
+                  sx={{ color: "#ffff" }}
                 >
                   Publish
                 </Button>
@@ -272,6 +273,7 @@ const Point = (props) => {
                   sx={{
                     backgroundColor: "#ffff66",
                     color: " #ff9900",
+                    border: "1px solid #ff9900",
                   }}
                   size="medium"
                 >

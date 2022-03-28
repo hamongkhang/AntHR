@@ -259,7 +259,7 @@ const Gift = (props) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Cance",
+      cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -552,6 +552,9 @@ const Gift = (props) => {
                   onClick={(event) => onAddGift(event)}
                   variant="contained"
                   size="medium"
+                  sx={{
+                    color: "#ffff",
+                  }}
                 >
                   Publish
                 </Button>
@@ -729,36 +732,26 @@ const Gift = (props) => {
               />
             </Grid>
             <Grid item xs={4} sm={8} md={4}>
-              <Button
-                type="submit"
-                onClick={(event) => onEditGift(event)}
-                sx={{
-                  height: 40.5,
-                  width: "100%",
-                  border: "1px solid #ff9900",
-                  backgroundColor: "#FFFF66",
-                  color: "#ff9900",
-                }}
-                size="medium"
-              >
-                Publish
-              </Button>
-            </Grid>
-            <Grid item xs={4} sm={8} md={2}>
-              <Button
-                type="submit"
-                onClick={() => clickOpenEdit()}
-                sx={{
-                  height: 40.5,
-                  width: "100%",
-                  border: "1px solid #ff9900",
-                  backgroundColor: "rgb(204, 204, 204)",
-                  color: "#ff9900",
-                }}
-                size="medium"
-              >
-                Cancel
-              </Button>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  type="submit"
+                  onClick={(event) => onEditGift(event)}
+                  variant="contained"
+                  size="medium"
+                  sx={{ color: "#ffff" }}
+                >
+                  Publish
+                </Button>
+                <Button
+                  type="submit"
+                  onClick={() => clickOpenEdit()}
+                  variant="contained"
+                  color="error"
+                  size="medium"
+                >
+                  Cancel
+                </Button>
+              </Stack>
             </Grid>
           </Grid>
         </Box>
@@ -1092,62 +1085,58 @@ const Gift = (props) => {
                             >
                               {item.description ? item.description : " - "}
                             </Typography>
-                            {role == 1 ? (
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  clickOpenEdit(event, item.id)
-                                }
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "#ff9900",
-                                  marginTop: "10px",
-                                }}
-                                size="medium"
-                              >
-                                Edit
-                              </Button>
-                            ) : (
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  clickExchangeGift(event, item.id)
-                                }
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "#ff9900",
-                                  marginTop: "10px",
-                                }}
-                                size="medium"
-                              >
-                                Exchange
-                              </Button>
-                            )}
-                            {role == 1 ? (
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onClickDeleteGift(event, item.id)
-                                }
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "red",
-                                  color: "white",
-                                  marginTop: "10px",
-                                }}
-                                size="medium"
-                              >
-                                Delete
-                              </Button>
-                            ) : null}
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              sx={{ mt: 2, justifyContent: "center" }}
+                            >
+                              {role == 1 ? (
+                                <Button
+                                  type="submit"
+                                  onClick={(event) =>
+                                    clickOpenEdit(event, item.id)
+                                  }
+                                  sx={{
+                                    width: "33%",
+                                    color: "#ffff",
+                                  }}
+                                  variant="contained"
+                                  size="medium"
+                                >
+                                  Edit
+                                </Button>
+                              ) : (
+                                <Grid container justifyContent="flex-end">
+                                  <Button
+                                    type="submit"
+                                    onClick={(event) =>
+                                      clickExchangeGift(event, item.id)
+                                    }
+                                    sx={{
+                                      color: "#ffff",
+                                    }}
+                                    variant="contained"
+                                    size="medium"
+                                  >
+                                    Exchange
+                                  </Button>
+                                </Grid>
+                                // <Grid con
+                              )}
+                              {role == 1 ? (
+                                <Button
+                                  type="submit"
+                                  onClick={(event) =>
+                                    onClickDeleteGift(event, item.id)
+                                  }
+                                  variant="contained"
+                                  color="error"
+                                  size="medium"
+                                >
+                                  Delete
+                                </Button>
+                              ) : null}
+                            </Stack>
                           </Box>
                         </Grid>
                       );
@@ -1272,60 +1261,57 @@ const Gift = (props) => {
                           >
                             {item.description ? item.description : " - "}
                           </Typography>
-                          {role == 1 ? (
-                            <Button
-                              type="submit"
-                              onClick={(event) => clickOpenEdit(event, item.id)}
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "#FFFF66",
-                                color: "#ff9900",
-                                marginTop: "10px",
-                              }}
-                              size="medium"
-                            >
-                              Edit
-                            </Button>
-                          ) : (
-                            <Button
-                              type="submit"
-                              onClick={(event) =>
-                                clickExchangeGift(event, item.id)
-                              }
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "#FFFF66",
-                                color: "#ff9900",
-                                marginTop: "10px",
-                              }}
-                              size="medium"
-                            >
-                              Exchange
-                            </Button>
-                          )}
-                          {role == 1 ? (
-                            <Button
-                              type="submit"
-                              onClick={(event) =>
-                                onClickDeleteGift(event, item.id)
-                              }
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "red",
-                                color: "white",
-                                marginTop: "10px",
-                              }}
-                              size="medium"
-                            >
-                              Delete
-                            </Button>
-                          ) : null}
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            sx={{ mt: 2, justifyContent: "center" }}
+                          >
+                            {role == 1 ? (
+                              <Button
+                                type="submit"
+                                onClick={(event) =>
+                                  clickOpenEdit(event, item.id)
+                                }
+                                sx={{
+                                  width: "33%",
+                                  color: "#ffff",
+                                }}
+                                variant="contained"
+                                size="medium"
+                              >
+                                Edit
+                              </Button>
+                            ) : (
+                              <Grid container justifyContent="flex-end">
+                                <Button
+                                  type="submit"
+                                  onClick={(event) =>
+                                    clickExchangeGift(event, item.id)
+                                  }
+                                  sx={{
+                                    color: "#ffff",
+                                  }}
+                                  variant="contained"
+                                  size="medium"
+                                >
+                                  Exchange
+                                </Button>
+                              </Grid>
+                            )}
+                            {role == 1 ? (
+                              <Button
+                                type="submit"
+                                onClick={(event) =>
+                                  onClickDeleteGift(event, item.id)
+                                }
+                                variant="contained"
+                                color="error"
+                                size="medium"
+                              >
+                                Delete
+                              </Button>
+                            ) : null}
+                          </Stack>
                         </Box>
                       </Grid>
                     );

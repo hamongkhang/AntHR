@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import ApprovalIcon from "@mui/icons-material/Approval";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
@@ -131,7 +131,7 @@ const Manager = (props) => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      cancelButtonText: "Cance",
+      cancelButtonText: "Cancel",
       confirmButtonText: "Delete",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -139,6 +139,7 @@ const Manager = (props) => {
       }
     });
   };
+
   const onBlock = (id) => {
     fetch(
       process.env.REACT_APP_API + "/cart_present/destroyCartPresent/" + id,
@@ -400,37 +401,39 @@ const Manager = (props) => {
                               </Grid>
                             </Box>
                           </Grid>
-                          <Grid item xs={2} sm={4} md={6}>
-                            <Button
-                              type="submit"
-                              onClick={(event) => onPublishCart(event, item.id)}
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "#FFFF66",
-                                color: "#ff9900",
-                              }}
-                              size="medium"
+                          <Grid item xs={2} sm={4} md={12}>
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              justifyContent="center"
                             >
-                              Publish
-                            </Button>
-                          </Grid>
-                          <Grid item xs={2} sm={4} md={6}>
-                            <Button
-                              type="submit"
-                              onClick={(event) => onBlockCart(event, item.id)}
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "red",
-                                color: "white",
-                              }}
-                              size="medium"
-                            >
-                              Block
-                            </Button>
+                              <Button
+                                type="submit"
+                                onClick={(event) =>
+                                  onPublishCart(event, item.id)
+                                }
+                                sx={{
+                                  color: "#ffff",
+                                }}
+                                size="medium"
+                                variant="contained"
+                              >
+                                Publish
+                              </Button>
+
+                              <Button
+                                type="submit"
+                                onClick={(event) => onBlockCart(event, item.id)}
+                                sx={{
+                                  width: "21%",
+                                }}
+                                size="medium"
+                                variant="contained"
+                                color="error"
+                              >
+                                Block
+                              </Button>
+                            </Stack>
                           </Grid>
                         </Grid>
                       </Box>
@@ -649,13 +652,14 @@ const Manager = (props) => {
                                 sx={{
                                   height: 40.5,
                                   width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "##ff9900",
+                                  backgroundColor: "#ff9900",
                                 }}
                                 size="medium"
                               >
-                                Gifts are being delivered to staff
+                                <Typography sx={{ color: "#ffff" }}>
+                                  {" "}
+                                  Gifts are being delivered to staff
+                                </Typography>
                               </Button>
                             </Grid>
                           ) : (
@@ -898,22 +902,21 @@ const Manager = (props) => {
                             </Grid>
                           ) : (
                             <Grid item xs={4} sm={8} md={12}>
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onConfirmEmployee(event, item.id)
-                                }
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "#ff9900",
-                                }}
-                                size="medium"
-                              >
-                                Confirm receipt
-                              </Button>
+                              <Stack direction="row" justifyContent="end">
+                                <Button
+                                  type="submit"
+                                  onClick={(event) =>
+                                    onConfirmEmployee(event, item.id)
+                                  }
+                                  sx={{
+                                    color: "#ffff",
+                                  }}
+                                  variant="contained"
+                                  size="medium"
+                                >
+                                  Confirm receipt
+                                </Button>
+                              </Stack>
                             </Grid>
                           )}
                         </Grid>
@@ -1128,20 +1131,21 @@ const Manager = (props) => {
                             </Box>
                           </Grid>
                           <Grid item xs={4} sm={8} md={12}>
-                            <Button
-                              type="submit"
-                              onClick={(event) => onBlockCart(event, item.id)}
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "red",
-                                color: "white",
-                              }}
-                              size="medium"
+                            <Stack
+                              direction="row"
+                              spacing={2}
+                              justifyContent="end"
                             >
-                              Delete
-                            </Button>
+                              <Button
+                                type="submit"
+                                onClick={(event) => onBlockCart(event, item.id)}
+                                size="medium"
+                                variant="contained"
+                                color="error"
+                              >
+                                Delete
+                              </Button>
+                            </Stack>
                           </Grid>
                         </Grid>
                       </Box>
@@ -1354,20 +1358,17 @@ const Manager = (props) => {
                             </Box>
                           </Grid>
                           <Grid item xs={4} sm={8} md={12}>
-                            <Button
-                              type="submit"
-                              onClick={(event) => onBlockCart(event, item.id)}
-                              sx={{
-                                height: 40.5,
-                                width: "100%",
-                                border: "1px solid #ff9900",
-                                backgroundColor: "red",
-                                color: "white",
-                              }}
-                              size="medium"
-                            >
-                              Delete
-                            </Button>
+                            <Stack direction="row" justifyContent="end">
+                              <Button
+                                type="submit"
+                                onClick={(event) => onBlockCart(event, item.id)}
+                                size="medium"
+                                variant="contained"
+                                color="error"
+                              >
+                                Delete
+                              </Button>
+                            </Stack>
                           </Grid>
                         </Grid>
                       </Box>

@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     },
     "&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle": {
       fontWeight: 600,
-      color: "#ff9900",
+      color: "#ffb74d",
     },
   },
 });
@@ -236,10 +236,8 @@ const MyAttend = () => {
         <Box style={styles.HeaderBody}>
           <Grid container sx={{ width: "100%" }}>
             <Grid item lg={3} md={4} sm={4} xs={12} sx={{ display: "flex" }}>
-              <Box style={styles.circle} sx={{ bgcolor: "background.primary" }}>
-                <AccessTimeIcon
-                  sx={{ margin: "auto", color: "primary.main" }}
-                />
+              <Box style={styles.circle} sx={{ bgcolor: "orange" }}>
+                <AccessTimeIcon sx={{ margin: "auto", color: "white" }} />
               </Box>
               <Typography variant="h6" style={styles.textAttendLeft}>
                 &nbsp; My Attendance{" "}
@@ -256,9 +254,8 @@ const MyAttend = () => {
                 style={styles.CheckAttend}
                 sx={{
                   textTransform: "none",
-                  // color: "#ffff",
+                  color: "#ffff",
                 }}
-                // color="error"
               >
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
                   Click in 00h 00m 00s
@@ -282,7 +279,7 @@ const MyAttend = () => {
               style={styles.BoxSwapper}
               sx={{ ml: 2 }}
             >
-              <Typography sx={{ fontWeight: 600, color: "primary.dark" }}>
+              <Typography sx={{ fontWeight: 600, color: "primary.main" }}>
                 Work Schedule
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>8h</Typography>

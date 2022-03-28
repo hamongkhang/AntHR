@@ -121,7 +121,7 @@ const HandleOption = (props) => {
                 <CloseIcon />
               </Grid>
             </Grid>
-            <Divider className={props.classes.model_divider} />
+            <Divider />
 
             <Box className={props.classes.modal_date}>
               <TextField
@@ -158,17 +158,12 @@ const HandleOption = (props) => {
             <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
               <Button
                 variant="contained"
-                sx={{ textTransform: "none" }}
+                sx={{ color: "#ffff", width: "16.5%" }}
                 onClick={handleClose2}
               >
                 Save
               </Button>
-              <Button
-                variant="contained"
-                sx={{ textTransform: "none" }}
-                onClick={handleClose2}
-                color="error"
-              >
+              <Button variant="contained" onClick={handleClose2} color="error">
                 Cancel
               </Button>
             </Stack>
@@ -198,9 +193,7 @@ const styles = {
     textAlign: "right",
     paddingTop: "5px",
   },
-  model_divider: {
-    padding: "1px",
-  },
+
   modal_head_text: {
     fontSize: "25px",
     fontWeight: 600,
