@@ -11,6 +11,7 @@ import New from "../new";
 import NewEdit from "../new/new_edit";
 import Employee from "../employees";
 import Directory from "../employees/directory";
+import Dashboard from '../dashboard';
 import Commendation from "../reward";
 import NewView from "../new/new_view";
 import Gift from "../reward/gift";
@@ -105,7 +106,6 @@ const Home = (props) => {
             <Route path="documents" element={<Documents />} />
             <Route path="documents/view/:id" element={<DocumentView />} />
             <Route path="documents/check/" element={<CheckGoogleDrive />} />
-
             <Route path="attendance" element={<MyAttend />} />
             <Route path="attendance/my-attendance" element={<MyAttend />} />
             <Route
@@ -119,6 +119,7 @@ const Home = (props) => {
       </Box>
     </ThemeProvider>
   );
+
 }
 
 export default Home;

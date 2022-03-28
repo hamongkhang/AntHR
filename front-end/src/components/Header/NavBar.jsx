@@ -219,7 +219,7 @@ const NavBar = (props) => {
                             fontSize: 25, fontWeight: 600
                         }}>Profile</Typography>
                         <Typography sx={{
-                            display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none',
+                         display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
                         }}>Information</Typography>
