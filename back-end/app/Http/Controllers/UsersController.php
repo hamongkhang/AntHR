@@ -83,7 +83,7 @@ class UsersController extends Controller
         if (!$token = auth()->attempt($validator->validated())) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        if (auth()->user()->status==="block") {
+        if (auth()->user()->status=="block") {
             return response()->json(['error' => 'Blocked'], 401);
         }
         return $this->createNewToken($token); 

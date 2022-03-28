@@ -88,7 +88,7 @@ class NewController extends Controller
             return response()->json(['error'=>$validator->errors()], 400);     
         }
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             if ($request->hasFile('file'))
             {
                 $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'new';
@@ -249,20 +249,20 @@ public function updateNew($id,Request $request){
         return response()->json(['error'=>$validator->errors()], 400);     
     }
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $new= News::find($id);
         if ($new){
-            if ($request->title===null){
+            if ($request->title==null){
                 $title=$new->title;
             }else{
                 $title=$request->title;
             } 
-            if ($request->content===null){
+            if ($request->content==null){
                 $content=$new->content;
             }else{
                 $content=$request->content;
             }
-            if ($request->important===null){
+            if ($request->important==null){
                 $important=$new->important;
             }else{
                 $important=$request->important;
@@ -330,7 +330,7 @@ public function updateNew($id,Request $request){
      */
     public function destroyNew($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $new= News::find($id);
             if ($new){
                $new->delete();
@@ -378,10 +378,10 @@ public function updateNew($id,Request $request){
      */
 public function changeImportant($id){
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $new= News::find($id);
         if ($new){
-            if($new->important===1){
+            if($new->important==1){
                 $new->important=0;
             }else{
                 $new->important=1;

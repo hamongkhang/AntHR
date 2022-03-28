@@ -186,7 +186,7 @@ class PraiseController extends Controller
      */
     public function getAllPraise(){
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             $data=DB::table('praise')->get();
         }else{
             $data = DB::table('praise')->where('status',1)->get();
@@ -315,7 +315,7 @@ class PraiseController extends Controller
      */
     public function destroyPraise($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $praise= Praise::find($id);
             if ($praise){
                 $scoreUser = DB::table('user_score')->where('user_id',$praise->author)->first();
@@ -377,10 +377,10 @@ class PraiseController extends Controller
      */
 public function changeStatus($id){
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $praise= Praise::find($id);
         if ($praise){
-            if($praise->status===1){
+            if($praise->status==1){
                 $praise->status=0;
             }else{
                 $praise->status=1;

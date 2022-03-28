@@ -131,7 +131,7 @@ class PresentController extends Controller
             $categoryItem3 = PresentCategory::create($postCategoryItem3);
         }       
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             if ($request->hasFile('image'))
             {
                 $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'present'.DIRECTORY_SEPARATOR.'image';
@@ -191,7 +191,7 @@ class PresentController extends Controller
      */
     public function getAllPresent(){
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             $data=DB::table('present')->get();
         }else{
             $data = DB::table('present')->where('status',1)->get();
@@ -323,39 +323,39 @@ public function updatePresent($id,Request $request){
         return response()->json(['error'=>$validator->errors()], 400);     
     }
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $present= Present::find($id);
         if ($present){
-            if ($request->category_id===null){
+            if ($request->category_id==null){
                 $category_id=$present->category_id;
             }else{
                 $category_id=$request->category_id;
             } 
 
-            if ($request->name===null){
+            if ($request->name==null){
                 $name=$present->name;
             }else{
                 $name=$request->name;
             }
 
-            if ($request->price===null){
+            if ($request->price==null){
                 $price=$present->price;
             }else{
                 $price=$request->price;
             }
 
-            if ($request->description===null){
+            if ($request->description==null){
                 $description=$present->description;
             }else{
                 $description=$request->description;
             }
 
-            if ($request->score===null){
+            if ($request->score==null){
                 $score=$present->score;
             }else{
                 $score=$request->score;
             }
-            if($request->image===null){
+            if($request->image==null){
                 $name=$present->image;
             }
             else{
@@ -428,7 +428,7 @@ public function updatePresent($id,Request $request){
      */
     public function destroyPresent($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $present= Present::find($id);
             if ($present){
                $present->delete();
@@ -480,10 +480,10 @@ public function updatePresent($id,Request $request){
      */
 public function changeStatus($id){
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $present= Present::find($id);
         if ($present){
-            if($present->status===1){
+            if($present->status==1){
                 $present->status=0;
             }else{
                 $present->status=1;
@@ -542,7 +542,7 @@ public function changeStatus($id){
         $present= Present::find($id);
         $scoreFind = DB::table('user_score')->where('user_id',$user->id)->first();
         if($present){
-            if($present->status===1){
+            if($present->status==1){
                 if($present->score<=$scoreFind->score){
                     $postArray = [
                         'user_id'  => $user->id,

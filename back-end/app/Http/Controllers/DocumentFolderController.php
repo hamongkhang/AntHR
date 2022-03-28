@@ -79,7 +79,7 @@ class DocumentFolderController extends Controller
         }
         $userFind = auth()->user();
         $employeeFind=DB::table('employee')->where('user_id',$userFind->id)->first();
-        if($userFind->role===1){
+        if($userFind->role==1){
         $author=$employeeFind->last_name.' '.$employeeFind->first_name;    
         $postArray = [
             'name'  => $request->name,
@@ -121,7 +121,7 @@ class DocumentFolderController extends Controller
      */
     public function getAllFolder(){
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             $data=DB::table('document_folder')->get();
         }else{
             $data = DB::table('document_folder')->where('share',1)->get();
@@ -215,15 +215,15 @@ public function updateFolder($id,Request $request){
         return response()->json(['error'=>$validator->errors()], 400);     
     }
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $folder= DocumentFolder::find($id);
         if ($folder){
-            if ($request->name===null){
+            if ($request->name==null){
                 $name=$folder->name;
             }else{
                 $name=$request->name;
             } 
-            if ($request->description===null){
+            if ($request->description==null){
                 $description=$folder->description;
             }else{
                 $description=$request->description;
@@ -274,7 +274,7 @@ public function updateFolder($id,Request $request){
      */
     public function destroyFolder($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $folder= DocumentFolder::find($id);
             if ($folder){
                $folder->delete();
@@ -323,10 +323,10 @@ public function updateFolder($id,Request $request){
      */
 public function changeShare($id){
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $folder= DocumentFolder::find($id);
         if ($folder){
-            if($folder->share===1){
+            if($folder->share==1){
                 $folder->share=0;
             }else{
                 $folder->share=1;

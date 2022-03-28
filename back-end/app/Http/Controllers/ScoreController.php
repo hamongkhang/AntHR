@@ -30,7 +30,7 @@ class ScoreController extends Controller
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
         }
-        if(auth()->user()->role===1){
+        if(auth()->user()->role==1){
             $scoreFind= DB::table('score_setup')->get();
             if(count($scoreFind)>0){
                 $scoreSetup=ScoreSetup::find($scoreFind[0]->id);

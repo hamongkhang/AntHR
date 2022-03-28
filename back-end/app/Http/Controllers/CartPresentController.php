@@ -120,10 +120,10 @@ class CartPresentController extends Controller
      */
     public function changeStatusAdmin($id){
             $checkLogin = auth()->user();
-            if($checkLogin->role===1){
+            if($checkLogin->role==1){
                 $cartPresent= CartPresent::find($id);
                 if ($cartPresent){
-                    if($cartPresent->status===1){
+                    if($cartPresent->status==1){
                         $cartPresent->status=0;
                         $scoreFind = DB::table('user_score')->where('user_id',$cartPresent->user_id)->first();
                         $present= Present::find($cartPresent->present_id);
