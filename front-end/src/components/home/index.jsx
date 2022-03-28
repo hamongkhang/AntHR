@@ -4,7 +4,7 @@ import Home from '../home/home';
 import Login from '../login';
 import ForgotPassword from "../forgot_password";
 import Register from "../register";
-import ActiveAccount from "../Account";
+import ActiveAccount from "../account";
 
 const HomePages = (props) => {
     const { changeRender } = props;
