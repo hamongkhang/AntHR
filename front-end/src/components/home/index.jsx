@@ -27,7 +27,6 @@ const HomePages = (props) => {
     useEffect(() => {
         handleCheckLoggedIn();
     }, [reRender]);
-
     return (
         <>
             <div>
