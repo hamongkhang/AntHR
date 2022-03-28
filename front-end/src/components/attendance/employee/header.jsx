@@ -121,20 +121,19 @@ const HeaderEmployee = () => {
 
             <Grid item xs={4} sm={4} md={4} lg={3.5}>
               <Stack direction="row" spacing={1.8} sx={{ width: "100%" }}>
-                <Button
-                  variant="contained"
-                  sx={{ background: "background.primary" }}
-                >
-                  <FileDownloadOutlinedIcon />
+                <Button variant="contained">
+                  <FileDownloadOutlinedIcon sx={{ color: "white" }} />
                 </Button>
                 <Button
                   variant="contained"
                   sx={{
-                    background: "background.primary",
                     textTransform: "none",
                   }}
                 >
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, color: "white" }}
+                  >
                     Revert
                   </Typography>
                 </Button>
@@ -145,7 +144,10 @@ const HeaderEmployee = () => {
                     textTransform: "none",
                   }}
                 >
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, color: "white" }}
+                  >
                     Reject
                   </Typography>
                 </Button>
@@ -156,7 +158,10 @@ const HeaderEmployee = () => {
                     textTransform: "none",
                   }}
                 >
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, color: "white" }}
+                  >
                     Approve
                   </Typography>
                 </Button>
@@ -167,7 +172,10 @@ const HeaderEmployee = () => {
                     textTransform: "none",
                   }}
                 >
-                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, color: "white" }}
+                  >
                     Confirm
                   </Typography>
                 </Button>

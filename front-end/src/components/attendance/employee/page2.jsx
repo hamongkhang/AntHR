@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
+import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { DataGrid } from "@mui/x-data-grid";
 import { Avatar } from "@mui/material";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import HandleOption from "./handleclick";
 import HeaderEmployee from "./header";
 
 const useStyles = makeStyles({
-    hide_border: {
-        '&.MuiDataGrid-root .MuiDataGrid-cell:focus-within': {
-            outline: 'none',
-        },
-        '&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle': {
-            fontWeight: 600,
-            color: '#ff9900'
-        },
-    }
+  hide_border: {
+    "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+      outline: "none",
+    },
+    "&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle": {
+      fontWeight: 600,
+      color: "#ffb74d",
+    },
+  },
 });
 const columns = [
     {
@@ -83,12 +83,12 @@ const columns = [
             );
         },
     },
+  },
 ];
 
 const rows = [
     { id: 1, name: 'khang ', avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU', clock_in: '-', clockInLocation: 'Jon', clock_out: 35, clockOutLocation: '-', work_schedule: '8h', logged_time: '0h', paid_time: '0h', deficit: '-8h' },
 ];
-
 
 const EmployeeAttend = (props) => {
     const classes = useStyles();
@@ -147,28 +147,31 @@ const EmployeeAttend = (props) => {
                     </Box>
                 </Box>
             </Box>
-        </>
-    );
-}
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
 
 const styles = {
-    BoxHeader: {
-        fontSize: 15,
-        display: 'flex',
-        padding: '10px 24px',
-        boxSizing: 'inherit',
-        border: '1px solid rgb(227 235 241)',
-        borderRadius: '5px',
-        marginTop: '2%',
-        marginBottom: '2%',
-    },
-    HeaderBody: {
-        width: '100%',
-        display: 'block',
-        margin: '12px auto',
-        overflowX: 'auto',
-        borderRadius: '5px',
-    },
-}
+  BoxHeader: {
+    fontSize: 15,
+    display: "flex",
+    padding: "10px 24px",
+    boxSizing: "inherit",
+    border: "1px solid rgb(227 235 241)",
+    borderRadius: "5px",
+    marginTop: "2%",
+    marginBottom: "2%",
+  },
+  HeaderBody: {
+    width: "100%",
+    display: "block",
+    margin: "12px auto",
+    overflowX: "auto",
+    borderRadius: "5px",
+  },
+};
 
 export default EmployeeAttend;
