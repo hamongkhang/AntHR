@@ -65,7 +65,9 @@ const NavBar = (props) => {
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
+    const handleNotifyMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
     };
@@ -92,7 +94,19 @@ const NavBar = (props) => {
         localStorage.clear();
         navigate('/')
     }
+    const [notify,setNotify]=React.useState([]);
+    const getNotify = () => {
+        fetch(process.env.REACT_APP_API + "/notify/getNotify", {
+          method: "GET",
+          headers: { Authorization: `Bearer ` + localStorage.getItem('access_token') },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setNotify(data.data.reverse());
+          });
+      };
     useEffect(() => {
+        getNotify();
         if (width < 900) {
             setAnchorEl(null);
         }
@@ -166,8 +180,9 @@ const NavBar = (props) => {
                                 size="large"
                                 aria-label="show 17 new notifications"
                                 color="inherit"
+                                onClick={handleNotifyMenuOpen}
                             >
-                                <Badge badgeContent={1} color="error">
+                                <Badge badgeContent={notify.length} color="error">
                                     <NotificationsIcon />
                                 </Badge>
                             </IconButton>
