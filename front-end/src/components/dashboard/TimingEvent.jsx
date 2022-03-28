@@ -19,10 +19,10 @@ const StyleTableCellBody = styled(TableCell)({
 })
 const Event = (props) => {
     return (
-        props.birthdays.length > 0 ? props.birthdays.map((b) => {
+        props.birthdays.length > 0 ? props.birthdays.map((b, index) => {
             if (b.day == props.day) {
                 return (
-                    <Box sx={{ height: '50px', width: '50px', position: 'relative' }}>
+                    <Box key={index} sx={{ height: '50px', width: '50px', position: 'relative' }}>
                         <Avatar src={`${process.env.REACT_APP_FILE}/avatar/${b.avatar}`}></Avatar>
                         <CakeIcon sx={{ color: 'orange', position: 'absolute', bottom: '5px', right: '5px', textShadow: 'initial' }} />
                     </Box>

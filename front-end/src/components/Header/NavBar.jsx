@@ -10,6 +10,7 @@ import useWindowDimensions from "../../config/windowDimensions";
 import AccountMenu from "./AccountMenu";
 import MobileAccountMenu from "./MobileAccountMenu";
 import ApartmentIcon from '@mui/icons-material/Apartment';
+import NotifyMenu from "./NotifyMenu";
 
 const drawerWidth = 240;
 
@@ -29,7 +30,8 @@ const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
 }));
 
 const NavBar = (props) => {
-    const { handleDrawerOpen, tabs } = props;
+    const { handleDrawerOpen, tabs} = props;
+    const [render, setRender] = React.useState(false)
     const [tab, setTab] = React.useState(tabs[0].value);
     const [tabMenus, setTabMenus] = React.useState(tabs[0].child);
     const [tabMenu, setTabMenu] = React.useState({
@@ -39,9 +41,11 @@ const NavBar = (props) => {
     const { width } = useWindowDimensions();
     const navigate = useNavigate();
 
+    const [anchorElNotify, setAnchorElNotify] = React.useState(null);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+    const isMenuOpenNotify = Boolean(anchorElNotify);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const menuId = 'primary-search-account-menu';
@@ -66,7 +70,10 @@ const NavBar = (props) => {
         setAnchorEl(event.currentTarget);
     };
     const handleNotifyMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorElNotify(event.currentTarget);
+    };
+    const handleNotifyMenuClose = (event) => {
+        setAnchorElNotify(null);
     };
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -94,17 +101,27 @@ const NavBar = (props) => {
         localStorage.clear();
         navigate('/')
     }
-    const [notify,setNotify]=React.useState([]);
+    const [notify, setNotify] = React.useState([]);
     const getNotify = () => {
         fetch(process.env.REACT_APP_API + "/notify/getNotify", {
-          method: "GET",
-          headers: { Authorization: `Bearer ` + localStorage.getItem('access_token') },
+            method: "GET",
+            headers: { Authorization: `Bearer ` + localStorage.getItem('access_token') },
         })
-          .then((response) => response.json())
-          .then((data) => {
-            setNotify(data.data.reverse());
-          });
-      };
+            .then((response) => response.json())
+            .then((data) => {
+                setNotify(data.data.reverse());
+            });
+    };
+    const deleteNotify = (id) =>{
+        fetch(process.env.REACT_APP_API + "/notify/destroyNotify/" +id, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ` + localStorage.getItem('access_token') },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setRender(!render);
+            });
+    }
     useEffect(() => {
         getNotify();
         if (width < 900) {
@@ -113,7 +130,7 @@ const NavBar = (props) => {
         else if (width > 900) {
             setMobileMoreAnchorEl(null);
         }
-    }, [])
+    }, [render])
     return (
         <>
             <AppBar position="fixed" open={props.open} color='secondary'>
@@ -174,12 +191,13 @@ const NavBar = (props) => {
                                 color="inherit"
                                 sx={{ display: role == 1 ? 'block' : 'none' }}
                                 component={Link} to='/home/company'>
-                                <ApartmentIcon sx={{mb:'8px'}} />
+                                <ApartmentIcon sx={{ mb: '8px' }} />
                             </IconButton>
                             <IconButton
                                 size="large"
                                 aria-label="show 17 new notifications"
                                 color="inherit"
+                                aria-controls={'notifyMenu'}
                                 onClick={handleNotifyMenuOpen}
                             >
                                 <Badge badgeContent={notify.length} color="error">
@@ -234,7 +252,7 @@ const NavBar = (props) => {
                             fontSize: 25, fontWeight: 600
                         }}>Profile</Typography>
                         <Typography sx={{
-                         display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none',
+                            display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
                         }}>Information</Typography>
@@ -281,6 +299,14 @@ const NavBar = (props) => {
                 handleMobileMenuClose={handleMobileMenuClose}
                 mobileMoreAnchorEl={mobileMoreAnchorEl}
                 handleLogout={handleLogout} />
+            <NotifyMenu
+                menuId={'notifyMenu'}
+                isMenuOpen={isMenuOpenNotify}
+                handleMenuClose={handleNotifyMenuClose}
+                anchorEl={anchorElNotify}
+                notify = {notify} 
+                setNotify = {setNotify}
+                deleteNotify = {deleteNotify}/>
         </>
     )
 }
