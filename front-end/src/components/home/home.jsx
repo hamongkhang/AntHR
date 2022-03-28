@@ -25,7 +25,6 @@ import Point from "../employees/point";
 import EmployeeAttend from "../attendance/employee/page2";
 import MyAttend from "../attendance/myattendance/page1";
 import Company from '../company/Company';
-import Dashboard from '../dashboard';
 
 const drawerWidth = 240;
 
