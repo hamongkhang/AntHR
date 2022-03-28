@@ -41,7 +41,6 @@ const columns = [
         width: 150,
         sortable: false,
     },
-
     {
         field: 'clock_out',
         headerName: 'Clock Out',
@@ -208,16 +207,20 @@ const HandleOption = (props) => {
                     </Typography>
                 </Box>
 
-                <Divider />
-                <Box style={styles.option_dropdown_content_li} className={props.classes.hover_li}>
-                    <CloseIcon />
-                    <Typography variant="body1">
-                        &nbsp;
-                        Reject
-                    </Typography>
-                </Box>
-            </Popover>
-
+        <Box
+          style={styles.option_dropdown_content_li}
+          className={props.classes.hover_li}
+        >
+          <CheckIcon />
+          <Typography variant="body1">&nbsp; Approve</Typography>
+        </Box>
+        <Box
+          style={styles.option_dropdown_content_li}
+          className={props.classes.hover_li}
+        >
+          <CheckIcon />
+          <Typography variant="body1">&nbsp; Confirm</Typography>
+        </Box>
             <Dialog
                 open={openModal}
                 fullScreen
@@ -256,28 +259,26 @@ const HandleOption = (props) => {
 }
 
 const styles = {
-    option_dropbtn: {
-        backgroundColor: '#989a9e',
-        color: 'white',
-        padding: '5px',
-        fontSize: '4px',
-        border: 'none',
-        cursor: 'pointer',
-        borderRadius: '5px',
+  option_dropbtn: {
+    backgroundColor: "#989a9e",
+    color: "white",
+    padding: "5px",
+    fontSize: "4px",
+    border: "none",
+    cursor: "pointer",
+    borderRadius: "5px",
+  },
+  option_dropdown_content_li: {
+    color: "black",
+    padding: "5px 12px",
+    display: "flex",
+    cursor: "pointer",
+  },
+  hover_li: {
+    "&:hover": {
+      backgroundColor: "#dedfe0",
     },
-    option_dropdown_content_li: {
-        color: 'black',
-        padding: '5px 12px',
-        display: 'flex',
-        cursor: 'pointer',
-    },
-    hover_li: {
-        '&:hover': {
-            backgroundColor: '#dedfe0',
-        }
-    },
-
-
-}
+  },
+};
 
 export default withStyles(styles)(HandleOption);

@@ -7,6 +7,7 @@ import HandleOption from "./handleclick";
 import SelectDate from "./selectdate";
 import { DataGrid } from "@mui/x-data-grid";
 import { makeStyles } from "@material-ui/core/styles";
+import { color } from "@mui/system";
 
 const useStyles = makeStyles({
   hide_border: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles({
     },
     "&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle": {
       fontWeight: 600,
-      color: "#ff9900",
+      color: "#ffb74d",
     },
   },
 });
@@ -174,10 +175,8 @@ const MyAttend = () => {
         <Box style={styles.HeaderBody}>
           <Grid container sx={{ width: "100%" }}>
             <Grid item lg={3} md={4} sm={4} xs={12} sx={{ display: "flex" }}>
-              <Box style={styles.circle} sx={{ bgcolor: "background.primary" }}>
-                <AccessTimeIcon
-                  sx={{ margin: "auto", color: "primary.main" }}
-                />
+              <Box style={styles.circle} sx={{ bgcolor: "orange" }}>
+                <AccessTimeIcon sx={{ margin: "auto", color: "white" }} />
               </Box>
               <Typography variant="h6" style={styles.textAttendLeft}>
                 &nbsp; My Attendance{" "}
@@ -192,7 +191,10 @@ const MyAttend = () => {
               <Button
                 variant="contained"
                 style={styles.CheckAttend}
-                sx={{ textTransform: "none" }}
+                sx={{
+                  textTransform: "none",
+                  color: "#ffff",
+                }}
               >
                 <Typography variant="body2" sx={{ fontWeight: 600 }}>
                   Click in 00h 00m 00s
@@ -216,7 +218,7 @@ const MyAttend = () => {
               style={styles.BoxSwapper}
               sx={{ ml: 2 }}
             >
-              <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
+              <Typography sx={{ fontWeight: 600, color: "primary.main" }}>
                 Work Schedule
               </Typography>
               <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.work_schedule}h</Typography>
@@ -310,7 +312,6 @@ const styles = {
     hieght: "100%",
     border: "1px solid rgb(227 235 241)",
     borderRadius: "5px",
-    // marginTop: 90,
   },
   BoxBody: {
     marginTop: "40px",
