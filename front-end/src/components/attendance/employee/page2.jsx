@@ -19,250 +19,133 @@ const useStyles = makeStyles({
     },
   },
 });
-
 const columns = [
-  {
-    field: "id",
-    headerName: "ID",
-    editable: false,
-    sortable: false,
-    width: 80,
-  },
-  {
-    field: "name",
-    headerName: "Name",
-    editable: false,
-    width: 150,
-    renderCell: (params) => {
-      return (
-        <>
-          <Avatar src={params.row.avatar} />
-          &nbsp; {params.row.name}
-        </>
-      );
+    {
+        field: "no", headerName: 'No.',
+        editable: false,
+        sortable: false,
+        width: 80,
     },
-  },
-  {
-    field: "clockIn",
-    headerName: "Clock In",
-    width: 100,
-    sortable: false,
-  },
-  {
-    field: "clockInLocation",
-    headerName: "Clock In Location",
-    width: 180,
-    editable: true,
-    sortable: false,
-  },
-  {
-    field: "clockOut",
-    headerName: "Clock Out",
-    width: 110,
-    editable: true,
-    sortable: false,
-  },
-  {
-    field: "clockOutLocation",
-    headerName: "Clock Out Location",
-    width: 180,
-    editable: true,
-    sortable: false,
-  },
-  {
-    field: "workSchedule",
-    headerName: "Work Schedule",
-    width: 150,
-    editable: true,
-    sortable: false,
-  },
-  {
-    field: "longgedTime",
-    headerName: "Longged Time",
-    width: 150,
-    editable: true,
-    sortable: false,
-  },
-  {
-    field: "paidTime",
-    headerName: "Paid Time",
-    width: 150,
-    editable: true,
-    sortable: false,
-  },
+    {
+        field: 'name', headerName: "Employee's name",
+        editable: false,
+        width: 300,
+        renderCell: (params) => {
+            return (
+                <>
+                    <Avatar src={`${process.env.REACT_APP_FILE}/avatar/${params.row.avatar}`} />
+                    &nbsp;{' '}
+                    {params.row.name}
+                </>
+            );
+        }
+    },
 
-  {
-    field: "deficit",
-    headerName: "Deficit",
-    width: 150,
-    editable: true,
-    sortable: false,
-  },
+    {
+        field: 'work_schedule',
+        headerName: 'Work Schedule',
+        width: 200,
+        editable: true,
+        sortable: false,
+    },
+    {
+        field: 'logged_time',
+        headerName: 'Longged Time',
+        width: 200,
+        editable: true,
+        sortable: false,
+    },
+    {
+        field: 'paid_time',
+        headerName: 'Paid Time',
+        width: 200,
+        editable: true,
+        sortable: false,
+    },
+    {
+        field: 'deficit',
+        headerName: 'Deficit',
+        width: 200,
+        editable: true,
+        sortable: false,
+    },
 
-  {
-    field: "",
-    headerName: "",
-    sortable: false,
-    width: 100,
-    renderCell: (params) => {
-      return (
-        <>
-          <HandleOption />
-        </>
-      );
+    {
+        field: '',
+        headerName: '',
+        sortable: false,
+        width: 100,
+        renderCell: (params) => {
+            return (
+                <>
+                    <HandleOption id={params.row.user_id}/>
+                </>
+            );
+        },
     },
   },
 ];
 
 const rows = [
-  {
-    id: 1,
-    name: "khang ",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Jon",
-    clockOut: 35,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 2,
-    name: "hang ",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Cersei",
-    clockOut: 42,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 3,
-    name: "quan",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Jaime",
-    clockOut: 45,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 4,
-    name: "sang",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Arya",
-    clockOut: 16,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 5,
-    name: "phat",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Daenerys",
-    clockOut: null,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 6,
-    name: "huan",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: null,
-    clockOut: 150,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 7,
-    name: "huhu",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Ferrara",
-    clockOut: 44,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
-  {
-    id: 8,
-    name: "hihi",
-    avatar:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU",
-    clockIn: "-",
-    clockInLocation: "Ferrara",
-    clockOut: 44,
-    clockOutLocation: "-",
-    workSchedule: "8h",
-    longgedTime: "0h",
-    paidTime: "0h",
-    deficit: "-8h",
-  },
+    { id: 1, name: 'khang ', avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VVmS2rXsgDjK5zVJMIJINpFdxB3hP2h7HenrsVOWl7RgmFC9aAIGbRzPWkmc-EVETlE&usqp=CAU', clock_in: '-', clockInLocation: 'Jon', clock_out: 35, clockOutLocation: '-', work_schedule: '8h', logged_time: '0h', paid_time: '0h', deficit: '-8h' },
 ];
 
 const EmployeeAttend = (props) => {
-  const classes = useStyles();
+    const classes = useStyles();
+    const [tableData, setTableData] = useState([]);
+    const $token = localStorage.getItem('access_token');
 
-  const [tableData, setTableData] = useState([]);
+    const getAllAttendances = (id) => {
+        fetch(process.env.REACT_APP_API + "/attendance/getAllAttendance", {
+            method: "GET",
+            headers: { "Authorization": `Bearer ` + $token }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    setTableData(rows);
 
-  useEffect(() => {
-    setTableData(rows);
-  }, []);
+                }
+                else {
+                    data.attendances.map((a, index)=>{
+                        a.id = index;
+                        a.no = index + 1;
+                        a.work_schedule = a.work_schedule+'h'
+                    })
+                    setTableData(data.attendances);
+                }
+            });
+    };
+    useEffect(() => {
+        getAllAttendances();
+    }, []);
 
-  return (
-    <>
-      <Box sx={{ width: "100%", bgcolor: "background.secondary" }}>
-        <HeaderEmployee />
-        <Box sx={{ mr: 3, mt: 3, ml: 3, mb: 3 }}>
-          <Box style={styles.BoxHeader} sx={{ bgcolor: "background.default" }}>
-            <NotificationsRoundedIcon
-              sx={{ color: "primary.main", fontSize: 30 }}
-            />
-            <Typography sx={{ pl: 1, pt: 0.5 }}>
-              You can only update the attendance record within the last 31 days.
-            </Typography>
-          </Box>
+    return (
+        <>
+            <Box sx={{ width: '100%', bgcolor: 'background.secondary' }}>
+                <HeaderEmployee />
+                <Box sx={{ mr: 3, mt: 3, ml: 3, mb: 3 }}>
+                    <Box style={styles.BoxHeader} sx={{ bgcolor: 'background.default' }}>
+                        <NotificationsRoundedIcon sx={{ color: 'primary.main', fontSize: 30 }} />
+                        <Typography sx={{ pl: 1, pt: 0.5 }}>
+                            You can only update the attendance record within the last 31 days.
+                        </Typography>
+                    </Box>
 
-          <Box style={styles.HeaderBody} sx={{ bgcolor: "background.default" }}>
-            <Box sx={{ height: 500, width: "100%" }}>
-              <DataGrid
-                className={classes.hide_border}
-                rows={tableData}
-                columns={columns}
-                pageSize={7}
-                disableColumnMenu
-                checkboxSelection
-                disableSelectionOnClick
-              />
+                    <Box style={styles.HeaderBody} sx={{ bgcolor: 'background.default' }}>
+                        <Box sx={{ height: 500, width: '100%' }} >
+                            <DataGrid
+                                className={classes.hide_border}
+                                rows={tableData}
+                                columns={columns}
+                                pageSize={7}
+                                disableColumnMenu
+                                checkboxSelection
+                                disableSelectionOnClick
+                            />
+                        </Box>
+                    </Box>
+                </Box>
             </Box>
           </Box>
         </Box>

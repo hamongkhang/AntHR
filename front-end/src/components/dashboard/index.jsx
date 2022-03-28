@@ -12,16 +12,10 @@ const Dashboard = () => {
   const [firstIn, setFirstIn] = React.useState('');
   const [lastOut, setLastOut] = React.useState('');
   const [liveTime, setLiveTime] = React.useState(new Date());
-  const [open, setOpen] = React.useState(false);
+  const [open1, setOpen1] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const date = new Date();
   const datestring = `Today: ${date.getDate()} - ${date.getMonth() + 1} - ${date.getFullYear()}`;
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   useEffect(() => {
     setInterval(() => setLiveTime(new Date()), 30000);
   }, []);
@@ -114,10 +108,16 @@ const Dashboard = () => {
               <Typography sx={{ mx: 3, color: 'black' }} variant='body2'>Last out: - : - : - </Typography>
             </Grid>
           </Grid>
-          <Button variant="contained" onClick={handleClickOpen}
-            sx={{ mt: 3, width: '100%' }}>
+          <Button variant="contained" onClick={()=> setOpen1(true)}
+            sx={{ mt: 3,ml:5, mr:2, width: '40%' }}>
             <Typography variant="body1" sx={{ fontSize: '20px', fontWeight: 500, color: 'white' }}>
-              Attendance
+              Clock in
+            </Typography>
+          </Button>
+          <Button variant="contained" onClick={()=> setOpen2(true)}
+            sx={{ mt: 3, width: '40%', backgroundColor:'red' }}>
+            <Typography variant="body1" sx={{ fontSize: '20px', fontWeight: 500, color: 'white' }}>
+              Clock out
             </Typography>
           </Button>
           {/* <Timer firstIn={firstIn} lastOut={lastOut} setFirstIn={setFirstIn} setLastOut={setLastOut}></Timer> */}
@@ -142,10 +142,9 @@ const Dashboard = () => {
           </Box>
         </Paper>
       </Box>
-
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={open1}
+        onClose={()=> setOpen1(false)}
         aria-labelledby="draggable-dialog-title"
         sx={{ p: 3 }}
       >
@@ -156,13 +155,38 @@ const Dashboard = () => {
           <DialogContentText>
             Your QR code is:
           </DialogContentText>
-          <QRcode></QRcode>
+          <QRcode text ='clockin'></QRcode>
         </DialogContent>
         <DialogActions>
           <Button
             variant="contained"
             sx={{ backgroundColor: '#AEB6BF ', color: 'white', '&:hover': { backgroundColor: '#808B96' }, mb: 2, mr: 2 }}
-            onClick={handleClose}>
+            onClick={()=> setOpen1(false)}>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={open2}
+        onClose={()=> setOpen2(false)}
+        aria-labelledby="draggable-dialog-title"
+        sx={{ p: 3 }}
+      >
+        <DialogTitle id="draggable-dialog-title">
+          QRCode
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your QR code is:
+          </DialogContentText>
+          <QRcode text ='clockout'></QRcode>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: '#AEB6BF ', color: 'white', '&:hover': { backgroundColor: '#808B96' }, mb: 2, mr: 2 }}
+            onClick={()=> setOpen2(false)}>
             Cancel
           </Button>
         </DialogActions>
