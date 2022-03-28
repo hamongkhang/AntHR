@@ -99,7 +99,7 @@ const UserProfile = () => {
             e.last_name = json.user[0].last_name
             e.phone = json.user[0].phone
             e.email = json.user[0].email
-            e.birthday = new Date(json.user[0].birthday).toLocaleDateString('fr-CA')
+            e.birthday = json.user[0].birthday !=null ? new Date(json.user[0].birthday).toLocaleDateString('fr-CA') : json.user[0].birthday
             e.gender = json.user[0].gender
             if (json.user[1] != null) {
               e.postal_code = json.user[1].postal_code
