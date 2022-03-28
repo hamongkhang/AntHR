@@ -104,7 +104,6 @@ class PraiseController extends Controller
      */
     public function createPraise(Request $request){
         $validator = Validator::make($request->all(), [
-            'image' => 'required',
             'message' => 'required',
             'score'=>'required',
             'present'=>'required',
@@ -130,6 +129,8 @@ class PraiseController extends Controller
                 $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                 $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image', $name);
                 $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'praise'.'/'.'image'.'/'.$name;
+            }else{
+                $name = "_17-03-2022-00-25-51.jpg";
             }
             $postArray = [
                 'author'=>$userFind->id,
