@@ -16,6 +16,7 @@ use App\Models\UserScore;
 use App\Models\Like;
 use App\Models\Comment;
 use Illuminate\Support\Facades\File;
+use App\Models\Notify;
 
 
 
@@ -145,7 +146,16 @@ class PraiseController extends Controller
                 'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
             ];
             $praise = Praise::create($postArray);
-
+                $postNotify = [
+                    'user_id'=>$request->recipient,
+                    'category'=>3,
+                    'title'  => "New notification",
+                    'content'=>"You just received a compliment",
+                    'status'=>1,
+                    'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                    'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+                ];
+                $notify = Notify::create($postNotify);
             $scoreAuthor=UserScore::find($scoreUser->id);
             $scoreAuthor->score=$scoreAuthor->score-$request->score;
             $scoreAuthor->score_spent=$scoreAuthor->score_spent+$request->score;

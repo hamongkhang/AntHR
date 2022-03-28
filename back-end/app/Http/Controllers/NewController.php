@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\File;
 
 
 use App\Models\News;
+use App\Models\Notify;
 
 
 class NewController extends Controller
@@ -114,6 +115,19 @@ class NewController extends Controller
             'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
         ];
         $new = News::create($postArray);
+        $employeeFind=DB::table('employee')->get();
+        for ($i=0;$i<count($employeeFind);$i++){
+            $postNotify = [
+                'user_id'=>$employeeFind[$i]->user_id,
+                'category'=>1,
+                'title'  => "Admin just added new news to the news",
+                'content'=>$request->title,
+                'status'=>1,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $notify = Notify::create($postNotify);
+        }
         return Response()->json(array("Create folder successfully!"=> 1,"data"=>$new ));
     }else{
         return response()->json(["error" => "You are not admin!!!"],401);

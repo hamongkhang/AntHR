@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use App\Models\Notify;
 
 
 use App\Models\Document;
@@ -110,6 +111,19 @@ class DocumentController extends Controller
                 $folderUpdate= DocumentFolder::find($request->folder_id);
                 $folderUpdate->sum=$folderUpdate->sum+1;
                 $folderUpdate->save();
+                $employeeFind=DB::table('employee')->get();
+        for ($i=0;$i<count($employeeFind);$i++){
+            $postNotify = [
+                'user_id'=>$employeeFind[$i]->user_id,
+                'category'=>2,
+                'title'  => "Admin just added document to the documents",
+                'content'=>$request->name_show,
+                'status'=>1,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $notify = Notify::create($postNotify);
+        }
                 return Response()->json(array("Create document successfully!"=> 1,"data"=>$document ));
             } 
         }else{

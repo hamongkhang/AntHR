@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use App\Models\Notify;
 
 use App\Models\Present;
 use App\Models\CartPresent;
@@ -159,6 +160,19 @@ class PresentController extends Controller
             'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
         ];
         $present = Present::create($postArray);
+        $employeeFind=DB::table('employee')->get();
+        for ($i=0;$i<count($employeeFind);$i++){
+            $postNotify = [
+                'user_id'=>$employeeFind[$i]->user_id,
+                'category'=>3,
+                'title'  => "Admin just added new gift to the gift",
+                'content'=>$request->name,
+                'status'=>1,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $notify = Notify::create($postNotify);
+        }
         return Response()->json(array("Create folder successfully!"=> 1,"data"=>$present ));
     }else{
         return response()->json(["error" => "You are not admin!!!"],401);
@@ -552,6 +566,21 @@ public function changeStatus($id){
                         'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
                     ];
                     $presentCart = CartPresent::create($postArray);
+                    $employeeFind=DB::table('users')->get();
+                    for ($i=0;$i<count($employeeFind);$i++){
+                        if($employeeFind[$i]->role==1){
+                            $postNotify = [
+                                'user_id'=>$employeeFind[$i]->id,
+                                'category'=>3,
+                                'title'  => "Waiting for approval",
+                                'content'=>"Employee just exchanged gifts",
+                                'status'=>1,
+                                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+                            ];
+                            $notify = Notify::create($postNotify);
+                        }
+                    }
                     return Response()->json(array("Exchange present successfully !"=> 1,"data"=>$postArray));
                 }else{
                     return response()->json(['error'=>"Not enough score !!!"], 400);

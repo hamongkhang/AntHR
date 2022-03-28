@@ -117,6 +117,7 @@ Route::post('/present/updatePresent/{id}', [App\Http\Controllers\PresentControll
 Route::delete('/present/destroyPresent/{id}', [App\Http\Controllers\PresentController::class, 'destroyPresent'])->name('present.destroyPresent');
 Route::get('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
 Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
+Route::delete('/notify/destroyNotify/{id}', [App\Http\Controllers\NotifyController::class, 'destroyNotify'])->name('notify.destroyNotify');
 
 
 

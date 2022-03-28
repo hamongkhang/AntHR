@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\Notify;
 
 use App\Models\Document;
 use App\Models\DocumentFolder;
@@ -91,6 +92,19 @@ class DocumentFolderController extends Controller
             'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
         ];
         $folder = DocumentFolder::create($postArray);
+        $employeeFind=DB::table('employee')->get();
+        for ($i=0;$i<count($employeeFind);$i++){
+            $postNotify = [
+                'user_id'=>$employeeFind[$i]->user_id,
+                'category'=>2,
+                'title'  => "Admin just added document folder to the document",
+                'content'=>$request->name,
+                'status'=>1,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $notify = Notify::create($postNotify);
+        }
         return Response()->json(array("Create folder successfully!"=> 1,"data"=>$postArray ));
     }else{
         return response()->json(["error" => "You are not admin!!!"],401);
