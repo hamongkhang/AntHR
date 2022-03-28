@@ -304,6 +304,7 @@ const Employee = (props) => {
                   onChange={(event) => aonChangeaddEmployee(event)}
                   style={{ fontSize: "14px" }}
                 />
+                 <span className="errorNotify">{error.first_name?error.first_name[0]:""}</span>
               </Form.Group>
               <Form.Group as={Col} className="mb-3" controlId="formGroupLname">
                 <Form.Control
@@ -312,7 +313,8 @@ const Employee = (props) => {
                   onChange={(event) => aonChangeaddEmployee(event)}
                   placeholder="Last Name"
                   style={{ fontSize: "14px" }}
-                />
+                />              <span className="errorNotify">{error.last_name?error.last_name[0]:""}</span>
+
               </Form.Group>
               <Form.Group as={Col} className="mb-3" controlId="formGroupEmail">
                 <Form.Control
@@ -322,6 +324,8 @@ const Employee = (props) => {
                   placeholder="Email"
                   style={{ fontSize: "14px" }}
                 />
+                              <span className="errorNotify">{error.email?error.email[0]:""}</span>
+
               </Form.Group>
             </Row>
           </Form>
