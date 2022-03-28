@@ -160,7 +160,7 @@ class EmployeeController extends Controller
     
          /**
      * @SWG\POST(
-     *     path="/api/employee/createAccount/",
+     *     path="api/employee/createAccount/",
      *     description="Return a account's information",
      *     @SWG\Parameter(
      *         name="password",
