@@ -1,0 +1,384 @@
+  /*
+Khi báo biến text and color button
+*/
+:root{
+    --text-color: #ff9900;
+    --button-color:#FFFF66;
+    --border-color:#ff9900;
+  }
+  a{
+    text-decoration: none;
+  }
+  /*
+  Register
+  */
+  .frame__register{
+    font-size: 10px;
+    border-radius: 16px;
+    width: 60em;
+    margin: 10em auto;
+    border: none;
+    border: 1px solid #ddd;
+    box-shadow: 5px 5px 10px rgb(240, 247, 250),
+                -5px -5px 10px rgb(240, 247, 250);
+    overflow: auto;
+  }
+  .register__header{
+    font-size: 30px;
+    margin: 30px 50px 30px;
+  }
+  .login__google{
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    background-color: var(--button-color);
+    text-align: center;
+    width: 100%;
+    margin-top: 2em;
+  }
+  .login__google_btn{
+    font-size: 20px;
+    padding: 15px;
+    color: var(--text-color);
+  }
+  .register__header_p{
+    font-size: 18px;
+    text-align: center;
+    margin:1.8em 0;
+    color: var(--text-color);
+  }
+  .register__form{
+    font-size: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 16.6em);
+    grid-template-rows: repeat(3, 3em);
+  }
+  .wrapper__form_input1{
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    border-top-left-radius: 16px;
+    border: 1px solid var(--border-color);
+    border-right-style: none;
+  }
+  .wrapper__form>input{
+    width: 98%;
+    outline: none;
+    border: none;
+    padding: 7px 5px;
+    margin-top: 2px;
+    margin-left: 3px;
+  }
+  .wrapper__form_input1 >input{
+    border-top-left-radius: 16px;
+  }
+  .wrapper__form_input2{
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    border-top-right-radius: 16px;
+    border: 1px solid var(--border-color);
+  }
+  .wrapper__form_input2 >input{
+    border-top-right-radius: 16px;
+  }
+  .wrapper__form_input3{
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    border: 1px solid var(--border-color);
+    border-top-style: none;
+  }
+  .wrapper__form_input4{
+    grid-column: 1 / 3;
+    grid-row: 3 / 4;
+    border: 1px solid var(--border-color);
+    border-top-style: none;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+  .wrapper__form_input4_1{
+    font-size: 15px;
+    display: grid;
+    grid-template-columns: repeat(16, 2.05em);
+    grid-template-rows: repeat(1, 3em);
+  }
+  .wrapper__form_input5{
+    grid-column: 1 / 16;
+    grid-row: 1 / 2;
+  }
+  .wrapper__form_icon{
+    grid-column: 16 / 17;
+    grid-row: 1 / 2;
+    margin-top: 10px;
+  }
+  .wrapper__form_input4 >input{
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+  .icon_eye{
+    right: 2px;
+    padding-top: 5px;
+  }
+  
+  .navigate__signin{
+    font-size: 18px;
+    color: rgb(125, 125, 125);
+    margin: 0 50px;
+  }
+  
+  .register__continue_btn{
+    font-size: 18px;
+    cursor: not-allowed;
+    background-color:#b8b6b4;
+    color: #e8dddc;
+    width: 7.5em;
+    outline: none;
+    padding: 0.8em;
+    border-radius: 0.8em;
+    float: right;
+    margin: 2em 2.8em;
+  }
+  
+  /*
+  Responsive of website
+  */
+  /*
+  Mobile: width < 740px = 46.1875em
+  */
+  @media only screen and (max-width: 46.1875em){
+    .register__form{
+        font-size: 10px;
+        grid-template-columns: repeat(2, 24.7em);
+        grid-template-rows: repeat(3, 6em);
+    }
+    .wrapper__form>input{
+        font-size: 20px;
+        margin: 10px;
+        width: 95%;
+    }
+    .wrapper__form_input1{
+        border-right-style:solid;
+    }
+    .wrapper__form_input2{
+        border-left-style:solid;
+    }
+    .wrapper__form_input4{
+        border-style: solid;
+        border-top-style: none;
+        border-left-style: solid;
+    }
+  
+    .register__header_p{
+        font-size: 22px;
+        margin: 1em 0;
+    }
+    .navigate__signin{
+        font-size: 22px;
+    }
+    .wrapper__form>i{
+        font-size: 20px;
+    }
+    .wrapper__form_icon{
+      margin-top: 17px;
+    }
+  }
+  @media only screen and (width: 1024px){
+    .wrapper__form_input1{
+        border-right-style:solid;
+    }
+    .wrapper__form_input2{
+        border-left-style:solid;
+    }
+    .wrapper__form--input3{
+        border-bottom-style: none;
+    }
+    .wrapper__form_input4{
+        border-style: solid;
+        border-top-style: none;
+        border-left-style: solid;
+    }
+  }
+  
+  
+  /*
+  =========================
+  Style Second Page Of Register
+  =========================
+  **/
+  .second__register_p{
+    font-size: 18px;
+    color: var(--text-color);
+    margin-bottom: 1.8em;
+    margin-top: 2em;
+  }
+  .wrapper__form_company{
+    font-size: 15px;
+    display: grid;
+    grid-template-columns: repeat(3, 11em);
+    grid-template-rows: repeat(2, 3em);
+  }
+  .form_company{
+    grid-column: 1 / 4;
+    grid-row: 1 / 2;
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--border-color);
+    border-bottom-style: none;
+  }
+  .form_domain{
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+    border-bottom-left-radius: 16px;
+    border: 1px solid var(--border-color);
+    border-right-style: none;
+  }
+  .form_domain_com{
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    border-bottom-right-radius: 16px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(243, 247, 250);
+    color: rgb(133,133,133);
+  }
+  .wrapper__form_page2>input{
+    width: 90%;
+    outline: none;
+    border: none;
+    padding: 8px 5px;
+    margin-top: 1.5px;
+    margin-left: 9px;
+  }
+  .create__url_p{
+    font-size: 12px;
+    /* color: rgb(136,158,175); */
+    margin-top: 0.8em;
+    margin-left: 0.2em;
+    color: var(--text-color);
+  }
+  .size__company{
+    margin: 35px 0px;
+  }
+  .size__company_p{
+    font-size: 20px;
+    color: var(--text-color);
+    margin-bottom: 1.5em;
+  }
+  .wrapper__size_company{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 22%);
+    grid-template-rows: repeat(2, 70px);
+  }
+  .wrapper__size_company1{
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  .wrapper__size_company2{
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+  .wrapper__size_company3{
+    grid-column: 3/4;
+    grid-row: 1/2;
+  }
+  .wrapper__size_company4{
+    grid-column: 4/5;
+    grid-row: 1/2;
+  }
+  .wrapper__size_company5{
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+  .wrapper__size_company6{
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+  .size__company_btn{
+    width: 95%;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 1em;
+    border-radius: 30px;
+  }
+  .size__company_btn:hover, .size__company_btn:focus {
+    background-color: #d5f7e0;
+    border: 1px solid #22b348;
+  }
+  .company__continue_btn{
+    cursor: not-allowed;
+    background-color:#b8b6b4;
+    color: #e8dddc;
+    font-size: 18px;
+    width: 7.5em;
+    /* background-color: var(--button-color); */
+    /* color: var(--text-color); */
+    /* cursor: pointer; */
+    outline: none;
+    padding: 0.8em;
+    border-radius: 0.8em;
+    float: right;
+    margin: 0 0 2em 2em;
+  }
+
+/*
+ CSS page 3
+ 
+ */
+  .wrapper__form_page3{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+  }
+  .wrapper__form_page3>select{
+    font-size: 18px;
+    padding:0.5em;
+    margin: 0.3em;
+    border: none;
+    outline: none;
+  }
+  .option__form_page3{
+    font-size: 18px;
+    padding:0.5em;
+    margin: 0.3em;
+    border: none;
+    outline: none;
+  }
+  .second__role_p{
+    font-size: 18px;
+    color: var(--text-color);
+    margin-bottom: 1.8em;
+    margin-top: 1.8em;
+  }
+  .wrapper__role{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(7, 14%);
+    grid-template-rows: repeat(3, 65px);
+  }
+  .wrapper__role1{
+    grid-column: 1/4;
+    grid-row: 1/2;
+  }
+  .wrapper__role2{
+    grid-column: 4/6;
+    grid-row: 1/2;
+  }
+  .wrapper__role3{
+    grid-column: 6/8;
+    grid-row: 1/2;
+  }
+  .wrapper__role4{
+    grid-column: 1/4;
+    grid-row: 2/3;
+  }
+  .wrapper__role5{
+    grid-column: 4/7;
+    grid-row: 2/3;
+  }
+  .wrapper__role6{
+    grid-column: 1/3;
+    grid-row: 3/4;
+  }
