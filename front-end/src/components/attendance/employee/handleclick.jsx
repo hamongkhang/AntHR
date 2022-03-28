@@ -207,78 +207,79 @@ const HandleOption = (props) => {
                     </Typography>
                 </Box>
 
-        <Box
-          style={styles.option_dropdown_content_li}
-          className={props.classes.hover_li}
-        >
-          <CheckIcon />
-          <Typography variant="body1">&nbsp; Approve</Typography>
-        </Box>
-        <Box
-          style={styles.option_dropdown_content_li}
-          className={props.classes.hover_li}
-        >
-          <CheckIcon />
-          <Typography variant="body1">&nbsp; Confirm</Typography>
-        </Box>
-            <Dialog
-                open={openModal}
-                fullScreen
-                onClose={handleClickClose}
-                aria-labelledby="draggable-dialog-title"
-                sx={{ p: 3 }}
-            >
-                <DialogContent>
-                    <Box
-                        sx={{
-                            height: 475,
-                            width: "100%",
-                            mt: 4,
-                        }}
-                    >
-                        <DataGrid
-                            className={classes.hide_border}
-                            rows={tableData}
-                            columns={columns}
-                            pageSize={7}
-                            disableColumnMenu
-                        />
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        sx={{ backgroundColor: '#AEB6BF ', color: 'white', '&:hover': { backgroundColor: '#808B96' }, mb: 2, mr: 2 }}
-                        onClick={handleClickClose}>
-                        Cancel
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <Box
+                    style={styles.option_dropdown_content_li}
+                    className={props.classes.hover_li}
+                >
+                    <CheckIcon />
+                    <Typography variant="body1">&nbsp; Approve</Typography>
+                </Box>
+                <Box
+                    style={styles.option_dropdown_content_li}
+                    className={props.classes.hover_li}
+                >
+                    <CheckIcon />
+                    <Typography variant="body1">&nbsp; Confirm</Typography>
+                </Box>
+                <Dialog
+                    open={openModal}
+                    fullScreen
+                    onClose={handleClickClose}
+                    aria-labelledby="draggable-dialog-title"
+                    sx={{ p: 3 }}
+                >
+                    <DialogContent>
+                        <Box
+                            sx={{
+                                height: 475,
+                                width: "100%",
+                                mt: 4,
+                            }}
+                        >
+                            <DataGrid
+                                className={classes.hide_border}
+                                rows={tableData}
+                                columns={columns}
+                                pageSize={7}
+                                disableColumnMenu
+                            />
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            variant="contained"
+                            sx={{ backgroundColor: '#AEB6BF ', color: 'white', '&:hover': { backgroundColor: '#808B96' }, mb: 2, mr: 2 }}
+                            onClick={handleClickClose}>
+                            Cancel
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </Popover>
         </>
     );
 }
 
 const styles = {
-  option_dropbtn: {
-    backgroundColor: "#989a9e",
-    color: "white",
-    padding: "5px",
-    fontSize: "4px",
-    border: "none",
-    cursor: "pointer",
-    borderRadius: "5px",
-  },
-  option_dropdown_content_li: {
-    color: "black",
-    padding: "5px 12px",
-    display: "flex",
-    cursor: "pointer",
-  },
-  hover_li: {
-    "&:hover": {
-      backgroundColor: "#dedfe0",
+    option_dropbtn: {
+        backgroundColor: "#989a9e",
+        color: "white",
+        padding: "5px",
+        fontSize: "4px",
+        border: "none",
+        cursor: "pointer",
+        borderRadius: "5px",
     },
-  },
+    option_dropdown_content_li: {
+        color: "black",
+        padding: "5px 12px",
+        display: "flex",
+        cursor: "pointer",
+    },
+    hover_li: {
+        "&:hover": {
+            backgroundColor: "#dedfe0",
+        },
+    },
 };
 
 export default withStyles(styles)(HandleOption);

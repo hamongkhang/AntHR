@@ -9,15 +9,15 @@ import HandleOption from "./handleclick";
 import HeaderEmployee from "./header";
 
 const useStyles = makeStyles({
-  hide_border: {
-    "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-      outline: "none",
+    hide_border: {
+        "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+            outline: "none",
+        },
+        "&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 600,
+            color: "#ffb74d",
+        },
     },
-    "&.MuiDataGrid-root	.MuiDataGrid-columnHeaderTitle": {
-      fontWeight: 600,
-      color: "#ffb74d",
-    },
-  },
 });
 const columns = [
     {
@@ -78,12 +78,11 @@ const columns = [
         renderCell: (params) => {
             return (
                 <>
-                    <HandleOption id={params.row.user_id}/>
+                    <HandleOption id={params.row.user_id} />
                 </>
             );
         },
     },
-  },
 ];
 
 const rows = [
@@ -107,10 +106,10 @@ const EmployeeAttend = (props) => {
 
                 }
                 else {
-                    data.attendances.map((a, index)=>{
+                    data.attendances.map((a, index) => {
                         a.id = index;
                         a.no = index + 1;
-                        a.work_schedule = a.work_schedule+'h'
+                        a.work_schedule = a.work_schedule + 'h'
                     })
                     setTableData(data.attendances);
                 }
@@ -147,31 +146,28 @@ const EmployeeAttend = (props) => {
                     </Box>
                 </Box>
             </Box>
-          </Box>
-        </Box>
-      </Box>
-    </>
-  );
+        </>
+    );
 };
 
 const styles = {
-  BoxHeader: {
-    fontSize: 15,
-    display: "flex",
-    padding: "10px 24px",
-    boxSizing: "inherit",
-    border: "1px solid rgb(227 235 241)",
-    borderRadius: "5px",
-    marginTop: "2%",
-    marginBottom: "2%",
-  },
-  HeaderBody: {
-    width: "100%",
-    display: "block",
-    margin: "12px auto",
-    overflowX: "auto",
-    borderRadius: "5px",
-  },
+    BoxHeader: {
+        fontSize: 15,
+        display: "flex",
+        padding: "10px 24px",
+        boxSizing: "inherit",
+        border: "1px solid rgb(227 235 241)",
+        borderRadius: "5px",
+        marginTop: "2%",
+        marginBottom: "2%",
+    },
+    HeaderBody: {
+        width: "100%",
+        display: "block",
+        margin: "12px auto",
+        overflowX: "auto",
+        borderRadius: "5px",
+    },
 };
 
 export default EmployeeAttend;
