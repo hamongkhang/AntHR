@@ -16,6 +16,7 @@ use App\Models\UserScore;
 use App\Models\Like;
 use App\Models\Comment;
 use Illuminate\Support\Facades\File;
+use App\Models\Notify;
 
 
 
@@ -104,7 +105,6 @@ class PraiseController extends Controller
      */
     public function createPraise(Request $request){
         $validator = Validator::make($request->all(), [
-            'image' => 'required',
             'message' => 'required',
             'score'=>'required',
             'present'=>'required',
@@ -130,6 +130,8 @@ class PraiseController extends Controller
                 $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
                 $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image', $name);
                 $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'praise'.'/'.'image'.'/'.$name;
+            }else{
+                $name = "_17-03-2022-00-25-51.jpg";
             }
             $postArray = [
                 'author'=>$userFind->id,
@@ -144,7 +146,16 @@ class PraiseController extends Controller
                 'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
             ];
             $praise = Praise::create($postArray);
-
+                $postNotify = [
+                    'user_id'=>$request->recipient,
+                    'category'=>3,
+                    'title'  => "New notification",
+                    'content'=>"You just received a compliment",
+                    'status'=>1,
+                    'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                    'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+                ];
+                $notify = Notify::create($postNotify);
             $scoreAuthor=UserScore::find($scoreUser->id);
             $scoreAuthor->score=$scoreAuthor->score-$request->score;
             $scoreAuthor->score_spent=$scoreAuthor->score_spent+$request->score;
@@ -186,7 +197,7 @@ class PraiseController extends Controller
      */
     public function getAllPraise(){
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
             $data=DB::table('praise')->get();
         }else{
             $data = DB::table('praise')->where('status',1)->get();
@@ -315,7 +326,7 @@ class PraiseController extends Controller
      */
     public function destroyPraise($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $praise= Praise::find($id);
             if ($praise){
                 $scoreUser = DB::table('user_score')->where('user_id',$praise->author)->first();
@@ -377,10 +388,10 @@ class PraiseController extends Controller
      */
 public function changeStatus($id){
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $praise= Praise::find($id);
         if ($praise){
-            if($praise->status===1){
+            if($praise->status==1){
                 $praise->status=0;
             }else{
                 $praise->status=1;

@@ -97,7 +97,7 @@ function createUser($getInfo,$provider){
     if (! $token = auth()->attempt($userLogin)) {
         return ['error' => 'Unauthorized'];
     }
-    if (auth()->user()->status==="block") {
+    if (auth()->user()->status=="block") {
         return ['error' => 'Blocked'];
     }
     return [
@@ -123,7 +123,7 @@ else{
   if (! $token = auth()->attempt($userNomal)) {
       return ['error' => 'Unauthorized'];
   }
-  if (auth()->user()->status==="block") {
+  if (auth()->user()->status=="block") {
       return ['error' => 'Blocked'];
   }
       return [

@@ -29,26 +29,6 @@ const MobileAccountMenu = (props) => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={1} color="error">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <Typography>Messages</Typography>
-            </MenuItem>
-            <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
-                    <Badge badgeContent={1} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <Typography>Notifications</Typography>
-            </MenuItem>
             <MenuItem to='profile/overview' component={Link}>
                 <IconButton
                     size="large"

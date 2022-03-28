@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use App\Models\Employee;
 use App\Models\Company;
 use App\Models\User;
+use App\Models\Notify;
 
 
 
@@ -59,7 +60,7 @@ class AccountController extends Controller
         if($admin->role==1){
             $account=User::find($id);
             if($account){
-               if($account->status==='active'){
+               if($account->status=='active'){
                      $account->status = 'block';
                      $account->save();
                      return response()->json([
@@ -132,7 +133,7 @@ class AccountController extends Controller
         if($admin->role==1){
             $account=User::find($id);
             if($account){
-                if($account->role===1){
+                if($account->role==1){
                     $account->role=0;
                 }else{
                     $account->role=1;

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 use App\Models\PresentCategory;
+use App\Models\Notify;
 
 
 class PresentCategoryController extends Controller
@@ -59,7 +60,7 @@ class PresentCategoryController extends Controller
             return response()->json(['error'=>$validator->errors()], 400);     
         }
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
         $postArray = [
             'category'  => $request->category,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
@@ -169,10 +170,10 @@ public function updateCategory($id,Request $request){
         return response()->json(['error'=>$validator->errors()], 400);     
     }
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $new= PresentCategory::find($id);
         if ($new){
-            if ($request->category===null){
+            if ($request->category==null){
                 $category=$new->category;
             }else{
                 $category=$request->category;
@@ -217,7 +218,7 @@ public function updateCategory($id,Request $request){
      */
     public function destroyCategory($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $new= PresentCategory::find($id);
             if ($new){
                $new->delete();

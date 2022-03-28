@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use App\Models\Notify;
 
 
 use App\Models\Document;
@@ -82,7 +83,7 @@ class DocumentController extends Controller
             return response()->json(['error'=>$validator->errors()], 400);     
         }
         $userFind = auth()->user();
-        if($userFind->role===1){
+        if($userFind->role==1){
         $folder=DB::table('document_folder')->where('id',$request->folder_id)->first();
         if($folder){
             if ($request->hasFile('name'))
@@ -110,6 +111,19 @@ class DocumentController extends Controller
                 $folderUpdate= DocumentFolder::find($request->folder_id);
                 $folderUpdate->sum=$folderUpdate->sum+1;
                 $folderUpdate->save();
+                $employeeFind=DB::table('employee')->get();
+        for ($i=0;$i<count($employeeFind);$i++){
+            $postNotify = [
+                'user_id'=>$employeeFind[$i]->user_id,
+                'category'=>2,
+                'title'  => "Admin just added document to the documents",
+                'content'=>$request->name_show,
+                'status'=>1,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $notify = Notify::create($postNotify);
+        }
                 return Response()->json(array("Create document successfully!"=> 1,"data"=>$document ));
             } 
         }else{
@@ -177,17 +191,17 @@ public function updateDocument($id,Request $request){
         return response()->json(['error'=>$validator->errors()], 400);     
     }
     $checkLogin = auth()->user();
-    if($checkLogin->role===1){
+    if($checkLogin->role==1){
         $folder= DocumentFolder::find($request->folder_id);
         if ($folder){
             $document=Document::find($id);
             if($document){
-                if ($request->name_show===null){
+                if ($request->name_show==null){
                     $name_show=$document->name_show;
                 }else{
                     $name_show=$request->name_show;
                 }
-                if ($request->name===null){
+                if ($request->name==null){
                     $name=$document->name;
                 }else{
                     if ($request->hasFile('name'))
@@ -207,7 +221,7 @@ public function updateDocument($id,Request $request){
                         $name=$request->name;
                     }
                 } 
-                if ($request->size===null){
+                if ($request->size==null){
                     $size=$document->size;
                 }else{
                     $size=$request->size;
@@ -260,7 +274,7 @@ public function updateDocument($id,Request $request){
      */
     public function destroyDocument($id){
         $checkLogin = auth()->user();
-        if($checkLogin->role===1){
+        if($checkLogin->role==1){
             $document= Document::find($id);
             if ($document){
                $document->delete();
@@ -308,7 +322,7 @@ public function updateDocument($id,Request $request){
     {
             $document= Document::find($id);
             if ($document){
-                if($document->size===null){
+                if($document->size==null){
                     $path = public_path().DIRECTORY_SEPARATOR."upload".DIRECTORY_SEPARATOR."document".DIRECTORY_SEPARATOR."cxampptmpphpec6etmp_14-03-2022-08-05-07.docx";
                     $fileName = "cxampptmpphpec6etmp_14-03-2022-08-05-07.docx";
                     return Response::download($path, $fileName, ['Content-Type: application']);
