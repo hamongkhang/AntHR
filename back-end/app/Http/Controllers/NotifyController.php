@@ -31,5 +31,9 @@ class NotifyController extends Controller
                 return response()->json(['error'=>"Invalid id !!!"], 400);
             }
     }
+    public function getNotify(){
+        $data=DB::table('notify')->where('user_id',auth()->user()->id)->get();
+        return Response()->json(array("Get notify successfully!"=> 1,"data"=>$data ));
+    }
 
 }

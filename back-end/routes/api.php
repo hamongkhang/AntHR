@@ -118,6 +118,7 @@ Route::delete('/present/destroyPresent/{id}', [App\Http\Controllers\PresentContr
 Route::get('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
 Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
 Route::delete('/notify/destroyNotify/{id}', [App\Http\Controllers\NotifyController::class, 'destroyNotify'])->name('notify.destroyNotify');
+Route::get('/notify/getNotify', [App\Http\Controllers\NotifyController::class, 'getNotify'])->name('notify.getNotify');
 
 
 
