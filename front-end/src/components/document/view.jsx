@@ -37,6 +37,7 @@ const [documents, setDocuments]= useState([]);
 const [search,setSearch]=useState(false);
 const [searchDocuments,setSearchDocuments]=useState([]);
 const [render, setRender] = useState(false);
+const role=localStorage.getItem('role');
 const [error, setError] = useState({
     name:null,
     description:null,
@@ -281,7 +282,9 @@ const uploadGoogleDrive=(event)=>{
     });
 }
     return(
-        <Box 
+        (role==1)
+        ?
+            <Box 
             sx={{
                 maxWidth:"100%",
                 height:'100%',
@@ -672,43 +675,59 @@ const uploadGoogleDrive=(event)=>{
                                            <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
                                            <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
                                            <TableCell>
-                                               <Grid
-                                                   container
-                                                   spacing={{ xs: 2, md: 3 }}
-                                                   columns={{ xs: 6, sm: 9, md: 12 }}
-                                               >
-                                                   <Grid item xs={2} sm={1} md={3}></Grid>
-                                                   <Grid item xs={2} sm={3} md={3}>
-                                                       <Box
-                                                           onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
-                                                           sx={{
-                                                               backgroundColor:"rgb(224, 230, 234)",
-                                                               paddingTop:"5px",
-                                                               paddingBottom:"5px",
-                                                               borderRadius:"3px",
-                                                               textAlign:"center",
-                                                           }}
-                                                       >
-                                                           <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
-                                                       </Box>
-                                                   </Grid>
-                                                   <Grid item xs={2} sm={3} md={3}>
-                                                       <Box
-                                                           onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
-                                                           sx={{
-                                                               backgroundColor:"rgb(224, 230, 234)",
-                                                               paddingTop:"5px",
-                                                               paddingBottom:"5px",
-                                                               borderRadius:"3px",
-                                                               textAlign:"center",
-                                                           }}
-                                                       >
-                                                           <DeleteOutlinedIcon sx={{color:"red"}}  />
-                                                       </Box>
-                                                   </Grid>
-                                                   <Grid item xs={2} sm={1} md={3}></Grid>
-                                               </Grid>
-                                           </TableCell>
+                                                    <Grid
+                                                        container
+                                                        spacing={{ xs: 2, md: 3 }}
+                                                        columns={{ xs: 6, sm: 8, md: 12 }}
+                                                    >
+                                                         <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                                <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>EditDocumentShow(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                               <ModeEditOutlineOutlinedIcon sx={{color:"blue"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={2} sm={2} md={3}>
+                                                            <Box
+                                                                onClick={(event)=>deleteDocuments(event,item.id,item.name_show)}
+                                                                sx={{
+                                                                    backgroundColor:"rgb(224, 230, 234)",
+                                                                    paddingTop:"5px",
+                                                                    paddingBottom:"5px",
+                                                                    borderRadius:"3px",
+                                                                    textAlign:"center",
+                                                                }}
+                                                            >
+                                                                <DeleteOutlinedIcon sx={{color:"red"}}  />
+                                                            </Box>
+                                                        </Grid>
+                                                        <Grid item xs={1} sm={1} md={1.5}>
+                                                        </Grid>
+                                                    </Grid>
+                                                </TableCell>
                                                     </TableRow>
                                                 )})
                                         :
@@ -730,6 +749,183 @@ const uploadGoogleDrive=(event)=>{
                         </Box>
                     </Grid>
             </Grid>
+            </Box>
+        :
+        <Box 
+        sx={{
+            maxWidth:"100%",
+            height:'100%',
+            border:"1px solid rgb(227, 235, 241)",
+            borderRadius:"5px",
+            backgroundColor:"white"
+        }}
+    >
+        <Modal
+        open={openModal}
+        onClose={(event)=>clickOpenModal(event)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+    ><Box 
+    sx={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: "60%",
+        height:"90%",
+        bgcolor: 'background.paper',
+        border: '2px solid #ff9900',
+        boxShadow: 24,
+        p: 4,
+        borderRadius:"10px"
+    }}
+>
+        <iframe src="https://docs.google.com/gview?url=www.khuyenmaihcmc.vn/files/Ho_so/Huong_dan_su_dung_trang_web.docx&embedded=true" style={{width: '100%', height: '100%'}} frameBorder={0}  />   
+        </Box>                               
+        </Modal>
+        <Grid
+                container
+                spacing={{ xs: 2, md: 3 }}
+                columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+                <Grid item xs={4} sm={8} md={12}>
+                    <Box
+                        sx={{
+                            borderBottom:"1px solid rgb(227, 235, 241)",
+                            padding:"20px"
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                        <Grid item xs={4} sm={3} md={4}>
+                            <Paper
+                                component="form"
+                                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: "100%" }}
+                            >
+                                <InputBase
+                                    sx={{ ml: 1, flex: 1 }}
+                                    placeholder="Search By Name ...."
+                                    inputProps={{ 'aria-label': 'search by name...' }}
+                                    onChange={(event)=>onChangeSearch(event)}
+                                />
+                                    <IconButton onClick={(event)=>onSearch(event)} type="submit" sx={{ p: '10px' }} aria-label="search">
+                                        <SearchIcon />
+                                    </IconButton>
+                            </Paper>
+                        </Grid>
+                       </Grid>
+                    </Box>
+                </Grid>
+                <Grid item xs={4} sm={8} md={12}>
+                    <Box
+                        sx={{
+                            padding:"20px"
+                        }}
+                    >
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Name</TableCell>
+                                        <TableCell align="right" sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Size</TableCell>
+                                        <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}} align="center"><SettingsOutlinedIcon /></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                {!search?
+                                    documents.length?
+                                        documents.map((item,index)=>{
+                                            return(
+                                                <TableRow
+                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
+                                            <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
+                                            <TableCell>
+                                                <Grid
+                                                    container
+                                                    spacing={{ xs: 2, md: 3 }}
+                                                    columns={{ xs: 6, sm: 8, md: 12 }}
+                                                >
+                                                     <Grid item xs={1} sm={1} md={4.5}>
+                                                    </Grid>
+                                                    <Grid item xs={2} sm={2} md={3}>
+                                                        <Box
+                                                            onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
+                                                            sx={{
+                                                                backgroundColor:"rgb(224, 230, 234)",
+                                                                paddingTop:"5px",
+                                                                paddingBottom:"5px",
+                                                                borderRadius:"3px",
+                                                                textAlign:"center",
+                                                            }}
+                                                        >
+                                                            <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
+                                                        </Box>
+                                                    </Grid>
+                                                    <Grid item xs={1} sm={1} md={4.5}>
+                                                    </Grid>
+                                                </Grid>
+                                            </TableCell>
+                                                </TableRow>
+                                    )}):null
+                                :    
+                                    searchDocuments.length?
+                                        searchDocuments.map((item,index)=>{
+                                            return(
+                                                <TableRow
+                                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                   >
+                                       <TableCell component="th" scope="row" onClick={(event)=>clickOpenModal(event)}><ArticleIcon sx={{color:"#1890ff"}} /> {item.name_show?item.name_show:"-"}</TableCell>
+                                       <TableCell align="right">{item.size?item.size:"-"} KB</TableCell>
+                                       <TableCell>
+                                           <Grid
+                                               container
+                                               spacing={{ xs: 2, md: 3 }}
+                                               columns={{ xs: 6, sm: 9, md: 12 }}
+                                           >
+                                               <Grid item xs={2} sm={1} md={4.5}></Grid>
+                                               <Grid item xs={2} sm={3} md={3}>
+                                                   <Box
+                                                       onClick={(event)=>downloadDocuments(event,item.id,item.name_show)}
+                                                       sx={{
+                                                           backgroundColor:"rgb(224, 230, 234)",
+                                                           paddingTop:"5px",
+                                                           paddingBottom:"5px",
+                                                           borderRadius:"3px",
+                                                           textAlign:"center",
+                                                       }}
+                                                   >
+                                                       <DownloadOutlinedIcon sx={{color:"rgb(42, 210, 95)"}}  />
+                                                   </Box>
+                                               </Grid>
+                                               <Grid item xs={2} sm={1} md={4.5}></Grid>
+                                           </Grid>
+                                       </TableCell>
+                                                </TableRow>
+                                            )})
+                                    :
+                                    <Typography
+                                    align="center"
+                                    variant="h4" 
+                                    sx={{ 
+                                      mb: 1.5,
+                                      color:"rgb(105, 129, 148)",
+                                    }} 
+                                    color="text.secondary" 
+                                  >
+                                   No data found
+                                  </Typography>
+                                    }
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Box>
+                </Grid>
+        </Grid>
         </Box>
     );
 }

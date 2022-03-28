@@ -19,6 +19,8 @@ class UserScore extends Model
         'id',
         'user_id',
         'score',
+        'score_spent',
+        'gift',
         'created_at',
         'updated_at',
     ];

@@ -23,6 +23,38 @@ class CartPresentController extends Controller
         $this->middleware('auth:api', ['except' => ['downloadDocument']]);
     }
 
+    public function getAllCartPresent(){
+        $userFind = auth()->user();
+        $data1 = DB::table('cart_present')->get();
+        $data=[];
+        for ($i=0;$i<count($data1);$i++){
+            $userFind= DB::table('users')->where('id',$data1[$i]->user_id)->first();
+            $EmployeeFind= DB::table('employee')->where('user_id',$data1[$i]->user_id)->first();
+            $PresentFind= DB::table('present')->where('id',$data1[$i]->present_id)->first();
+            $postData=[
+                'id'=> $data1[$i]->id,
+                'first_name'=> $EmployeeFind->first_name,
+                'last_name' => $EmployeeFind->last_name,
+                'email' => $EmployeeFind->email,
+                'user_id' => $EmployeeFind->user_id,
+                'role' => $userFind->role,
+                'avatar' => $EmployeeFind->avatar,
+                'present_id' => $PresentFind->id,
+                'present_name' => $PresentFind->name,
+                'present_image' => $PresentFind->image,
+                'present_price' => $PresentFind->price,
+                'present_author' => $PresentFind->author,
+                'present_description' => $PresentFind->description,
+                'present_score' => $PresentFind->score,
+                'present_status' => $PresentFind->status,
+                'status' => $data1[$i]->status,
+                'updated_at' => $data1[$i]->updated_at,
+            ];
+        
+            array_push($data,$postData);
+        }
+        return Response()->json(array("Get present successfully!"=> 1,"data"=>$data ));
+    }
     /**
      * @SWG\DELETE(
      *     path="/api/cart_present/destroyCartPresent/{id}",
@@ -103,8 +135,13 @@ class CartPresentController extends Controller
                         $scoreFind = DB::table('user_score')->where('user_id',$cartPresent->user_id)->first();
                         $present= Present::find($cartPresent->present_id);
                         $scoreSum=UserScore::find($scoreFind->id);
-                        $scoreSum->score=$scoreSum->score-$present->score;
-                        $scoreSum->save();
+                        if($scoreSum->score>=$present->score){
+                            $scoreSum->score=$scoreSum->score-$present->score;
+                            $scoreSum->gift=$scoreSum->gift+$present->score;
+                            $scoreSum->save();
+                        }else{
+                            return response()->json(['error'=>"Not enough points !!!"], 400);
+                        }
                     }                  
                     $cartPresent->updated_at=Carbon::now('Asia/Ho_Chi_Minh'); 
                     $cartPresent->save(); 

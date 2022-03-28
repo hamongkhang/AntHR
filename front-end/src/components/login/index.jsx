@@ -21,6 +21,9 @@ const Login = (props) => {
   const avatar = value.avatar;
   const avatar_google = value.avatar_google;
   const access_token = value.access_token;
+  const email = value.email;
+  const role = value.role;
+  const id = value.id;
   const error = value.error;
 
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -170,7 +173,9 @@ const Login = (props) => {
                   localStorage.setItem('first_name',json.name.first_name);
                   localStorage.setItem('last_name',json.name.last_name);
                   localStorage.setItem('avatar', json.name.avatar);
+                  localStorage.setItem('email', json.name.email);
                   localStorage.setItem('role', json.user.role);
+                  localStorage.setItem('id', json.user.id);
                   toast.success(`Logged in successfully !!!`, {
                       position: 'top-center',
                       autoClose: 5000,
@@ -190,8 +195,11 @@ const Login = (props) => {
       navigate('/home');
     }else if(access_token){
       localStorage.setItem('access_token', access_token);
+      localStorage.setItem('id', id);
+      localStorage.setItem('role', role);
       localStorage.setItem('first_name', first_name);
       localStorage.setItem('last_name', last_name);
+      localStorage.setItem('email', email);
       if (avatar_google) {
           localStorage.setItem('avatar', avatar_google);
       } else {

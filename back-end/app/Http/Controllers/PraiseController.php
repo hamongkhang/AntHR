@@ -13,6 +13,9 @@ use Illuminate\Support\Str;
 use App\Models\Praise;
 use App\Models\User;
 use App\Models\UserScore;
+use App\Models\Like;
+use App\Models\Comment;
+use Illuminate\Support\Facades\File;
 
 
 
@@ -101,50 +104,61 @@ class PraiseController extends Controller
      */
     public function createPraise(Request $request){
         $validator = Validator::make($request->all(), [
-            'image' => '',
+            'image' => 'required',
             'message' => 'required',
             'score'=>'required',
-            'present'=>'',
+            'present'=>'required',
             'recipient'=>'required|integer',
             'cheer'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 400);     
         }
-        $userFind = auth()->user();
-        if ($request->hasFile('image'))
-        {
-            $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image';
-            if (!file_exists($destinationPath)) {
-                File::makeDirectory($destinationPath, 0775, true);
-            }       
-            $file = $request->file('file');
-            $date = now('Asia/Ho_Chi_Minh');
-            $date = $date->format('d-m-Y-H-i-s');
-            $extension = $file->extension();
-            $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
-            $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image', $name);
-            $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'praise'.'/'.'image'.'/'.$name;
+        $scoreUser = DB::table('user_score')->where('user_id',auth()->user()->id)->first();
+        if($scoreUser->score>=$request->score){
+            $userFind = auth()->user();
+            if ($request->hasFile('image'))
+            {
+                $destinationPath = public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image';
+                if (!file_exists($destinationPath)) {
+                    File::makeDirectory($destinationPath, 0775, true);
+                }       
+                $file = $request->file('image');
+                $date = now('Asia/Ho_Chi_Minh');
+                $date = $date->format('d-m-Y-H-i-s');
+                $extension = $file->extension();
+                $name = Str::slug($request->name, '_').'_'.$date.'.'.$extension;
+                $file->move(public_path().DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR.'praise'.DIRECTORY_SEPARATOR.'image', $name);
+                $linkFile = $request->getSchemeAndHttpHost().'/'.'upload'.'/'.'praise'.'/'.'image'.'/'.$name;
+            }
+            $postArray = [
+                'author'=>$userFind->id,
+                'image'  => $name,
+                'message'=>$request->message,
+                'score'=>$request->score,
+                'present'=>$request->present,
+                'recipient'=>$request->recipient,
+                'cheer'=>$request->cheer,
+                'status'=>0,
+                'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+                'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+            ];
+            $praise = Praise::create($postArray);
+
+            $scoreAuthor=UserScore::find($scoreUser->id);
+            $scoreAuthor->score=$scoreAuthor->score-$request->score;
+            $scoreAuthor->score_spent=$scoreAuthor->score_spent+$request->score;
+            $scoreAuthor->save();
+            $scoreFind = DB::table('user_score')->where('user_id',$request->recipient)->first();
+            $scoreSum=UserScore::find($scoreFind->id);
+            $scoreSum->score=$scoreSum->score+$request->score;
+            $scoreSum->save();
+            return Response()->json(array("Create folder successfully!"=> 1,"data"=>$praise ));
+        }else{
+            return response()->json(["error" => "Score not found!!!"],400);
         }
-        $postArray = [
-            'author'=>$userFind->id,
-            'image'  => $name,
-            'message'=>$request->message,
-            'score'=>$request->score,
-            'present'=>$request->present,
-            'recipient'=>$request->recipient,
-            'cheer'=>$request->cheer,
-            'status'=>0,
-            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
-            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
-        ];
-        $praise = Praise::create($postArray);
-        $scoreFind = DB::table('user_score')->where('user_id',$request->recipient)->first();
-        $scoreSum=UserScore::find($scoreFind->id);
-        $scoreSum->score=$scoreSum->score+$request->score;
-        $scoreSum->save();
-        return Response()->json(array("Create folder successfully!"=> 1,"data"=>$praise ));
-    }
+        }
+        
     /**
      * @SWG\GET(
      *     path="/api/praise/getAllPraise",
@@ -178,6 +192,53 @@ class PraiseController extends Controller
             $data = DB::table('praise')->where('status',1)->get();
         } 
         return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+
+    public function getAllLike(){
+        $userFind = auth()->user();
+           $data=DB::table('like')->get();
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+    public function getAllComment(){
+        $userFind = auth()->user();
+            $data=DB::table('comment')->get();
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+    public function createComment(Request $request){
+        $validator = Validator::make($request->all(), [
+            'praise_id' => 'required',
+            'messeger' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        $userFind = auth()->user();
+        $postArray = [
+            'user_id'=>$userFind->id,
+            'praise_id'  => $request->praise_id,
+            'messeger'=>$request->messeger,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+        ];
+        $praise = Comment::create($postArray);
+        return Response()->json(array("Create comment successfully!"=> 1,"data"=>$praise ));
+    }
+    public function createLike(Request $request){
+        $validator = Validator::make($request->all(), [
+            'praise_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 400);     
+        }
+        $userFind = auth()->user();
+        $postArray = [
+            'user_id'=>$userFind->id,
+            'praise_id'  => $request->praise_id,
+            'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
+            'updated_at'=> Carbon::now('Asia/Ho_Chi_Minh')
+        ];
+        $praise = Like::create($postArray);
+        return Response()->json(array("Create comment successfully!"=> 1,"data"=>$praise ));
     }
      /**
      * @SWG\GET(
@@ -257,11 +318,21 @@ class PraiseController extends Controller
         if($checkLogin->role===1){
             $praise= Praise::find($id);
             if ($praise){
-               $praise->delete();
-               return response()->json([
+                $scoreUser = DB::table('user_score')->where('user_id',$praise->author)->first();
+                $scoreAuthor=UserScore::find($scoreUser->id);
+                $scoreAuthor->score=$scoreAuthor->score+$praise->score;
+                $scoreAuthor->score_spent=$scoreAuthor->score_spent-$praise->score;
+                $scoreAuthor->save();
+
+                $scoreFind = DB::table('user_score')->where('user_id',$praise->recipient)->first();
+                $scoreSum=UserScore::find($scoreFind->id);
+                $scoreSum->score=$scoreSum->score-$praise->score;
+                $scoreSum->save();
+                $praise->delete();
+                return response()->json([
                    'message'=>"Delete praise successfully",
                    'data'=>$praise
-               ]);
+                ]);
             }else{
                 return response()->json(['error'=>"Invalid id !!!"], 400);
             }

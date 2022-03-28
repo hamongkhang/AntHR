@@ -4,12 +4,12 @@ import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { Tabs, Tab, Badge, Container, Toolbar, Typography, IconButton, Box, Avatar } from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from '@mui/icons-material/MoreVert';
 import useWindowDimensions from "../../config/windowDimensions";
 import AccountMenu from "./AccountMenu";
 import MobileAccountMenu from "./MobileAccountMenu";
+import ApartmentIcon from '@mui/icons-material/Apartment';
 
 const drawerWidth = 240;
 
@@ -46,7 +46,7 @@ const NavBar = (props) => {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const menuId = 'primary-search-account-menu';
     const mobileMenuId = 'primary-search-account-menu-mobile';
-
+    const role = localStorage.getItem('role');
     const handleChangeTab = (event, newPath) => {
         setTab(newPath);
         let t = tabs.find(tab => (tab.value == newPath))
@@ -113,7 +113,7 @@ const NavBar = (props) => {
 
                         <Typography variant="h6" noWrap component="div" sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
                             <Avatar variant='square'
-                                sx={{ height:50, width:50 }}
+                                sx={{ height: 50, width: 50 }}
                                 src={`${process.env.REACT_APP_FILE}/logo/logo1.png`}
                                 component={Link} to='/home'>
                             </Avatar>
@@ -121,25 +121,46 @@ const NavBar = (props) => {
 
 
                         <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            LOGO
+                            <Avatar variant='square'
+                                sx={{ height: 50, width: 50 }}
+                                src={`${process.env.REACT_APP_FILE}/logo/logo1.png`}
+                                component={Link} to='/home'>
+                            </Avatar>
                         </Typography>
 
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             <Tabs value={tab} onChange={handleChangeTab} textColor='primary' indicatorColor='primary' TabIndicatorProps={{ style: { backgroundColor: 'transparent' } }}>
                                 {
-                                    tabs.map((tab) => (
-                                        <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
-                                            sx={{ color: 'white', fontWeight: '600', display: 'block' }}
-                                        ></Tab>
-                                    ))
+                                    tabs.map((tab) => {
+                                        if (role == 1) {
+                                            return (
+                                                <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
+                                                    sx={{ color: 'white', fontWeight: '600', display: 'block' }}
+                                                ></Tab>
+                                            )
+                                        }
+                                        else {
+                                            if (tab.value != 'employees') {
+                                                return (
+                                                    <Tab key={tab.value} value={tab.value} label={tab.value} to={`${tab.value}`} component={Link}
+                                                        sx={{ color: 'white', fontWeight: '600', display: 'block' }}
+                                                    ></Tab>
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    )
                                 }
                             </Tabs>
                         </Box>
                         <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                                <Badge badgeContent={1} color="error">
-                                    <MailIcon />
-                                </Badge>
+                            <IconButton
+                                size="large"
+                                color="inherit"
+                                sx={{ display: role == 1 ? 'block' : 'none' }}
+                                component={Link} to='/home/company'>
+                                <ApartmentIcon sx={{mb:'8px'}} />
                             </IconButton>
                             <IconButton
                                 size="large"
@@ -159,19 +180,17 @@ const NavBar = (props) => {
                                 onClick={handleProfileMenuOpen}
                                 color="inherit"
                             >
-                                {/* <AccountCircle /> */}
-
-                                <Avatar 
+                                <Avatar
                                     src={
-                                        localStorage.getItem('avatar')
+                                        (localStorage.getItem('avatar') === "null")
                                             ?
-                                                (localStorage.getItem('avatar').search('https://') != -1)
-                                                ?
-                                                    localStorage.getItem('avatar')
-                                                :
-                                                    process.env.REACT_APP_FILE+'/avatar/'+localStorage.getItem('avatar')
+                                            process.env.REACT_APP_FILE + '/avatar/avatar.png'
                                             :
-                                                process.env.REACT_APP_FILE+'/avatar/avatar.png'
+                                            (localStorage.getItem('avatar').search('https://') != -1)
+                                                ?
+                                                localStorage.getItem('avatar')
+                                                :
+                                                process.env.REACT_APP_FILE + '/avatar/' + localStorage.getItem('avatar')
                                     }
                                     sx={{ width: 24, height: 24 }} variant='circular'>
                                 </Avatar>
@@ -200,6 +219,16 @@ const NavBar = (props) => {
                             fontSize: 25, fontWeight: 600
                         }}>Profile</Typography>
                         <Typography sx={{
+                         display: window.location.pathname.search('employees/detail') != -1 ? 'block' : 'none',
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight: 600
+                        }}>Information</Typography>
+                        <Typography sx={{
+                            display: window.location.pathname.search('/company') != -1 ? 'block' : 'none',
+                            color: 'rgb(60, 82, 100)',
+                            fontSize: 25, fontWeight: 600
+                        }}>Company Information</Typography>
+                        <Typography sx={{
                             display: window.location.pathname == '/home' ? 'block' : 'none',
                             color: 'rgb(60, 82, 100)',
                             fontSize: 25, fontWeight: 600
@@ -207,13 +236,18 @@ const NavBar = (props) => {
                     </Box>
                     <Box justifyContent='space-around' sx={{
                         width: 1,
-                        display: window.location.pathname.search('profile') != -1 || window.location.pathname == '/home' ? 'none' : 'flex',
+                        display:
+                            window.location.pathname.search('profile') != -1 ||
+                                window.location.pathname.search('employees/detail') != -1 ||
+                                window.location.pathname.search('/company') != -1 ||
+                                window.location.pathname == '/home' ? 'none' : 'flex',
                     }}>
                         <Tabs value={tabMenu.value} onChange={handleChangeMenu}>
                             {
                                 tabMenus.map(child => (
                                     <Tab key={child.value} label={child.value} value={child.value} to={child.path} component={Link} />
-                                ))
+                                )
+                                )
                             }
                         </Tabs>
                     </Box>

@@ -25,6 +25,7 @@ use App\Models\Address;
 use App\Models\Code;
 use App\Models\Role;
 use App\Models\Bank;
+use App\Models\ScoreSetup;
 
 
 
@@ -36,7 +37,7 @@ class EmployeeController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('auth:api', ['except' => ['exportEmployee']]);
+        $this->middleware('auth:api', ['except' => ['exportEmployee','createAccount']]);
     }
 
          /**
@@ -121,23 +122,31 @@ class EmployeeController extends Controller
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];
+        $scoreFind= DB::table('score_setup')->get();
+        if(count($scoreFind)>0){
+            $scoreSetup=$scoreFind[0]->score;
+        }else{
+            $scoreSetup=500;
+        }
         $postScore = [
             'user_id'  =>$employeeFind->id,
-            'score'  => 0,
+            'score'  => $scoreSetup,
             'created_at'=> Carbon::now('Asia/Ho_Chi_Minh'),
             'updated_at'=>Carbon::now('Asia/Ho_Chi_Minh'),
         ];   
         $score=UserScore::create($postScore);
         $employee = Employee::create($postEmployee);
         $dataSendMail = [
-            'description'=>'notiChangePasswordSuccess',
-            'title' => 'Cập nhật mật khẩu thành công',
-            'content'=>'Đổi mật khẩu thành công'
+            'description'=>'createNewEmployee',
+            'title' => 'Active your account',
+            'content'=>"Please access link below to active your account",
+            'link'=>'http://localhost:3000/active_account',
+            'logo'=>'http://localhost:8000/upload/logo/logo1.png'
         ];
-         SendEmail::dispatch($dataSendMail,  auth()->user()->email)->delay(now());
+         SendEmail::dispatch($dataSendMail, $request->email)->delay(now());
         return response()->json([
             'message' => 'Create employee successfully',
-            'user' => $employeeFind
+            'user' => $employeeFind,
             ], 201);
         }else{
             return response()->json([
@@ -219,8 +228,8 @@ class EmployeeController extends Controller
             ], 201);
        }else{
         return response()->json([
-            'error'=>1,
-            'description'=>'No one account',
+            'code'=>1,
+            'error'=>'No one account',
         ], 401);
        }
     }

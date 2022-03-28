@@ -23,6 +23,9 @@ const  Directory=(props)=>{
             setDirectories(data.data[1].reverse());
         });
     }
+    const employeeDetail = (item) =>{
+        navigate(`/home/employees/detail/${item.id}`)
+      }
     useEffect(() => {
         if($token){
           getDirectory();
@@ -48,7 +51,7 @@ const  Directory=(props)=>{
                     directories.map((item,index)=>{
                         return(
                             <Grid item xs={2} sm={3} md={3}>
-                                <Box
+                                <Box onClick={()=>employeeDetail(item)}
                                     sx={{
                                         backgroundColor:"white",
                                         boxShadow: 'rgb(95 125 149 / 7%) 0px 4px 13px 0px',
@@ -58,6 +61,7 @@ const  Directory=(props)=>{
                                         width: "100%",
                                         borderRadius: '5px',
                                         padding: "24px",
+                                        cursor:'pointer'
                                     }}
                                 > 
                                     <img 

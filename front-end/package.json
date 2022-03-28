@@ -19,6 +19,8 @@
     "draft-convert": "^2.1.12",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "moment": "^2.29.1",
+    "qrcode": "^1.5.0",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-bootstrap": "^2.1.2",

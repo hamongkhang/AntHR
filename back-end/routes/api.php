@@ -63,7 +63,7 @@ Route::get('/employee/exportEmployee', [App\Http\Controllers\EmployeeController:
 /////////////////////////////////////// Account APIs //////////////////////////////////////////////////////////////////////////////
 
 Route::get('/account/blockAccount/{id}', [App\Http\Controllers\AccountController::class, 'blockAccount'])->name('account.blockAccount');
-Route::post('/account/authoriseAccount', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
+Route::get('/account/authoriseAccount/{id}', [App\Http\Controllers\AccountController::class, 'authoriseAccount'])->name('account.authoriseAccount');
 Route::get('/account/userProfile', [App\Http\Controllers\AccountController::class, 'userProfile'])->name('account.userProfile');
 Route::get('/auth/redirect/{provider}', [App\Http\Controllers\SocialController::class, 'redirect'])->name('user.redirect');
 Route::get('/callback/{provider}',  [App\Http\Controllers\SocialController::class, 'callback'])->name('user.callback');
@@ -97,7 +97,11 @@ Route::get('/praise/getAllPraise', [App\Http\Controllers\PraiseController::class
 Route::get('/praise/getOnePraise/{id}', [App\Http\Controllers\PraiseController::class, 'getOnePraise'])->name('praise.getOnePraise');
 Route::delete('/praise/destroyPraise/{id}', [App\Http\Controllers\PraiseController::class, 'destroyPraise'])->name('praise.destroyPraise');
 Route::post('/praise/createPraise', [App\Http\Controllers\PraiseController::class, 'createPraise'])->name('praise.createPraise');
-Route::post('/praise/changeStatus/{id}', [App\Http\Controllers\PraiseController::class, 'changeStatus'])->name('praise.changeStatus');
+Route::get('/praise/changeStatus/{id}', [App\Http\Controllers\PraiseController::class, 'changeStatus'])->name('praise.changeStatus');
+Route::get('/praise/getAllLike', [App\Http\Controllers\PraiseController::class, 'getAllLike'])->name('praise.getAllLike');
+Route::get('/praise/getAllComment', [App\Http\Controllers\PraiseController::class, 'getAllComment'])->name('praise.getAllComment');
+Route::post('/praise/createLike', [App\Http\Controllers\PraiseController::class, 'createLike'])->name('praise.createLike');
+Route::post('/praise/createComment', [App\Http\Controllers\PraiseController::class, 'createComment'])->name('praise.createComment');
 
 
 ////////////////////////////////////// Present APIs //////////////////////////////////////////////////////////////////////////////
@@ -111,19 +115,22 @@ Route::get('/present/getAllPresent', [App\Http\Controllers\PresentController::cl
 Route::get('/present/getOnePresent/{id}', [App\Http\Controllers\PresentController::class, 'getOnePresent'])->name('present.getOnePresent');
 Route::post('/present/updatePresent/{id}', [App\Http\Controllers\PresentController::class, 'updatePresent'])->name('present.updatePresent');
 Route::delete('/present/destroyPresent/{id}', [App\Http\Controllers\PresentController::class, 'destroyPresent'])->name('present.destroyPresent');
-Route::post('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
+Route::get('/present/changeStatus/{id}', [App\Http\Controllers\PresentController::class, 'changeStatus'])->name('present.changeStatus');
 Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
 
 
 
 ////////////////////////////////////// Score APIs //////////////////////////////////////////////////////////////////////////////
-Route::get('/score/getOneScore/{id}', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
+Route::get('/score/getOneScore', [App\Http\Controllers\ScoreController::class, 'getOneScore'])->name('score.getOneScore');
+Route::get('/employee/getUserPoints', [App\Http\Controllers\ScoreController::class, 'getUserPoints'])->name('score.getUserPoints');
+Route::post('/score/createScore', [App\Http\Controllers\ScoreController::class, 'createScore'])->name('score.createScore');
 
 
 ////////////////////////////////////// Cart Present APIs //////////////////////////////////////////////////////////////////////////////
 Route::delete('/cart_present/destroyCartPresent/{id}', [App\Http\Controllers\CartPresentController::class, 'destroyCartPresent'])->name('cart_present.destroyCartPresent');
-Route::post('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusAdmin'])->name('cart_present.changeStatusAdmin');
-Route::post('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
+Route::get('/cart_present/changeStatusAdmin/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusAdmin'])->name('cart_present.changeStatusAdmin');
+Route::get('/cart_present/changeStatusClient/{id}', [App\Http\Controllers\CartPresentController::class, 'changeStatusClient'])->name('cart_present.changeStatusClient');
+Route::get('/cart_present/getAllCartPresent', [App\Http\Controllers\CartPresentController::class, 'getAllCartPresent'])->name('cart_present.getAllCartPresent');
 
 
 ////////////////////////////////////// Google Drive APIs //////////////////////////////////////////////////////////////////////////////
@@ -133,8 +140,17 @@ Route::get('/google-drive/callback', [App\Http\Controllers\SocialController::cla
 Route::get('/google-drive/getGoogleDrive/{access_token_google_drive}', [App\Http\Controllers\SocialController::class, 'getGoogleDrive'])->name('google_document.getGoogleDrive');
 Route::get('/google-drive/{access_token_google_drive}/{id}/{folder_id}/uploadGoogleDrive', [App\Http\Controllers\SocialController::class, 'uploadGoogleDrive'])->name('google_document.uploadGoogleDrive');
 
+////////////////////////////////////// Company APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/company/getCompany', [App\Http\Controllers\CompanyController::class, 'getCompany'])->name('company.getCompany');
+Route::post('/company/updateCompany/{id}', [App\Http\Controllers\CompanyController::class, 'updateCompany'])->name('company.updateCompany');
+Route::post('/company/changeLogo/{id}', [App\Http\Controllers\CompanyController::class, 'changeLogo'])->name('company.changeLogo');
 
-
+////////////////////////////////////// Attendances APIs //////////////////////////////////////////////////////////////////////////////
+Route::get('/attendance/getAllAttendance', [App\Http\Controllers\AttendanceController::class, 'getAllAttendance'])->name('attendance.getAllAttendance');
+Route::post('/attendance/getOneAttendance', [App\Http\Controllers\AttendanceController::class, 'getOneAttendance'])->name('attendance.getOneAttendance');
+Route::get('/attendance/getMyAttendance', [App\Http\Controllers\AttendanceController::class, 'getMyAttendance'])->name('attendance.getMyAttendance');
+Route::post('/attendance/createAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'createAttendance'])->name('attendance.createAttendance');
+Route::post('/attendance/updateAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'updateAttendance'])->name('attendance.updateAttendance');
 
 
 
