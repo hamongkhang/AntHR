@@ -11,7 +11,6 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { Divider } from "@mui/material";
 import React, { useEffect } from "react";
 import EventIcon from "@mui/icons-material/Event";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -21,21 +20,76 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AccessTimeSharpIcon from "@mui/icons-material/AccessTimeSharp";
 import QRcode from "./QRcode";
-
+import moment from "moment"
 const Dashboard = () => {
   const [firstIn, setFirstIn] = React.useState("");
   const [lastOut, setLastOut] = React.useState("");
+  const [render, setRender] = React.useState(false);
   const [liveTime, setLiveTime] = React.useState(new Date());
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
+  const [attendance, setAttendance] = React.useState();
+  const [buttonClock, setButtonClock] = React.useState({
+    clock_in: 'block',
+    clock_out: 'none'
+  })
   const date = new Date();
-  const datestring = `Today: ${date.getDate()} - ${
-    date.getMonth() + 1
-  } - ${date.getFullYear()}`;
+  const datestring = `Today: ${date.getDate()} - ${date.getMonth() + 1
+    } - ${date.getFullYear()}`;
+  const $token = localStorage.getItem('access_token');
+  const getMyAttendance = () => {
+    fetch(process.env.REACT_APP_API + "/attendance/getMyAttendance", {
+      method: "GET",
+      headers: { "Authorization": `Bearer ` + $token }
+    })
+      .then(response => response.json())
+      .then(data => {
+        checkButton(data.attendances)
+      });
+  };
+  const checkButton = (arr) => {
+    console.log(arr);
+    arr.map(a => {
+      let now = new moment();
+      let clock_in = new moment(a.clock_in).format("YYYY-MM-DD");
+      if (now.format("YYYY-MM-DD") == clock_in) {
+        if (a.clock_out != null) {
+          setButtonClock({
+            clock_in: 'block',
+            clock_out: 'none'
+          });
+          setFirstIn(new moment(a.clock_in).format("HH:MM:ss"))
+          setLastOut(new moment(a.clock_out).format("HH:MM:ss"))
+        }
+        else {
+          setFirstIn(new moment(a.clock_in).format("HH:MM:ss"))
+          setButtonClock({
+            clock_in: 'none',
+            clock_out: 'block'
+          })
+        }
+      }
+    })
+  }
+  const openQRClockIn = () =>{
+    setOpen1(true);
+  }
+  const openQRClockOut = () =>{
+    setOpen2(true);
+  }
+  const closeQRClockIn = () =>{
+    setOpen1(false);
+    setRender(!render);
+  }
+  const closeQRClockOut = () =>{
+    setOpen2(false);
+    setRender(!render);
+  }
   useEffect(() => {
-    setInterval(() => setLiveTime(new Date()), 30000);
-  }, []);
-
+    getMyAttendance()
+    console.log('check');
+    setInterval(() => setLiveTime(new Date()), 1000);
+  }, [render]);
   return (
     <Box
       sx={{ display: { xs: "block", md: "grid" } }}
@@ -182,12 +236,13 @@ const Dashboard = () => {
               </Typography>
             </Box>
             <Typography
-              sx={{ ml: 2, color: "black", fontSize: 18 }}
+              sx={{ ml: 2, color: "rgb(60, 82, 100)", fontSize: 18 }}
               variant="subtitle1"
             >
               {liveTime.toLocaleString("en-US", {
                 hour: "numeric",
                 minute: "numeric",
+                second: "numeric",
                 hour12: false,
               })}
             </Typography>
@@ -199,35 +254,36 @@ const Dashboard = () => {
           >
             <Grid item xs={1} md={1} sx={{ mb: 2, pl: 1 }}>
               <Typography sx={{ mx: 3 }} variant="body2">
-                First in: - : - : -{" "}
+                First in: {firstIn?firstIn:'-:-:-'}
               </Typography>
             </Grid>
             <Grid item xs={1} md={1} sx={{ mb: 2, pl: 1 }}>
               <Typography sx={{ mx: 3, color: "black" }} variant="body2">
-                Last out: - : - : -{" "}
+                Last out: {lastOut?lastOut:'-:-:-'}
               </Typography>
             </Grid>
           </Grid>
           <Button
             variant="contained"
-            onClick={() => setOpen1(true)}
-            sx={{ mt: 3, ml: 5, mr: 2, width: "40%" }}
+            onClick={openQRClockIn}
+            sx={{ mt: 3, mb: 2, ml: 5, mr: 2, width: "80%", display: buttonClock.clock_in }}
           >
             <Typography
               variant="body1"
-              sx={{ fontSize: "20px", fontWeight: 500, color: "white" }}
+              sx={{ fontSize: "16px", fontWeight: 500, color: "white" }}
             >
               Clock in
             </Typography>
           </Button>
           <Button
             variant="contained"
-            onClick={() => setOpen2(true)}
-            sx={{ mt: 3, width: "40%", backgroundColor: "red" }}
+            onClick={openQRClockOut}
+            color='error'
+            sx={{ mt: 3, mb: 2, ml: 5, width: "80%", display: buttonClock.clock_out }}
           >
             <Typography
               variant="body1"
-              sx={{ fontSize: "20px", fontWeight: 500, color: "white" }}
+              sx={{ fontSize: "16px", fontWeight: 500, color: "white" }}
             >
               Clock out
             </Typography>
@@ -362,7 +418,7 @@ const Dashboard = () => {
       </Box>
       <Dialog
         open={open1}
-        onClose={() => setOpen1(false)}
+        onClose={closeQRClockIn}
         aria-labelledby="draggable-dialog-title"
         sx={{ p: 3 }}
       >
@@ -381,7 +437,7 @@ const Dashboard = () => {
               mb: 2,
               mr: 2,
             }}
-            onClick={() => setOpen1(false)}
+            onClick={closeQRClockIn}
           >
             Cancel
           </Button>
@@ -390,7 +446,7 @@ const Dashboard = () => {
 
       <Dialog
         open={open2}
-        onClose={() => setOpen2(false)}
+        onClose={closeQRClockOut}
         aria-labelledby="draggable-dialog-title"
         sx={{ p: 3 }}
       >
@@ -409,7 +465,7 @@ const Dashboard = () => {
               mb: 2,
               mr: 2,
             }}
-            onClick={() => setOpen2(false)}
+            onClick={closeQRClockOut}
           >
             Cancel
           </Button>
