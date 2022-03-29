@@ -12,7 +12,6 @@ import moment from "moment"
 import { useNavigate } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
 
-
 const Dashboard = () => {
   const [firstIn, setFirstIn] = React.useState("");
   const [lastOut, setLastOut] = React.useState("");
@@ -47,7 +46,6 @@ const Dashboard = () => {
       });
   };
   const checkButton = (arr) => {
-    console.log(arr);
     arr.map(a => {
       let now = new moment();
       let clock_in = new moment(a.clock_in).format("YYYY-MM-DD");
@@ -100,7 +98,6 @@ const Dashboard = () => {
     getMyAttendance()
     getNews()
     setInterval(() => setLiveTime(new Date()), 1000);
-    console.log(loading);
   }, [render]);
   return (
     <>

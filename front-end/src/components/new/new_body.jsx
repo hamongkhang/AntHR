@@ -10,8 +10,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function NewBody(props) {
+  const [loading, setLoading] = useState(true);
   const clickRender = (ren) => {
     props.onRender(ren);
   };
@@ -33,6 +36,7 @@ export default function NewBody(props) {
     });
   };
   const onDelete = (id) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("id", id);
     fetch(process.env.REACT_APP_API + "/new/destroyNew/" + id, {
@@ -43,6 +47,7 @@ export default function NewBody(props) {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading(false)
           toast.error("Delete Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -55,6 +60,7 @@ export default function NewBody(props) {
           });
         } else {
           clickRender(!props.renderR);
+          setLoading(false)
           toast.success("Deleted successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -81,6 +87,9 @@ export default function NewBody(props) {
         border: "solid 1px #cfd8dc",
       }}
     >
+       <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}

@@ -8,10 +8,11 @@ import { toast } from 'react-toastify';
 toast.configure();
 
 const LeftBoxInfor = (props) => {
-    const { Item, avatar, setRerender, email, phone, firstname, lastname } = props;
+    const { Item, avatar, setRerender, email, phone, firstname, lastname, setLoading } = props;
     const $token = localStorage.getItem('access_token');
     const [srcImg, setScrImg] = useState('');
     const updateAvatar = (event) => {
+        setLoading(true)
         if ($token) {
             const _formData = new FormData();
             _formData.append('avatar', event.target.files[0]);
@@ -27,6 +28,7 @@ const LeftBoxInfor = (props) => {
                 .then((res) => res.json())
                 .then((json) => {
                     if (!json.error) {
+                        setLoading(false)
                         toast.success(`Update avatar successfully`, {
                             position: 'top-center',
                             autoClose: 5000,
@@ -40,6 +42,7 @@ const LeftBoxInfor = (props) => {
                         setRerender(true)
                     } 
                     else {
+                        setLoading(false)
                         toast.error(`error`, {
                             position: 'top-center',
                             autoClose: 5000,

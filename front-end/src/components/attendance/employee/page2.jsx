@@ -3,10 +3,11 @@ import { Box } from "@mui/system";
 import { Typography } from "@mui/material";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { DataGrid } from "@mui/x-data-grid";
-import { Avatar } from "@mui/material";
+import { Avatar, Backdrop } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import HandleOption from "./handleclick";
 import HeaderEmployee from "./header";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const useStyles = makeStyles({
     hide_border: {
@@ -93,8 +94,9 @@ const EmployeeAttend = (props) => {
     const classes = useStyles();
     const [tableData, setTableData] = useState([]);
     const $token = localStorage.getItem('access_token');
-
+    const [loading, setLoading] = useState(false)
     const getAllAttendances = (id) => {
+        setLoading(true)
         fetch(process.env.REACT_APP_API + "/attendance/getAllAttendance", {
             method: "GET",
             headers: { "Authorization": `Bearer ` + $token }
@@ -103,6 +105,7 @@ const EmployeeAttend = (props) => {
             .then(data => {
                 if (data.error) {
                     setTableData(rows);
+                    setLoading(false)
 
                 }
                 else {
@@ -112,6 +115,7 @@ const EmployeeAttend = (props) => {
                         a.work_schedule = a.work_schedule + 'h'
                     })
                     setTableData(data.attendances);
+                    setLoading(false)
                 }
             });
     };
@@ -121,6 +125,17 @@ const EmployeeAttend = (props) => {
 
     return (
         <>
+            <Backdrop
+                sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+                open={loading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+            <Box
+                sx={{ display: { xs: "block", md: "grid" } }}
+                gridTemplateColumns="repeat(12, 1fr)"
+                gap={2}
+            ></Box>
             <Box sx={{ width: '100%', bgcolor: 'background.secondary' }}>
                 <HeaderEmployee />
                 <Box sx={{ mr: 3, mt: 3, ml: 3, mb: 3 }}>

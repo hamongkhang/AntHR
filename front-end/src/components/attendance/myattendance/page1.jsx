@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
-import { Button, Divider, Grid, Typography } from "@mui/material";
+import { Button, Divider, Grid, Typography, Backdrop } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import HandleOption from "./handleclick";
 import SelectDate from "./selectdate";
 import { DataGrid } from "@mui/x-data-grid";
 import { makeStyles } from "@material-ui/core/styles";
-import { color } from "@mui/system";
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const useStyles = makeStyles({
   hide_border: {
@@ -106,14 +107,16 @@ const MyAttend = () => {
   const classes = useStyles();
   const [infor, setInfor] = useState({
     work_schedule: '0h',
-    paid_time:'0h',
-    logged_time:'0h',
-    deficit:'0h'
+    paid_time: '0h',
+    logged_time: '0h',
+    deficit: '0h'
   });
   const [tableData, setTableData] = useState([]);
   const $token = localStorage.getItem('access_token');
+  const [loading, setLoading] = useState(false)
 
   const getMyAttendance = () => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/attendance/getMyAttendance", {
       method: "GET",
       headers: { "Authorization": `Bearer ` + $token }
@@ -121,7 +124,8 @@ const MyAttend = () => {
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          setTableData(rows);
+          setTableData(rows);;
+          setLoading(false)
 
         }
         else {
@@ -146,7 +150,8 @@ const MyAttend = () => {
             a.work_schedule = '8h'
           })
           setTableData(data.attendances);
-          setInfor(data.infor)
+          setInfor(data.infor);
+          setLoading(false)
         }
       });
   };
@@ -156,6 +161,12 @@ const MyAttend = () => {
 
   return (
     <>
+      <Backdrop
+        sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box
         style={styles.BoxHeader}
         sx={{ m: 3, bgcolor: "background.default" }}
@@ -233,7 +244,7 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Logged Time
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.logged_time==''?'0h':infor.logged_time}</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.logged_time == '' ? '0h' : infor.logged_time}</Typography>
             </Grid>
 
             <Grid
@@ -248,7 +259,7 @@ const MyAttend = () => {
               <Typography sx={{ color: "primary.main", fontWeight: 600 }}>
                 Paid Time
               </Typography>
-              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.paid_time==''?'0h':infor.paid_time}</Typography>
+              <Typography sx={{ fontWeight: 600, pb: 1 }}>{infor.paid_time == '' ? '0h' : infor.paid_time}</Typography>
             </Grid>
             <Grid
               item

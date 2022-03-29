@@ -4,13 +4,14 @@ import "react-toastify/dist/ReactToastify.css";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, Backdrop } from "@mui/material";
 import ApprovalIcon from "@mui/icons-material/Approval";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Manager = (props) => {
   const $token = localStorage.getItem("access_token");
@@ -19,8 +20,10 @@ const Manager = (props) => {
   const [render, setRender] = useState(false);
   const [orders, setOrders] = useState([]);
   const [orders2, setOrders2] = useState([]);
+  const [loading, setLoading] = useState({ load1: true, load2: true });
   const navigate = useNavigate();
   const getOrders = () => {
+    setLoading({ ...loading, load1: true });
     fetch(process.env.REACT_APP_API + "/cart_present/getAllCartPresent", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -28,19 +31,24 @@ const Manager = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setOrders(data.data.reverse());
+        setLoading({ ...loading, load1: false });
+
       });
   };
   const getOrders2 = () => {
+    setLoading({ ...loading, load2: true });
     fetch(process.env.REACT_APP_API + "/cart_present/getAllCartPresent", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
     })
       .then((response) => response.json())
       .then((data) => {
+        setLoading({ ...loading, load2: false });
         setOrders2(data.data);
       });
   };
   const onPublishCart = (event, id) => {
+    setLoading({ load1: true, load2: true })
     fetch(process.env.REACT_APP_API + "/cart_present/changeStatusAdmin/" + id, {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -49,6 +57,7 @@ const Manager = (props) => {
       .then((data) => {
         if (data.error) {
           if (data.error == "Not enough points !!!") {
+            setLoading({ load1: false, load2: false })
             toast.error("Employee has an inadequate score.", {
               position: "bottom-right",
               autoClose: 3000,
@@ -60,6 +69,7 @@ const Manager = (props) => {
               theme: "colored",
             });
           } else {
+            setLoading({ load1: false, load2: false })
             toast.error("Public Failed.", {
               position: "bottom-right",
               autoClose: 3000,
@@ -73,6 +83,7 @@ const Manager = (props) => {
           }
         } else {
           setRender(!render);
+          setLoading({ load1: false, load2: false })
           toast.success("Public successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -87,6 +98,7 @@ const Manager = (props) => {
       });
   };
   const onConfirmEmployee = (event, id) => {
+    setLoading({ load1: true, load2: true })
     fetch(
       process.env.REACT_APP_API + "/cart_present/changeStatusClient/" + id,
       {
@@ -97,6 +109,7 @@ const Manager = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading({ load1: false, load2: false })
           toast.error("Public Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -109,6 +122,7 @@ const Manager = (props) => {
           });
         } else {
           setRender(!render);
+          setLoading({ load1: false, load2: false })
           toast.success("Public successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -141,6 +155,7 @@ const Manager = (props) => {
   };
 
   const onBlock = (id) => {
+    setLoading({ load1: true, load2: true })
     fetch(
       process.env.REACT_APP_API + "/cart_present/destroyCartPresent/" + id,
       {
@@ -151,6 +166,7 @@ const Manager = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading({ load1: false, load2: false })
           toast.error("Delete Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -163,6 +179,7 @@ const Manager = (props) => {
           });
         } else {
           setRender(!render);
+          setLoading({ load1: false, load2: false })
           toast.success("Delete successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -193,6 +210,9 @@ const Manager = (props) => {
         borderRadius: "5px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={ loading.load1 &&  loading.load2}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
@@ -239,64 +259,47 @@ const Manager = (props) => {
             </Box>
             {orders2.length
               ? orders2.map((item, index) => {
-                  if (item.status == 0) {
-                    return (
-                      <Box
+                if (item.status == 0) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
-                          >
-                            {item.avatar ? (
-                              item.avatar.search("https://") !== -1 ? (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={item.avatar}
-                                ></img>
-                              ) : (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={
-                                    process.env.REACT_APP_FILE +
-                                    "/avatar/" +
-                                    item.avatar
-                                  }
-                                ></img>
-                              )
+                          {item.avatar ? (
+                            item.avatar.search("https://") !== -1 ? (
+                              <img
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  objectFit: "cover",
+                                  borderRadius: "100%",
+                                  float: "right",
+                                  border: "2px solid #2196f3",
+                                }}
+                                src={item.avatar}
+                              ></img>
                             ) : (
                               <img
                                 style={{
@@ -309,137 +312,154 @@ const Manager = (props) => {
                                 }}
                                 src={
                                   process.env.REACT_APP_FILE +
-                                  "/avatar/avatar.png"
+                                  "/avatar/" +
+                                  item.avatar
                                 }
                               ></img>
-                            )}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {item.last_name + " " + item.first_name}{" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã đổi phần thưởng
-                              </span>{" "}
-                              {item.present_name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
+                            )
+                          ) : (
                             <img
                               style={{
-                                height: "100%",
-                                width: "100%",
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "cover",
+                                borderRadius: "100%",
+                                float: "right",
+                                border: "2px solid #2196f3",
                               }}
                               src={
                                 process.env.REACT_APP_FILE +
-                                "/present/image/" +
-                                item.present_image
+                                "/avatar/avatar.png"
                               }
                             ></img>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
+                          )}
+                        </Grid>
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {item.last_name + " " + item.first_name}{" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "normal",
                               }}
                             >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                        fontSize: "20px",
-                                      }}
-                                    >
-                                      {item.present_score
-                                        ? item.present_score
-                                        : null}{" "}
-                                      Points
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={2} sm={8} md={12}>
+                              đã đổi phần thưởng
+                            </span>{" "}
+                            {item.present_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <img
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                            }}
+                            src={
+                              process.env.REACT_APP_FILE +
+                              "/present/image/" +
+                              item.present_image
+                            }
+                          ></img>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
                                   <Typography
                                     sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "italic",
-                                      fontSize: "12px",
+                                      color: "red",
+                                      fontWeight: "bold",
+                                      fontSize: "20px",
                                     }}
                                   >
-                                    Please confirm the employee's redemption
-                                    information
+                                    {item.present_score
+                                      ? item.present_score
+                                      : null}{" "}
+                                    Points
                                   </Typography>
-                                </Grid>
+                                </Box>
                               </Grid>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={2} sm={4} md={12}>
-                            <Stack
-                              direction="row"
-                              spacing={2}
-                              justifyContent="center"
-                            >
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onPublishCart(event, item.id)
-                                }
-                                sx={{
-                                  color: "#ffff",
-                                }}
-                                size="medium"
-                                variant="contained"
-                              >
-                                Publish
-                              </Button>
-
-                              <Button
-                                type="submit"
-                                onClick={(event) => onBlockCart(event, item.id)}
-                                sx={{
-                                  width: "21%",
-                                }}
-                                size="medium"
-                                variant="contained"
-                                color="error"
-                              >
-                                Block
-                              </Button>
-                            </Stack>
-                          </Grid>
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Typography
+                                  sx={{
+                                    color: "rgb(35, 54, 78)",
+                                    fontWeight: "italic",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  Please confirm the employee's redemption
+                                  information
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={2} sm={4} md={12}>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            justifyContent="center"
+                          >
+                            <Button
+                              type="submit"
+                              onClick={(event) =>
+                                onPublishCart(event, item.id)
+                              }
+                              sx={{
+                                color: "#ffff",
+                              }}
+                              size="medium"
+                              variant="contained"
+                            >
+                              Publish
+                            </Button>
+
+                            <Button
+                              type="submit"
+                              onClick={(event) => onBlockCart(event, item.id)}
+                              sx={{
+                                width: "21%",
+                              }}
+                              size="medium"
+                              variant="contained"
+                              color="error"
+                            >
+                              Block
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         ) : null}
@@ -482,64 +502,47 @@ const Manager = (props) => {
             </Box>
             {orders.length
               ? orders.map((item, index) => {
-                  if (item.status == 1) {
-                    return (
-                      <Box
+                if (item.status == 1) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
-                          >
-                            {item.avatar ? (
-                              item.avatar.search("https://") !== -1 ? (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={item.avatar}
-                                ></img>
-                              ) : (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={
-                                    process.env.REACT_APP_FILE +
-                                    "/avatar/" +
-                                    item.avatar
-                                  }
-                                ></img>
-                              )
+                          {item.avatar ? (
+                            item.avatar.search("https://") !== -1 ? (
+                              <img
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  objectFit: "cover",
+                                  borderRadius: "100%",
+                                  float: "right",
+                                  border: "2px solid #2196f3",
+                                }}
+                                src={item.avatar}
+                              ></img>
                             ) : (
                               <img
                                 style={{
@@ -552,141 +555,158 @@ const Manager = (props) => {
                                 }}
                                 src={
                                   process.env.REACT_APP_FILE +
-                                  "/avatar/avatar.png"
+                                  "/avatar/" +
+                                  item.avatar
                                 }
                               ></img>
-                            )}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {item.last_name + " " + item.first_name}{" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã đổi phần thưởng
-                              </span>{" "}
-                              {item.present_name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
+                            )
+                          ) : (
                             <img
                               style={{
-                                height: "100%",
-                                width: "100%",
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "cover",
+                                borderRadius: "100%",
+                                float: "right",
+                                border: "2px solid #2196f3",
                               }}
                               src={
                                 process.env.REACT_APP_FILE +
-                                "/present/image/" +
-                                item.present_image
+                                "/avatar/avatar.png"
                               }
                             ></img>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
-                              }}
-                            >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                        fontSize: "20px",
-                                      }}
-                                    >
-                                      {item.present_score
-                                        ? item.present_score
-                                        : null}{" "}
-                                      Points
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Typography
-                                    sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "italic",
-                                      fontSize: "12px",
-                                    }}
-                                  >
-                                    Please wait for the staff to confirm receipt
-                                    of the goods
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            </Box>
-                          </Grid>
-                          {role == 1 ? (
-                            <Grid item xs={4} sm={8} md={12}>
-                              <Button
-                                type="submit"
-                                disabled={true}
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  backgroundColor: "#ff9900",
-                                }}
-                                size="medium"
-                              >
-                                <Typography sx={{ color: "#ffff" }}>
-                                  {" "}
-                                  Gifts are being delivered to staff
-                                </Typography>
-                              </Button>
-                            </Grid>
-                          ) : (
-                            <Grid item xs={4} sm={8} md={12}>
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onConfirmEmployee(event, item.id)
-                                }
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "#ff9900",
-                                }}
-                                size="medium"
-                              >
-                                Confirm receipt
-                              </Button>
-                            </Grid>
                           )}
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {item.last_name + " " + item.first_name}{" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              đã đổi phần thưởng
+                            </span>{" "}
+                            {item.present_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <img
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                            }}
+                            src={
+                              process.env.REACT_APP_FILE +
+                              "/present/image/" +
+                              item.present_image
+                            }
+                          ></img>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      color: "red",
+                                      fontWeight: "bold",
+                                      fontSize: "20px",
+                                    }}
+                                  >
+                                    {item.present_score
+                                      ? item.present_score
+                                      : null}{" "}
+                                    Points
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Typography
+                                  sx={{
+                                    color: "rgb(35, 54, 78)",
+                                    fontWeight: "italic",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  Please wait for the staff to confirm receipt
+                                  of the goods
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Grid>
+                        {role == 1 ? (
+                          <Grid item xs={4} sm={8} md={12}>
+                            <Button
+                              type="submit"
+                              disabled={true}
+                              sx={{
+                                height: 40.5,
+                                width: "100%",
+                                backgroundColor: "#ff9900",
+                              }}
+                              size="medium"
+                            >
+                              <Typography sx={{ color: "#ffff" }}>
+                                {" "}
+                                Gifts are being delivered to staff
+                              </Typography>
+                            </Button>
+                          </Grid>
+                        ) : (
+                          <Grid item xs={4} sm={8} md={12}>
+                            <Button
+                              type="submit"
+                              onClick={(event) =>
+                                onConfirmEmployee(event, item.id)
+                              }
+                              sx={{
+                                height: 40.5,
+                                width: "100%",
+                                border: "1px solid #ff9900",
+                                backgroundColor: "#FFFF66",
+                                color: "#ff9900",
+                              }}
+                              size="medium"
+                            >
+                              Confirm receipt
+                            </Button>
+                          </Grid>
+                        )}
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         ) : (
@@ -721,64 +741,47 @@ const Manager = (props) => {
             </Box>
             {orders.length
               ? orders.map((item, index) => {
-                  if (item.status == 1 && item.user_id == id) {
-                    return (
-                      <Box
+                if (item.status == 1 && item.user_id == id) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
-                          >
-                            {item.avatar ? (
-                              item.avatar.search("https://") !== -1 ? (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={item.avatar}
-                                ></img>
-                              ) : (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={
-                                    process.env.REACT_APP_FILE +
-                                    "/avatar/" +
-                                    item.avatar
-                                  }
-                                ></img>
-                              )
+                          {item.avatar ? (
+                            item.avatar.search("https://") !== -1 ? (
+                              <img
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  objectFit: "cover",
+                                  borderRadius: "100%",
+                                  float: "right",
+                                  border: "2px solid #2196f3",
+                                }}
+                                src={item.avatar}
+                              ></img>
                             ) : (
                               <img
                                 style={{
@@ -791,139 +794,156 @@ const Manager = (props) => {
                                 }}
                                 src={
                                   process.env.REACT_APP_FILE +
-                                  "/avatar/avatar.png"
+                                  "/avatar/" +
+                                  item.avatar
                                 }
                               ></img>
-                            )}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {item.last_name + " " + item.first_name}{" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã đổi phần thưởng
-                              </span>{" "}
-                              {item.present_name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
+                            )
+                          ) : (
                             <img
                               style={{
-                                height: "100%",
-                                width: "100%",
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "cover",
+                                borderRadius: "100%",
+                                float: "right",
+                                border: "2px solid #2196f3",
                               }}
                               src={
                                 process.env.REACT_APP_FILE +
-                                "/present/image/" +
-                                item.present_image
+                                "/avatar/avatar.png"
                               }
                             ></img>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
-                              }}
-                            >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                        fontSize: "20px",
-                                      }}
-                                    >
-                                      {item.present_score
-                                        ? item.present_score
-                                        : null}{" "}
-                                      Points
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Typography
-                                    sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "italic",
-                                      fontSize: "12px",
-                                    }}
-                                  >
-                                    Please wait for the staff to confirm receipt
-                                    of the goods
-                                  </Typography>
-                                </Grid>
-                              </Grid>
-                            </Box>
-                          </Grid>
-                          {role == 1 ? (
-                            <Grid item xs={4} sm={8} md={12}>
-                              <Button
-                                type="submit"
-                                disabled={true}
-                                sx={{
-                                  height: 40.5,
-                                  width: "100%",
-                                  border: "1px solid #ff9900",
-                                  backgroundColor: "#FFFF66",
-                                  color: "##ff9900",
-                                }}
-                                size="medium"
-                              >
-                                Gifts are being delivered to staff
-                              </Button>
-                            </Grid>
-                          ) : (
-                            <Grid item xs={4} sm={8} md={12}>
-                              <Stack direction="row" justifyContent="end">
-                                <Button
-                                  type="submit"
-                                  onClick={(event) =>
-                                    onConfirmEmployee(event, item.id)
-                                  }
-                                  sx={{
-                                    color: "#ffff",
-                                  }}
-                                  variant="contained"
-                                  size="medium"
-                                >
-                                  Confirm receipt
-                                </Button>
-                              </Stack>
-                            </Grid>
                           )}
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {item.last_name + " " + item.first_name}{" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              đã đổi phần thưởng
+                            </span>{" "}
+                            {item.present_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <img
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                            }}
+                            src={
+                              process.env.REACT_APP_FILE +
+                              "/present/image/" +
+                              item.present_image
+                            }
+                          ></img>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      color: "red",
+                                      fontWeight: "bold",
+                                      fontSize: "20px",
+                                    }}
+                                  >
+                                    {item.present_score
+                                      ? item.present_score
+                                      : null}{" "}
+                                    Points
+                                  </Typography>
+                                </Box>
+                              </Grid>
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Typography
+                                  sx={{
+                                    color: "rgb(35, 54, 78)",
+                                    fontWeight: "italic",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  Please wait for the staff to confirm receipt
+                                  of the goods
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Grid>
+                        {role == 1 ? (
+                          <Grid item xs={4} sm={8} md={12}>
+                            <Button
+                              type="submit"
+                              disabled={true}
+                              sx={{
+                                height: 40.5,
+                                width: "100%",
+                                border: "1px solid #ff9900",
+                                backgroundColor: "#FFFF66",
+                                color: "##ff9900",
+                              }}
+                              size="medium"
+                            >
+                              Gifts are being delivered to staff
+                            </Button>
+                          </Grid>
+                        ) : (
+                          <Grid item xs={4} sm={8} md={12}>
+                            <Stack direction="row" justifyContent="end">
+                              <Button
+                                type="submit"
+                                onClick={(event) =>
+                                  onConfirmEmployee(event, item.id)
+                                }
+                                sx={{
+                                  color: "#ffff",
+                                }}
+                                variant="contained"
+                                size="medium"
+                              >
+                                Confirm receipt
+                              </Button>
+                            </Stack>
+                          </Grid>
+                        )}
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         )}
@@ -969,64 +989,47 @@ const Manager = (props) => {
             </Box>
             {orders.length
               ? orders.map((item, index) => {
-                  if (item.status == 2) {
-                    return (
-                      <Box
+                if (item.status == 2) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
-                          >
-                            {item.avatar ? (
-                              item.avatar.search("https://") !== -1 ? (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={item.avatar}
-                                ></img>
-                              ) : (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={
-                                    process.env.REACT_APP_FILE +
-                                    "/avatar/" +
-                                    item.avatar
-                                  }
-                                ></img>
-                              )
+                          {item.avatar ? (
+                            item.avatar.search("https://") !== -1 ? (
+                              <img
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  objectFit: "cover",
+                                  borderRadius: "100%",
+                                  float: "right",
+                                  border: "2px solid #2196f3",
+                                }}
+                                src={item.avatar}
+                              ></img>
                             ) : (
                               <img
                                 style={{
@@ -1039,119 +1042,136 @@ const Manager = (props) => {
                                 }}
                                 src={
                                   process.env.REACT_APP_FILE +
-                                  "/avatar/avatar.png"
+                                  "/avatar/" +
+                                  item.avatar
                                 }
                               ></img>
-                            )}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {item.last_name + " " + item.first_name}{" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã đổi phần thưởng
-                              </span>{" "}
-                              {item.present_name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
+                            )
+                          ) : (
                             <img
                               style={{
-                                height: "100%",
-                                width: "100%",
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "cover",
+                                borderRadius: "100%",
+                                float: "right",
+                                border: "2px solid #2196f3",
                               }}
                               src={
                                 process.env.REACT_APP_FILE +
-                                "/present/image/" +
-                                item.present_image
+                                "/avatar/avatar.png"
                               }
                             ></img>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
+                          )}
+                        </Grid>
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {item.last_name + " " + item.first_name}{" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "normal",
                               }}
                             >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                        fontSize: "20px",
-                                      }}
-                                    >
-                                      {item.present_score
-                                        ? item.present_score
-                                        : null}{" "}
-                                      Points
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={2} sm={8} md={12}>
+                              đã đổi phần thưởng
+                            </span>{" "}
+                            {item.present_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <img
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                            }}
+                            src={
+                              process.env.REACT_APP_FILE +
+                              "/present/image/" +
+                              item.present_image
+                            }
+                          ></img>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
                                   <Typography
                                     sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "italic",
-                                      fontSize: "12px",
+                                      color: "red",
+                                      fontWeight: "bold",
+                                      fontSize: "20px",
                                     }}
                                   >
-                                    You can delete to clear up storage
+                                    {item.present_score
+                                      ? item.present_score
+                                      : null}{" "}
+                                    Points
                                   </Typography>
-                                </Grid>
+                                </Box>
                               </Grid>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Stack
-                              direction="row"
-                              spacing={2}
-                              justifyContent="end"
-                            >
-                              <Button
-                                type="submit"
-                                onClick={(event) => onBlockCart(event, item.id)}
-                                size="medium"
-                                variant="contained"
-                                color="error"
-                              >
-                                Delete
-                              </Button>
-                            </Stack>
-                          </Grid>
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Typography
+                                  sx={{
+                                    color: "rgb(35, 54, 78)",
+                                    fontWeight: "italic",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  You can delete to clear up storage
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            justifyContent="end"
+                          >
+                            <Button
+                              type="submit"
+                              onClick={(event) => onBlockCart(event, item.id)}
+                              size="medium"
+                              variant="contained"
+                              color="error"
+                            >
+                              Delete
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         ) : (
@@ -1196,64 +1216,47 @@ const Manager = (props) => {
             </Box>
             {orders.length
               ? orders.map((item, index) => {
-                  if (item.status == 2 && item.user_id == id) {
-                    return (
-                      <Box
+                if (item.status == 2 && item.user_id == id) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
-                          >
-                            {item.avatar ? (
-                              item.avatar.search("https://") !== -1 ? (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={item.avatar}
-                                ></img>
-                              ) : (
-                                <img
-                                  style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    objectFit: "cover",
-                                    borderRadius: "100%",
-                                    float: "right",
-                                    border: "2px solid #2196f3",
-                                  }}
-                                  src={
-                                    process.env.REACT_APP_FILE +
-                                    "/avatar/" +
-                                    item.avatar
-                                  }
-                                ></img>
-                              )
+                          {item.avatar ? (
+                            item.avatar.search("https://") !== -1 ? (
+                              <img
+                                style={{
+                                  height: "40px",
+                                  width: "40px",
+                                  objectFit: "cover",
+                                  borderRadius: "100%",
+                                  float: "right",
+                                  border: "2px solid #2196f3",
+                                }}
+                                src={item.avatar}
+                              ></img>
                             ) : (
                               <img
                                 style={{
@@ -1266,115 +1269,132 @@ const Manager = (props) => {
                                 }}
                                 src={
                                   process.env.REACT_APP_FILE +
-                                  "/avatar/avatar.png"
+                                  "/avatar/" +
+                                  item.avatar
                                 }
                               ></img>
-                            )}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
-                                fontSize: "12px",
-                              }}
-                            >
-                              {item.last_name + " " + item.first_name}{" "}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã đổi phần thưởng
-                              </span>{" "}
-                              {item.present_name}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
+                            )
+                          ) : (
                             <img
                               style={{
-                                height: "100%",
-                                width: "100%",
+                                height: "40px",
+                                width: "40px",
+                                objectFit: "cover",
+                                borderRadius: "100%",
+                                float: "right",
+                                border: "2px solid #2196f3",
                               }}
                               src={
                                 process.env.REACT_APP_FILE +
-                                "/present/image/" +
-                                item.present_image
+                                "/avatar/avatar.png"
                               }
                             ></img>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
+                          )}
+                        </Grid>
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {item.last_name + " " + item.first_name}{" "}
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "normal",
                               }}
                             >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                    }}
-                                  >
-                                    <Typography
-                                      sx={{
-                                        color: "red",
-                                        fontWeight: "bold",
-                                        fontSize: "20px",
-                                      }}
-                                    >
-                                      {item.present_score
-                                        ? item.present_score
-                                        : null}{" "}
-                                      Points
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={2} sm={8} md={12}>
+                              đã đổi phần thưởng
+                            </span>{" "}
+                            {item.present_name}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
+                          >
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <img
+                            style={{
+                              height: "100%",
+                              width: "100%",
+                            }}
+                            src={
+                              process.env.REACT_APP_FILE +
+                              "/present/image/" +
+                              item.present_image
+                            }
+                          ></img>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
+                            >
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
                                   <Typography
                                     sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "italic",
-                                      fontSize: "12px",
+                                      color: "red",
+                                      fontWeight: "bold",
+                                      fontSize: "20px",
                                     }}
                                   >
-                                    You can delete to clear up storage
+                                    {item.present_score
+                                      ? item.present_score
+                                      : null}{" "}
+                                    Points
                                   </Typography>
-                                </Grid>
+                                </Box>
                               </Grid>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Stack direction="row" justifyContent="end">
-                              <Button
-                                type="submit"
-                                onClick={(event) => onBlockCart(event, item.id)}
-                                size="medium"
-                                variant="contained"
-                                color="error"
-                              >
-                                Delete
-                              </Button>
-                            </Stack>
-                          </Grid>
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Typography
+                                  sx={{
+                                    color: "rgb(35, 54, 78)",
+                                    fontWeight: "italic",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  You can delete to clear up storage
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Stack direction="row" justifyContent="end">
+                            <Button
+                              type="submit"
+                              onClick={(event) => onBlockCart(event, item.id)}
+                              size="medium"
+                              variant="contained"
+                              color="error"
+                            >
+                              Delete
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         )}

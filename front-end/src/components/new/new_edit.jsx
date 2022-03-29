@@ -15,6 +15,8 @@ import IconButton from "@mui/material/IconButton";
 import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useParams } from "react-router-dom";
+import { Backdrop } from "@mui/material";
+import CircularProgress from '@mui/material/CircularProgress';
 
 toast.configure();
 
@@ -39,7 +41,9 @@ const NewEdit = (props) => {
     file: null,
   });
   const [editNews, setEditNews] = useState({});
+  const [loading, setLoading] = useState(true);
   const getOneNews = () => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/new/getOneNew/" + id, {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -47,6 +51,7 @@ const NewEdit = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading(false)
           toast.error("Loading Failed", {
             position: "bottom-right",
             autoClose: 3000,
@@ -57,6 +62,7 @@ const NewEdit = (props) => {
             progress: undefined,
           });
         } else {
+          setLoading(false)
           setEditNews(data.data);
           if (data.data.important === 1) {
             setChecked(true);
@@ -78,6 +84,7 @@ const NewEdit = (props) => {
   };
 
   const onEditNews = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("title", editNews.title);
     _formData.append("file", editNews.file);
@@ -110,6 +117,7 @@ const NewEdit = (props) => {
       .then((json) => {
         if (json.error) {
           if (json.error === "You are not admin!!!") {
+            setLoading(false)
             toast.error(`You are not admin!!!`, {
               position: "top-center",
               autoClose: 5000,
@@ -121,9 +129,11 @@ const NewEdit = (props) => {
             });
             setError("");
           } else {
+            setLoading(false)
             setError(json.error);
           }
         } else {
+          setLoading(false)
           toast.success(`Update new successfully !!!`, {
             position: "top-center",
             autoClose: 5000,
@@ -154,6 +164,9 @@ const NewEdit = (props) => {
         paddingBottom: "40px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box
         maxWidth="100%"
         style={{
