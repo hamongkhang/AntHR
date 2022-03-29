@@ -119,6 +119,9 @@ Route::get('/present/changeStatus/{id}', [App\Http\Controllers\PresentController
 Route::get('/present/exchangePresent/{id}', [App\Http\Controllers\PresentController::class, 'exchangePresent'])->name('present.exchangePresent');
 Route::delete('/notify/destroyNotify/{id}', [App\Http\Controllers\NotifyController::class, 'destroyNotify'])->name('notify.destroyNotify');
 Route::get('/notify/getNotify', [App\Http\Controllers\NotifyController::class, 'getNotify'])->name('notify.getNotify');
+Route::post('/time/createTimeOffAdmin', [App\Http\Controllers\TimeController::class, 'createTimeOffAdmin'])->name('time.createTimeOffAdmin');
+Route::post('/time/createTimeOffEmployee', [App\Http\Controllers\TimeController::class, 'createTimeOffEmployee'])->name('time.createTimeOffEmployee');
+Route::get('/time/getTimeOff', [App\Http\Controllers\TimeController::class, 'getTimeOff'])->name('time.getTimeOff');
 
 
 

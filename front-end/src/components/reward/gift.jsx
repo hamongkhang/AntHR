@@ -73,7 +73,7 @@ const Gift = (props) => {
       setChecked(2);
       setSearch(true);
       for (var i = 0; i < presents.length; i++) {
-        if (presents[i].category_id == 2) {
+        if (presents[i].category_id == 3) {
           a.push(presents[i]);
         } else {
           setSearchGift([]);
@@ -83,7 +83,7 @@ const Gift = (props) => {
       setChecked(3);
       setSearch(true);
       for (var i = 0; i < presents.length; i++) {
-        if (presents[i].category_id == 3) {
+        if (presents[i].category_id == 2) {
           a.push(presents[i]);
         } else {
           setSearchGift([]);
