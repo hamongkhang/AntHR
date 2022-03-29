@@ -14,7 +14,7 @@ import { Backdrop } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 
 export default function NewBody(props) {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const clickRender = (ren) => {
     props.onRender(ren);
   };
