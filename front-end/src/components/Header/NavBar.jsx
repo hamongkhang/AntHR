@@ -30,7 +30,7 @@ const AppBar = styled(MuiAppBar, { shouldForwardProp: (prop) => prop !== 'open',
 }));
 
 const NavBar = (props) => {
-    const { handleDrawerOpen, tabs} = props;
+    const { handleDrawerOpen, tabs } = props;
     const [render, setRender] = React.useState(false)
     const [tab, setTab] = React.useState(tabs[0].value);
     const [tabMenus, setTabMenus] = React.useState(tabs[0].child);
@@ -112,8 +112,8 @@ const NavBar = (props) => {
                 setNotify(data.data.reverse());
             });
     };
-    const deleteNotify = (id) =>{
-        fetch(process.env.REACT_APP_API + "/notify/destroyNotify/" +id, {
+    const deleteNotify = (id) => {
+        fetch(process.env.REACT_APP_API + "/notify/destroyNotify/" + id, {
             method: "DELETE",
             headers: { Authorization: `Bearer ` + localStorage.getItem('access_token') },
         })
@@ -215,15 +215,13 @@ const NavBar = (props) => {
                             >
                                 <Avatar
                                     src={
-                                        (localStorage.getItem('avatar') === "null")
-                                            ?
-                                            process.env.REACT_APP_FILE + '/avatar/avatar.png'
+                                        !localStorage.getItem('avatar') ? process.env.REACT_APP_FILE + '/avatar/avatar.png'
                                             :
-                                            (localStorage.getItem('avatar').search('https://') != -1)
-                                                ?
+                                            localStorage.getItem('avatar').search('https://') != -1 ?
                                                 localStorage.getItem('avatar')
                                                 :
                                                 process.env.REACT_APP_FILE + '/avatar/' + localStorage.getItem('avatar')
+
                                     }
                                     sx={{ width: 24, height: 24 }} variant='circular'>
                                 </Avatar>
@@ -304,9 +302,9 @@ const NavBar = (props) => {
                 isMenuOpen={isMenuOpenNotify}
                 handleMenuClose={handleNotifyMenuClose}
                 anchorEl={anchorElNotify}
-                notify = {notify} 
-                setNotify = {setNotify}
-                deleteNotify = {deleteNotify}/>
+                notify={notify}
+                setNotify={setNotify}
+                deleteNotify={deleteNotify} />
         </>
     )
 }

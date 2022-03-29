@@ -13,10 +13,11 @@ import ApprovalIcon from "@mui/icons-material/Approval";
 import moment from "moment";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { Stack } from "@mui/material";
+import { Stack, Backdrop } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import SendIcon from "@mui/icons-material/Send";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Portal = (props) => {
   const $token = localStorage.getItem("access_token");
@@ -34,6 +35,9 @@ const Portal = (props) => {
     praise_id: "",
     messeger: "",
   });
+  const [loading, setLoading] = useState({
+    load1: true, load2: true, load3: true, load4: true, load5: true
+  })
   const sumLike = (id) => {
     var sum = 0;
     for (var i = 0; i < like.lengh; i++) {
@@ -106,6 +110,7 @@ const Portal = (props) => {
       });
   };
   const getEmployees = () => {
+    setLoading({ ...loading, load1: true })
     fetch(process.env.REACT_APP_API + "/employee/getAllEmployee", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -113,19 +118,25 @@ const Portal = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setEmployees(data.data[1].reverse());
+        setLoading({ ...loading, load1: false })
+
       });
   };
   const getLike = () => {
+    setLoading({ ...loading, load2: true })
     fetch(process.env.REACT_APP_API + "/praise/getAllLike", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
     })
       .then((response) => response.json())
       .then((data) => {
+        setLoading({ ...loading, load2: false })
+
         setLike(data.data.reverse());
       });
   };
   const getComment = () => {
+    setLoading({ ...loading, load3: true })
     fetch(process.env.REACT_APP_API + "/praise/getAllComment", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -133,19 +144,23 @@ const Portal = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setComment(data.data);
+        setLoading({ ...loading, load3: false })
       });
   };
   const getPraise = () => {
+    setLoading({ ...loading, load4: true })
     fetch(process.env.REACT_APP_API + "/praise/getAllPraise", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
     })
       .then((response) => response.json())
       .then((data) => {
+        setLoading({ ...loading, load4: false })
         setPraise(data.data.reverse());
       });
   };
   const getPraise2 = () => {
+    setLoading({ ...loading, load5: true })
     fetch(process.env.REACT_APP_API + "/praise/getAllPraise", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -153,9 +168,11 @@ const Portal = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setPraise1(data.data);
+        setLoading({ ...loading, load5: false })
       });
   };
   const onPublicPraise = (event, id) => {
+    setLoading({load1:true,load2:true,load3:true,load4:true,load5:true})
     fetch(process.env.REACT_APP_API + "/praise/changeStatus/" + id, {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -163,6 +180,7 @@ const Portal = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading({load1:false,load2:false,load3:false,load4:false,load5:false})
           toast.error("Public Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -175,6 +193,7 @@ const Portal = (props) => {
           });
         } else {
           setRender(!render);
+          setLoading({load1:false,load2:false,load3:false,load4:false,load5:false})
           toast.success("Public successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -202,10 +221,12 @@ const Portal = (props) => {
     }).then((result) => {
       if (result.isConfirmed) {
         onBlock(id);
+        setLoading({load1:false,load2:false,load3:false,load4:false,load5:false})
       }
     });
   };
   const onBlock = (id) => {
+    setLoading({load1:true,load2:true,load3:true,load4:true,load5:true})
     fetch(process.env.REACT_APP_API + "/praise/destroyPraise/" + id, {
       method: "DELETE",
       headers: { Authorization: `Bearer ` + $token },
@@ -213,6 +234,7 @@ const Portal = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading({load1:false,load2:false,load3:false,load4:false,load5:false})
           toast.error("Delete Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -225,6 +247,7 @@ const Portal = (props) => {
           });
         } else {
           setRender(!render);
+          setLoading({load1:false,load2:false,load3:false,load4:false,load5:false})
           toast.success("Delete successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -274,6 +297,10 @@ const Portal = (props) => {
         borderRadius: "5px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+        open={loading.load1 && loading.load2 && loading.load3 && loading.load4 && loading.load5}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Modal
         open={showComment}
         onClose={() => clickShowComment()}
@@ -342,62 +369,44 @@ const Portal = (props) => {
           >
             {comment.length
               ? comment.map((itemComment, index) => {
-                  if (itemComment.praise_id == addComment.praise_id) {
-                    return (
-                      <Grid
-                        item
-                        xs={4}
-                        sm={8}
-                        md={12}
-                        sx={{ marginBottom: "10px" }}
-                      >
-                        <Box>
-                          <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                            sx={{ marginTop: "20px" }}
-                          >
-                            <Grid item xs={2} sm={3} md={2}>
-                              {employees.map((itemEmployee, index) => {
-                                if (
-                                  itemComment.user_id == itemEmployee.user_id
-                                ) {
-                                  if (itemEmployee.avatar) {
-                                    if (
-                                      itemEmployee.avatar.search("https://") !==
-                                      -1
-                                    ) {
-                                      return (
-                                        <img
-                                          style={{
-                                            height: "40px",
-                                            width: "40px",
-                                            objectFit: "cover",
-                                            borderRadius: "100%",
-                                            float: "right",
-                                          }}
-                                          src={itemEmployee.avatar}
-                                        ></img>
-                                      );
-                                    } else {
-                                      return (
-                                        <img
-                                          style={{
-                                            height: "40px",
-                                            width: "40px",
-                                            objectFit: "cover",
-                                            borderRadius: "100%",
-                                            float: "right",
-                                          }}
-                                          src={
-                                            process.env.REACT_APP_FILE +
-                                            "/avatar/" +
-                                            itemEmployee.avatar
-                                          }
-                                        ></img>
-                                      );
-                                    }
+                if (itemComment.praise_id == addComment.praise_id) {
+                  return (
+                    <Grid
+                      item
+                      xs={4}
+                      sm={8}
+                      md={12}
+                      sx={{ marginBottom: "10px" }}
+                    >
+                      <Box>
+                        <Grid
+                          container
+                          spacing={{ xs: 2, md: 3 }}
+                          columns={{ xs: 4, sm: 8, md: 12 }}
+                          sx={{ marginTop: "20px" }}
+                        >
+                          <Grid item xs={2} sm={3} md={2}>
+                            {employees.map((itemEmployee, index) => {
+                              if (
+                                itemComment.user_id == itemEmployee.user_id
+                              ) {
+                                if (itemEmployee.avatar) {
+                                  if (
+                                    itemEmployee.avatar.search("https://") !==
+                                    -1
+                                  ) {
+                                    return (
+                                      <img
+                                        style={{
+                                          height: "40px",
+                                          width: "40px",
+                                          objectFit: "cover",
+                                          borderRadius: "100%",
+                                          float: "right",
+                                        }}
+                                        src={itemEmployee.avatar}
+                                      ></img>
+                                    );
                                   } else {
                                     return (
                                       <img
@@ -410,51 +419,69 @@ const Portal = (props) => {
                                         }}
                                         src={
                                           process.env.REACT_APP_FILE +
-                                          "/avatar/avatar.png"
+                                          "/avatar/" +
+                                          itemEmployee.avatar
                                         }
                                       ></img>
                                     );
                                   }
                                 } else {
-                                  return null;
+                                  return (
+                                    <img
+                                      style={{
+                                        height: "40px",
+                                        width: "40px",
+                                        objectFit: "cover",
+                                        borderRadius: "100%",
+                                        float: "right",
+                                      }}
+                                      src={
+                                        process.env.REACT_APP_FILE +
+                                        "/avatar/avatar.png"
+                                      }
+                                    ></img>
+                                  );
                                 }
-                              })}
-                            </Grid>
-                            <Grid
-                              item
-                              xs={2}
-                              sm={5}
-                              md={10}
-                              sx={{ paddingRight: "40px" }}
+                              } else {
+                                return null;
+                              }
+                            })}
+                          </Grid>
+                          <Grid
+                            item
+                            xs={2}
+                            sm={5}
+                            md={10}
+                            sx={{ paddingRight: "40px" }}
+                          >
+                            <Box
+                              sx={{
+                                boxShadow:
+                                  "rgb(95 125 149 / 15%) 0px 1px 3px 0px",
+                                borderRadius: "5px",
+                                backgroundColor: "#eeeeee",
+                                border: "1px solid #e0e0e0",
+                                padding: "5px",
+                              }}
                             >
-                              <Box
+                              <Typography
                                 sx={{
-                                  boxShadow:
-                                    "rgb(95 125 149 / 15%) 0px 1px 3px 0px",
-                                  borderRadius: "5px",
-                                  backgroundColor: "#eeeeee",
-                                  border: "1px solid #e0e0e0",
-                                  padding: "5px",
+                                  fontWeight: "600px",
+                                  fontSize: "14px",
+                                  color: "rgb(79, 94, 113)",
+                                  lineHeight: "24px",
                                 }}
                               >
-                                <Typography
-                                  sx={{
-                                    fontWeight: "600px",
-                                    fontSize: "14px",
-                                    color: "rgb(79, 94, 113)",
-                                    lineHeight: "24px",
-                                  }}
-                                >
-                                  {itemComment.messeger}
-                                </Typography>
-                              </Box>
-                            </Grid>
+                                {itemComment.messeger}
+                              </Typography>
+                            </Box>
                           </Grid>
-                        </Box>
-                      </Grid>
-                    );
-                  }
-                })
+                        </Grid>
+                      </Box>
+                    </Grid>
+                  );
+                }
+              })
               : null}
           </Box>
           <Box>
@@ -545,272 +572,272 @@ const Portal = (props) => {
             </Box>
             {praise1.length
               ? praise1.map((item, index) => {
-                  if (item.status === 0) {
-                    return (
-                      <Box
+                if (item.status === 0) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        marginRight: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          marginRight: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
+                          {employees.length
+                            ? employees.map((itemUser, index) => {
+                              if (itemUser.user_id === item.author) {
+                                if (itemUser.avatar) {
+                                  if (
+                                    itemUser.avatar.search("https://") !==
+                                    -1
+                                  ) {
+                                    return (
+                                      <img
+                                        style={{
+                                          height: "40px",
+                                          width: "40px",
+                                          objectFit: "cover",
+                                          borderRadius: "100%",
+                                          float: "right",
+                                          border: "2px solid #2196f3",
+                                        }}
+                                        src={itemUser.avatar}
+                                      ></img>
+                                    );
+                                  } else {
+                                    return (
+                                      <img
+                                        style={{
+                                          height: "40px",
+                                          width: "40px",
+                                          objectFit: "cover",
+                                          borderRadius: "100%",
+                                          float: "right",
+                                          border: "2px solid #2196f3",
+                                        }}
+                                        src={
+                                          process.env.REACT_APP_FILE +
+                                          "/avatar/" +
+                                          itemUser.avatar
+                                        }
+                                      ></img>
+                                    );
+                                  }
+                                } else {
+                                  return (
+                                    <img
+                                      style={{
+                                        height: "40px",
+                                        width: "40px",
+                                        objectFit: "cover",
+                                        borderRadius: "100%",
+                                        float: "right",
+                                        border: "2px solid #2196f3",
+                                      }}
+                                      src={
+                                        process.env.REACT_APP_FILE +
+                                        "/avatar/avatar.png"
+                                      }
+                                    ></img>
+                                  );
+                                }
+                              } else {
+                                return null;
+                              }
+                            })
+                            : null}
+                        </Grid>
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
                           >
                             {employees.length
                               ? employees.map((itemUser, index) => {
-                                  if (itemUser.user_id === item.author) {
-                                    if (itemUser.avatar) {
-                                      if (
-                                        itemUser.avatar.search("https://") !==
-                                        -1
-                                      ) {
-                                        return (
-                                          <img
-                                            style={{
-                                              height: "40px",
-                                              width: "40px",
-                                              objectFit: "cover",
-                                              borderRadius: "100%",
-                                              float: "right",
-                                              border: "2px solid #2196f3",
-                                            }}
-                                            src={itemUser.avatar}
-                                          ></img>
-                                        );
-                                      } else {
-                                        return (
-                                          <img
-                                            style={{
-                                              height: "40px",
-                                              width: "40px",
-                                              objectFit: "cover",
-                                              borderRadius: "100%",
-                                              float: "right",
-                                              border: "2px solid #2196f3",
-                                            }}
-                                            src={
-                                              process.env.REACT_APP_FILE +
-                                              "/avatar/" +
-                                              itemUser.avatar
-                                            }
-                                          ></img>
-                                        );
-                                      }
-                                    } else {
-                                      return (
-                                        <img
-                                          style={{
-                                            height: "40px",
-                                            width: "40px",
-                                            objectFit: "cover",
-                                            borderRadius: "100%",
-                                            float: "right",
-                                            border: "2px solid #2196f3",
-                                          }}
-                                          src={
-                                            process.env.REACT_APP_FILE +
-                                            "/avatar/avatar.png"
-                                          }
-                                        ></img>
-                                      );
-                                    }
-                                  } else {
-                                    return null;
-                                  }
-                                })
+                                if (itemUser.user_id === item.author) {
+                                  return (
+                                    itemUser.last_name +
+                                    " " +
+                                    itemUser.first_name +
+                                    " "
+                                  );
+                                } else {
+                                  return null;
+                                }
+                              })
                               : null}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
+                            <span
+                              style={{
                                 fontSize: "12px",
+                                fontWeight: "normal",
                               }}
                             >
-                              {employees.length
-                                ? employees.map((itemUser, index) => {
-                                    if (itemUser.user_id === item.author) {
-                                      return (
-                                        itemUser.last_name +
-                                        " " +
-                                        itemUser.first_name +
-                                        " "
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  })
-                                : null}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã khen thưởng
-                              </span>
-                              {employees.length
-                                ? employees.map((itemUser, index) => {
-                                    if (itemUser.user_id === item.recipient) {
-                                      return (
-                                        " " +
-                                        itemUser.last_name +
-                                        " " +
-                                        itemUser.first_name
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  })
-                                : null}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={4}
-                            sm={8}
-                            md={12}
-                            sx={{ textAlign: "center" }}
+                              đã khen thưởng
+                            </span>
+                            {employees.length
+                              ? employees.map((itemUser, index) => {
+                                if (itemUser.user_id === item.recipient) {
+                                  return (
+                                    " " +
+                                    itemUser.last_name +
+                                    " " +
+                                    itemUser.first_name
+                                  );
+                                } else {
+                                  return null;
+                                }
+                              })
+                              : null}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
                           >
-                            <Typography
-                              sx={{
-                                color: "#76ff03",
-                                fontSize: "18px",
-                                fontWeight: "bold",
-                              }}
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={8}
+                          md={12}
+                          sx={{ textAlign: "center" }}
+                        >
+                          <Typography
+                            sx={{
+                              color: "#76ff03",
+                              fontSize: "18px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            + {item.score ? item.score : null} Points
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "#76ff03",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            + {item.present ? item.present : null}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Typography
+                            sx={{
+                              color: "black",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {item.message}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
                             >
-                              + {item.score ? item.score : null} Points
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "#76ff03",
-                                fontSize: "12px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              + {item.present ? item.present : null}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Typography
-                              sx={{
-                                color: "black",
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {item.message}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
-                              }}
-                            >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      height: "30px",
+                                      width: "40px",
+                                    }}
+                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                    src={
+                                      process.env.REACT_APP_FILE +
+                                      "/reward/value.png"
+                                    }
+                                  ></img>
+                                  <Typography
                                     sx={{
-                                      display: "flex",
+                                      color: "rgb(35, 54, 78)",
+                                      fontWeight: "bold",
+                                      fontSize: "12px",
                                     }}
                                   >
-                                    <img
-                                      style={{
-                                        height: "30px",
-                                        width: "40px",
-                                      }}
-                                      // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                      src={
-                                        process.env.REACT_APP_FILE +
-                                        "/reward/value.png"
-                                      }
-                                    ></img>
-                                    <Typography
-                                      sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      {item.cheer}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
+                                    {item.cheer}
+                                  </Typography>
+                                </Box>
                               </Grid>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Stack
-                              direction="row"
-                              spacing={2}
-                              sx={{ mt: 2 }}
-                              justifyContent="center"
-                            >
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onPublicPraise(event, item.id)
-                                }
-                                variant="contained"
-                                size="medium"
-                                sx={{
-                                  color: "#ffff",
-                                }}
-                              >
-                                Publish
-                              </Button>
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onBlockPraise(event, item.id)
-                                }
-                                sx={{
-                                  width: "29%",
-                                }}
-                                variant="contained"
-                                size="medium"
-                                color="error"
-                              >
-                                Block
-                              </Button>
-                            </Stack>
-                          </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            sx={{ mt: 2 }}
+                            justifyContent="center"
+                          >
+                            <Button
+                              type="submit"
+                              onClick={(event) =>
+                                onPublicPraise(event, item.id)
+                              }
+                              variant="contained"
+                              size="medium"
+                              sx={{
+                                color: "#ffff",
+                              }}
+                            >
+                              Publish
+                            </Button>
+                            <Button
+                              type="submit"
+                              onClick={(event) =>
+                                onBlockPraise(event, item.id)
+                              }
+                              sx={{
+                                width: "29%",
+                              }}
+                              variant="contained"
+                              size="medium"
+                              color="error"
+                            >
+                              Block
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         ) : null}
@@ -824,529 +851,529 @@ const Portal = (props) => {
         <Grid item xs={4} sm={3} md={6} sx={{ position: "relative" }}>
           {praise.length
             ? praise.map((item, index) => {
-                if (item.status === 1) {
-                  return (
-                    <Box
+              if (item.status === 1) {
+                return (
+                  <Box
+                    sx={{
+                      boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                      border: "1.5px solid #e0e0e0",
+                      borderRadius: "10px",
+                      padding: "10px",
+                      backgroundColor: "white",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <Grid
+                      container
+                      spacing={{ xs: 2, md: 3 }}
+                      columns={{ xs: 4, sm: 8, md: 12 }}
                       sx={{
-                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                        border: "1.5px solid #e0e0e0",
-                        borderRadius: "10px",
-                        padding: "10px",
-                        backgroundColor: "white",
-                        marginBottom: "15px",
+                        display: "flex",
+                        alignItems: "center",
                       }}
                     >
                       <Grid
-                        container
-                        spacing={{ xs: 2, md: 3 }}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                        }}
+                        item
+                        xs={1}
+                        sm={2}
+                        md={2}
+                        display={{ xs: "none", md: "block", sm: "block" }}
                       >
-                        <Grid
-                          item
-                          xs={1}
-                          sm={2}
-                          md={2}
-                          display={{ xs: "none", md: "block", sm: "block" }}
+                        {employees.length
+                          ? employees.map((itemUser, index) => {
+                            if (itemUser.user_id === item.author) {
+                              if (itemUser.avatar) {
+                                if (
+                                  itemUser.avatar.search("https://") !== -1
+                                ) {
+                                  return (
+                                    <img
+                                      style={{
+                                        height: "60px",
+                                        width: "60px",
+                                        objectFit: "cover",
+                                        borderRadius: "100%",
+                                        float: "right",
+                                        border: "2px solid #2196f3",
+                                      }}
+                                      src={itemUser.avatar}
+                                    ></img>
+                                  );
+                                } else {
+                                  return (
+                                    <img
+                                      style={{
+                                        height: "60px",
+                                        width: "60px",
+                                        objectFit: "cover",
+                                        borderRadius: "100%",
+                                        float: "right",
+                                        border: "2px solid #2196f3",
+                                      }}
+                                      src={
+                                        process.env.REACT_APP_FILE +
+                                        "/avatar/" +
+                                        itemUser.avatar
+                                      }
+                                    ></img>
+                                  );
+                                }
+                              } else {
+                                return (
+                                  <img
+                                    style={{
+                                      height: "60px",
+                                      width: "60px",
+                                      objectFit: "cover",
+                                      borderRadius: "100%",
+                                      float: "right",
+                                      border: "2px solid #2196f3",
+                                    }}
+                                    src={
+                                      process.env.REACT_APP_FILE +
+                                      "/avatar/avatar.png"
+                                    }
+                                  ></img>
+                                );
+                              }
+                            } else {
+                              return null;
+                            }
+                          })
+                          : null}
+                      </Grid>
+                      <Grid item xs={3} sm={5} md={9}>
+                        <Typography
+                          sx={{
+                            color: "rgb(35, 54, 78)",
+                            fontWeight: "bold",
+                            fontSize: "16px",
+                          }}
                         >
                           {employees.length
                             ? employees.map((itemUser, index) => {
-                                if (itemUser.user_id === item.author) {
-                                  if (itemUser.avatar) {
-                                    if (
-                                      itemUser.avatar.search("https://") !== -1
-                                    ) {
-                                      return (
-                                        <img
-                                          style={{
-                                            height: "60px",
-                                            width: "60px",
-                                            objectFit: "cover",
-                                            borderRadius: "100%",
-                                            float: "right",
-                                            border: "2px solid #2196f3",
-                                          }}
-                                          src={itemUser.avatar}
-                                        ></img>
-                                      );
+                              if (itemUser.user_id === item.author) {
+                                return (
+                                  itemUser.last_name +
+                                  " " +
+                                  itemUser.first_name +
+                                  " "
+                                );
+                              } else {
+                                return null;
+                              }
+                            })
+                            : null}
+                          <span
+                            style={{ fontSize: "16px", fontWeight: "normal" }}
+                          >
+                            đã khen thưởng
+                          </span>
+                          {employees.length
+                            ? employees.map((itemUser, index) => {
+                              if (itemUser.user_id === item.recipient) {
+                                return (
+                                  " " +
+                                  itemUser.last_name +
+                                  " " +
+                                  itemUser.first_name
+                                );
+                              } else {
+                                return null;
+                              }
+                            })
+                            : null}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgb(35, 54, 78)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {moment(item.updated_at).fromNow()}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={1} sm={1} md={1}>
+                        <MoreVertIcon />
+                      </Grid>
+                      <Grid item xs={4} sm={8} md={12}>
+                        <Box
+                          sx={{
+                            alignItems: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid item xs={4} sm={8} md={1}></Grid>
+                            <Grid item xs={4} sm={8} md={4}>
+                              {employees.length
+                                ? employees.map((itemUser, index) => {
+                                  if (itemUser.user_id === item.author) {
+                                    if (itemUser.avatar) {
+                                      if (
+                                        itemUser.avatar.search(
+                                          "https://"
+                                        ) !== -1
+                                      ) {
+                                        return (
+                                          <img
+                                            style={{
+                                              height: "100px",
+                                              width: "100px",
+                                              objectFit: "cover",
+                                              borderRadius: "100%",
+                                              border: "2px solid #ff5722",
+                                            }}
+                                            src={itemUser.avatar}
+                                          ></img>
+                                        );
+                                      } else {
+                                        return (
+                                          <img
+                                            style={{
+                                              height: "100px",
+                                              width: "100px",
+                                              objectFit: "cover",
+                                              borderRadius: "100%",
+                                              border: "2px solid #ff5722",
+                                            }}
+                                            src={
+                                              process.env.REACT_APP_FILE +
+                                              "/avatar/" +
+                                              itemUser.avatar
+                                            }
+                                          ></img>
+                                        );
+                                      }
                                     } else {
                                       return (
                                         <img
                                           style={{
-                                            height: "60px",
-                                            width: "60px",
+                                            height: "100px",
+                                            width: "100px",
                                             objectFit: "cover",
                                             borderRadius: "100%",
-                                            float: "right",
-                                            border: "2px solid #2196f3",
+                                            border: "2px solid #ff5722",
                                           }}
                                           src={
                                             process.env.REACT_APP_FILE +
-                                            "/avatar/" +
-                                            itemUser.avatar
+                                            "/avatar/avatar.png"
                                           }
                                         ></img>
                                       );
                                     }
                                   } else {
-                                    return (
-                                      <img
-                                        style={{
-                                          height: "60px",
-                                          width: "60px",
-                                          objectFit: "cover",
-                                          borderRadius: "100%",
-                                          float: "right",
-                                          border: "2px solid #2196f3",
-                                        }}
-                                        src={
-                                          process.env.REACT_APP_FILE +
-                                          "/avatar/avatar.png"
-                                        }
-                                      ></img>
-                                    );
-                                  }
-                                } else {
-                                  return null;
-                                }
-                              })
-                            : null}
-                        </Grid>
-                        <Grid item xs={3} sm={5} md={9}>
-                          <Typography
-                            sx={{
-                              color: "rgb(35, 54, 78)",
-                              fontWeight: "bold",
-                              fontSize: "16px",
-                            }}
-                          >
-                            {employees.length
-                              ? employees.map((itemUser, index) => {
-                                  if (itemUser.user_id === item.author) {
-                                    return (
-                                      itemUser.last_name +
-                                      " " +
-                                      itemUser.first_name +
-                                      " "
-                                    );
-                                  } else {
                                     return null;
                                   }
                                 })
-                              : null}
-                            <span
-                              style={{ fontSize: "16px", fontWeight: "normal" }}
-                            >
-                              đã khen thưởng
-                            </span>
-                            {employees.length
-                              ? employees.map((itemUser, index) => {
-                                  if (itemUser.user_id === item.recipient) {
-                                    return (
-                                      " " +
-                                      itemUser.last_name +
-                                      " " +
-                                      itemUser.first_name
-                                    );
-                                  } else {
-                                    return null;
-                                  }
-                                })
-                              : null}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "rgb(35, 54, 78)",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {moment(item.updated_at).fromNow()}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1}>
-                          <MoreVertIcon />
-                        </Grid>
-                        <Grid item xs={4} sm={8} md={12}>
-                          <Box
-                            sx={{
-                              alignItems: "center",
-                              textAlign: "center",
-                            }}
-                          >
-                            <Grid
-                              container
-                              spacing={{ xs: 2, md: 3 }}
-                              columns={{ xs: 4, sm: 8, md: 12 }}
-                              sx={{
-                                display: "flex",
-                                alignItems: "center",
-                              }}
-                            >
-                              <Grid item xs={4} sm={8} md={1}></Grid>
-                              <Grid item xs={4} sm={8} md={4}>
+                                : null}
+                              <Typography
+                                sx={{
+                                  color: "rgb(35, 54, 78)",
+                                  fontWeight: "bold",
+                                  fontSize: "18px",
+                                  marginTop: "10px",
+                                }}
+                              >
                                 {employees.length
                                   ? employees.map((itemUser, index) => {
-                                      if (itemUser.user_id === item.author) {
-                                        if (itemUser.avatar) {
-                                          if (
-                                            itemUser.avatar.search(
-                                              "https://"
-                                            ) !== -1
-                                          ) {
-                                            return (
-                                              <img
-                                                style={{
-                                                  height: "100px",
-                                                  width: "100px",
-                                                  objectFit: "cover",
-                                                  borderRadius: "100%",
-                                                  border: "2px solid #ff5722",
-                                                }}
-                                                src={itemUser.avatar}
-                                              ></img>
-                                            );
-                                          } else {
-                                            return (
-                                              <img
-                                                style={{
-                                                  height: "100px",
-                                                  width: "100px",
-                                                  objectFit: "cover",
-                                                  borderRadius: "100%",
-                                                  border: "2px solid #ff5722",
-                                                }}
-                                                src={
-                                                  process.env.REACT_APP_FILE +
-                                                  "/avatar/" +
-                                                  itemUser.avatar
-                                                }
-                                              ></img>
-                                            );
-                                          }
-                                        } else {
-                                          return (
-                                            <img
-                                              style={{
-                                                height: "100px",
-                                                width: "100px",
-                                                objectFit: "cover",
-                                                borderRadius: "100%",
-                                                border: "2px solid #ff5722",
-                                              }}
-                                              src={
-                                                process.env.REACT_APP_FILE +
-                                                "/avatar/avatar.png"
-                                              }
-                                            ></img>
-                                          );
-                                        }
-                                      } else {
-                                        return null;
-                                      }
-                                    })
+                                    if (itemUser.user_id === item.author) {
+                                      return (
+                                        itemUser.last_name +
+                                        " " +
+                                        itemUser.first_name +
+                                        " "
+                                      );
+                                    } else {
+                                      return null;
+                                    }
+                                  })
                                   : null}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "rgb(35, 54, 78)",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                Executive Cum Legal Assistant Consultant
+                                Employee
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={4} sm={8} md={2}>
+                              <img
+                                style={{
+                                  height: "100%",
+                                  width: "100%",
+                                }}
+                                // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                src={
+                                  process.env.REACT_APP_FILE +
+                                  "/reward/gold.png"
+                                }
+                              ></img>
+                            </Grid>
+                            <Grid item xs={4} sm={8} md={4}>
+                              {employees.length
+                                ? employees.map((itemUser, index) => {
+                                  if (itemUser.user_id === item.recipient) {
+                                    if (itemUser.avatar) {
+                                      if (
+                                        itemUser.avatar.search(
+                                          "https://"
+                                        ) !== -1
+                                      ) {
+                                        return (
+                                          <img
+                                            style={{
+                                              height: "100px",
+                                              width: "100px",
+                                              objectFit: "cover",
+                                              borderRadius: "100%",
+                                              border: "2px solid #ff5722",
+                                            }}
+                                            src={itemUser.avatar}
+                                          ></img>
+                                        );
+                                      } else {
+                                        return (
+                                          <img
+                                            style={{
+                                              height: "100px",
+                                              width: "100px",
+                                              objectFit: "cover",
+                                              borderRadius: "100%",
+                                              border: "2px solid #ff5722",
+                                            }}
+                                            src={
+                                              process.env.REACT_APP_FILE +
+                                              "/avatar/" +
+                                              itemUser.avatar
+                                            }
+                                          ></img>
+                                        );
+                                      }
+                                    } else {
+                                      return (
+                                        <img
+                                          style={{
+                                            height: "100px",
+                                            width: "100px",
+                                            objectFit: "cover",
+                                            borderRadius: "100%",
+                                            border: "2px solid #00e676",
+                                          }}
+                                          src={
+                                            process.env.REACT_APP_FILE +
+                                            "/avatar/avatar.png"
+                                          }
+                                        ></img>
+                                      );
+                                    }
+                                  } else {
+                                    return null;
+                                  }
+                                })
+                                : null}
+                              <Typography
+                                sx={{
+                                  color: "rgb(35, 54, 78)",
+                                  fontWeight: "bold",
+                                  fontSize: "18px",
+                                  marginTop: "10px",
+                                }}
+                              >
+                                {employees.length
+                                  ? employees.map((itemUser, index) => {
+                                    if (
+                                      itemUser.user_id === item.recipient
+                                    ) {
+                                      return (
+                                        " " +
+                                        itemUser.last_name +
+                                        " " +
+                                        itemUser.first_name
+                                      );
+                                    } else {
+                                      return null;
+                                    }
+                                  })
+                                  : null}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "rgb(35, 54, 78)",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                Manager Programme Development(Partnership
+                                Global)
+                              </Typography>
+                            </Grid>
+                            <Grid item xs={4} sm={8} md={1}></Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+                      <Grid
+                        item
+                        xs={4}
+                        sm={8}
+                        md={12}
+                        sx={{ alignItems: "center", textAlign: "center" }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "#76ff03",
+                            fontSize: "24px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          + {item.score} Points
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#76ff03",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          + {item.present ? item.present : null}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4} sm={8} md={12}>
+                        <Typography
+                          sx={{
+                            color: "black",
+                            fontSize: "18px",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          {item.message}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4} sm={8} md={12}>
+                        <Box
+                          sx={{
+                            alignItems: "center",
+                            textAlign: "center",
+                          }}
+                        >
+                          <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                          >
+                            <Grid item xs={2} sm={2} md={3}>
+                              <Box
+                                sx={{
+                                  borderRadius: "5px",
+                                  backgroundColor: "#a7ffeb",
+                                  padding: "10px",
+                                }}
+                              >
                                 <Typography
                                   sx={{
                                     color: "rgb(35, 54, 78)",
                                     fontWeight: "bold",
-                                    fontSize: "18px",
-                                    marginTop: "10px",
-                                  }}
-                                >
-                                  {employees.length
-                                    ? employees.map((itemUser, index) => {
-                                        if (itemUser.user_id === item.author) {
-                                          return (
-                                            itemUser.last_name +
-                                            " " +
-                                            itemUser.first_name +
-                                            " "
-                                          );
-                                        } else {
-                                          return null;
-                                        }
-                                      })
-                                    : null}
-                                </Typography>
-                                <Typography
-                                  sx={{
-                                    color: "rgb(35, 54, 78)",
                                     fontSize: "14px",
                                   }}
                                 >
-                                  Executive Cum Legal Assistant Consultant
-                                  Employee
+                                  Achievements
                                 </Typography>
-                              </Grid>
-                              <Grid item xs={4} sm={8} md={2}>
+                              </Box>
+                            </Grid>
+                            <Grid item xs={2} sm={6} md={9}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 <img
                                   style={{
-                                    height: "100%",
-                                    width: "100%",
+                                    height: "40px",
+                                    width: "50px",
                                   }}
                                   // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
                                   src={
                                     process.env.REACT_APP_FILE +
-                                    "/reward/gold.png"
+                                    "/reward/value.png"
                                   }
                                 ></img>
-                              </Grid>
-                              <Grid item xs={4} sm={8} md={4}>
-                                {employees.length
-                                  ? employees.map((itemUser, index) => {
-                                      if (itemUser.user_id === item.recipient) {
-                                        if (itemUser.avatar) {
-                                          if (
-                                            itemUser.avatar.search(
-                                              "https://"
-                                            ) !== -1
-                                          ) {
-                                            return (
-                                              <img
-                                                style={{
-                                                  height: "100px",
-                                                  width: "100px",
-                                                  objectFit: "cover",
-                                                  borderRadius: "100%",
-                                                  border: "2px solid #ff5722",
-                                                }}
-                                                src={itemUser.avatar}
-                                              ></img>
-                                            );
-                                          } else {
-                                            return (
-                                              <img
-                                                style={{
-                                                  height: "100px",
-                                                  width: "100px",
-                                                  objectFit: "cover",
-                                                  borderRadius: "100%",
-                                                  border: "2px solid #ff5722",
-                                                }}
-                                                src={
-                                                  process.env.REACT_APP_FILE +
-                                                  "/avatar/" +
-                                                  itemUser.avatar
-                                                }
-                                              ></img>
-                                            );
-                                          }
-                                        } else {
-                                          return (
-                                            <img
-                                              style={{
-                                                height: "100px",
-                                                width: "100px",
-                                                objectFit: "cover",
-                                                borderRadius: "100%",
-                                                border: "2px solid #00e676",
-                                              }}
-                                              src={
-                                                process.env.REACT_APP_FILE +
-                                                "/avatar/avatar.png"
-                                              }
-                                            ></img>
-                                          );
-                                        }
-                                      } else {
-                                        return null;
-                                      }
-                                    })
-                                  : null}
                                 <Typography
                                   sx={{
                                     color: "rgb(35, 54, 78)",
                                     fontWeight: "bold",
-                                    fontSize: "18px",
-                                    marginTop: "10px",
-                                  }}
-                                >
-                                  {employees.length
-                                    ? employees.map((itemUser, index) => {
-                                        if (
-                                          itemUser.user_id === item.recipient
-                                        ) {
-                                          return (
-                                            " " +
-                                            itemUser.last_name +
-                                            " " +
-                                            itemUser.first_name
-                                          );
-                                        } else {
-                                          return null;
-                                        }
-                                      })
-                                    : null}
-                                </Typography>
-                                <Typography
-                                  sx={{
-                                    color: "rgb(35, 54, 78)",
                                     fontSize: "14px",
+                                    textOverflow: "ellipsis",
+                                    overflow: "hidden",
                                   }}
                                 >
-                                  Manager Programme Development(Partnership
-                                  Global)
+                                  {item.cheer}
                                 </Typography>
-                              </Grid>
-                              <Grid item xs={4} sm={8} md={1}></Grid>
+                              </Box>
                             </Grid>
-                          </Box>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sm={8}
-                          md={12}
-                          sx={{ alignItems: "center", textAlign: "center" }}
-                        >
-                          <Typography
-                            sx={{
-                              color: "#76ff03",
-                              fontSize: "24px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            + {item.score} Points
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "#76ff03",
-                              fontSize: "18px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            + {item.present ? item.present : null}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={4} sm={8} md={12}>
-                          <Typography
-                            sx={{
-                              color: "black",
-                              fontSize: "18px",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {item.message}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={4} sm={8} md={12}>
-                          <Box
-                            sx={{
-                              alignItems: "center",
-                              textAlign: "center",
-                            }}
-                          >
-                            <Grid
-                              container
-                              spacing={{ xs: 2, md: 3 }}
-                              columns={{ xs: 4, sm: 8, md: 12 }}
-                            >
-                              <Grid item xs={2} sm={2} md={3}>
-                                <Box
-                                  sx={{
-                                    borderRadius: "5px",
-                                    backgroundColor: "#a7ffeb",
-                                    padding: "10px",
-                                  }}
-                                >
-                                  <Typography
-                                    sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "bold",
-                                      fontSize: "14px",
-                                    }}
-                                  >
-                                    Achievements
-                                  </Typography>
-                                </Box>
-                              </Grid>
-                              <Grid item xs={2} sm={6} md={9}>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                  }}
-                                >
-                                  <img
-                                    style={{
-                                      height: "40px",
-                                      width: "50px",
-                                    }}
-                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                    src={
-                                      process.env.REACT_APP_FILE +
-                                      "/reward/value.png"
-                                    }
-                                  ></img>
-                                  <Typography
-                                    sx={{
-                                      color: "rgb(35, 54, 78)",
-                                      fontWeight: "bold",
-                                      fontSize: "14px",
-                                      textOverflow: "ellipsis",
-                                      overflow: "hidden",
-                                    }}
-                                  >
-                                    {item.cheer}
-                                  </Typography>
-                                </Box>
-                              </Grid>
-                            </Grid>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={4} sm={8} md={12}>
-                          <Box sx={{ display: "flex" }}>
-                            {checkLike(item.id) ? (
-                              <ThumbUpOutlinedIcon
-                                id="icon_like"
-                                sx={{ marginRight: "10px", color: "blue" }}
-                              />
-                            ) : (
-                              <ThumbUpOutlinedIcon
-                                onClick={(event) =>
-                                  onChangeAddLike(event, item.id)
-                                }
-                                id="icon_like"
-                                sx={{ marginRight: "10px" }}
-                              />
-                            )}
-                            <Typography
-                              sx={{
-                                fontSize: "14px",
-                                color: "rgb(35, 54, 78)",
-                              }}
-                            >
-                              {sumLike(item.id) != 0 ? sumLike(item.id) : null}
-                            </Typography>
-                          </Box>
-                          <Box sx={{ display: "flex" }}>
-                            <ChatBubbleOutlineOutlinedIcon
+                          </Grid>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={4} sm={8} md={12}>
+                        <Box sx={{ display: "flex" }}>
+                          {checkLike(item.id) ? (
+                            <ThumbUpOutlinedIcon
+                              id="icon_like"
+                              sx={{ marginRight: "10px", color: "blue" }}
+                            />
+                          ) : (
+                            <ThumbUpOutlinedIcon
                               onClick={(event) =>
-                                onClickAddComment(event, item.id)
+                                onChangeAddLike(event, item.id)
                               }
-                              id="icon_comment"
+                              id="icon_like"
                               sx={{ marginRight: "10px" }}
                             />
-                            <Typography
-                              sx={{
-                                fontSize: "14px",
-                                color: "rgb(35, 54, 78)",
-                              }}
-                            >
-                              {sumComment(item.id) != 0
-                                ? sumComment(item.id)
-                                : null}
-                            </Typography>
-                          </Box>
-                        </Grid>
+                          )}
+                          <Typography
+                            sx={{
+                              fontSize: "14px",
+                              color: "rgb(35, 54, 78)",
+                            }}
+                          >
+                            {sumLike(item.id) != 0 ? sumLike(item.id) : null}
+                          </Typography>
+                        </Box>
+                        <Box sx={{ display: "flex" }}>
+                          <ChatBubbleOutlineOutlinedIcon
+                            onClick={(event) =>
+                              onClickAddComment(event, item.id)
+                            }
+                            id="icon_comment"
+                            sx={{ marginRight: "10px" }}
+                          />
+                          <Typography
+                            sx={{
+                              fontSize: "14px",
+                              color: "rgb(35, 54, 78)",
+                            }}
+                          >
+                            {sumComment(item.id) != 0
+                              ? sumComment(item.id)
+                              : null}
+                          </Typography>
+                        </Box>
                       </Grid>
-                    </Box>
-                  );
-                }
-              })
+                    </Grid>
+                  </Box>
+                );
+              }
+            })
             : null}
         </Grid>
         {role == 1 ? (
@@ -1390,253 +1417,253 @@ const Portal = (props) => {
             </Box>
             {praise.length
               ? praise.map((item, index) => {
-                  if (item.author == id_user) {
-                    return (
-                      <Box
+                if (item.author == id_user) {
+                  return (
+                    <Box
+                      sx={{
+                        boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
+                        border: "1.5px solid #e0e0e0",
+                        borderRadius: "10px",
+                        padding: "10px",
+                        backgroundColor: "white",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <Grid
+                        container
+                        spacing={{ xs: 2, md: 3 }}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
                         sx={{
-                          boxShadow: "rgb(95 125 149 / 20%) 0px 4px 13px 0px",
-                          border: "1.5px solid #e0e0e0",
-                          borderRadius: "10px",
-                          padding: "10px",
-                          backgroundColor: "white",
-                          marginBottom: "10px",
+                          alignItems: "center",
                         }}
                       >
                         <Grid
-                          container
-                          spacing={{ xs: 2, md: 3 }}
-                          columns={{ xs: 4, sm: 8, md: 12 }}
-                          sx={{
-                            alignItems: "center",
-                          }}
+                          item
+                          xs={1}
+                          sm={2}
+                          md={3}
+                          display={{ xs: "none", md: "block", sm: "block" }}
                         >
-                          <Grid
-                            item
-                            xs={1}
-                            sm={2}
-                            md={3}
-                            display={{ xs: "none", md: "block", sm: "block" }}
+                          {employees.length
+                            ? employees.map((itemUser, index) => {
+                              if (itemUser.user_id === item.author) {
+                                if (itemUser.avatar) {
+                                  if (
+                                    itemUser.avatar.search("https://") !==
+                                    -1
+                                  ) {
+                                    return (
+                                      <img
+                                        style={{
+                                          height: "40px",
+                                          width: "40px",
+                                          objectFit: "cover",
+                                          borderRadius: "100%",
+                                          float: "right",
+                                          border: "2px solid #2196f3",
+                                        }}
+                                        src={itemUser.avatar}
+                                      ></img>
+                                    );
+                                  } else {
+                                    return (
+                                      <img
+                                        style={{
+                                          height: "40px",
+                                          width: "40px",
+                                          objectFit: "cover",
+                                          borderRadius: "100%",
+                                          float: "right",
+                                          border: "2px solid #2196f3",
+                                        }}
+                                        src={
+                                          process.env.REACT_APP_FILE +
+                                          "/avatar/" +
+                                          itemUser.avatar
+                                        }
+                                      ></img>
+                                    );
+                                  }
+                                } else {
+                                  return (
+                                    <img
+                                      style={{
+                                        height: "40px",
+                                        width: "40px",
+                                        objectFit: "cover",
+                                        borderRadius: "100%",
+                                        float: "right",
+                                        border: "2px solid #2196f3",
+                                      }}
+                                      src={
+                                        process.env.REACT_APP_FILE +
+                                        "/avatar/avatar.png"
+                                      }
+                                    ></img>
+                                  );
+                                }
+                              } else {
+                                return null;
+                              }
+                            })
+                            : null}
+                        </Grid>
+                        <Grid item xs={3} sm={5} md={9}>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontWeight: "bold",
+                              fontSize: "12px",
+                            }}
                           >
                             {employees.length
                               ? employees.map((itemUser, index) => {
-                                  if (itemUser.user_id === item.author) {
-                                    if (itemUser.avatar) {
-                                      if (
-                                        itemUser.avatar.search("https://") !==
-                                        -1
-                                      ) {
-                                        return (
-                                          <img
-                                            style={{
-                                              height: "40px",
-                                              width: "40px",
-                                              objectFit: "cover",
-                                              borderRadius: "100%",
-                                              float: "right",
-                                              border: "2px solid #2196f3",
-                                            }}
-                                            src={itemUser.avatar}
-                                          ></img>
-                                        );
-                                      } else {
-                                        return (
-                                          <img
-                                            style={{
-                                              height: "40px",
-                                              width: "40px",
-                                              objectFit: "cover",
-                                              borderRadius: "100%",
-                                              float: "right",
-                                              border: "2px solid #2196f3",
-                                            }}
-                                            src={
-                                              process.env.REACT_APP_FILE +
-                                              "/avatar/" +
-                                              itemUser.avatar
-                                            }
-                                          ></img>
-                                        );
-                                      }
-                                    } else {
-                                      return (
-                                        <img
-                                          style={{
-                                            height: "40px",
-                                            width: "40px",
-                                            objectFit: "cover",
-                                            borderRadius: "100%",
-                                            float: "right",
-                                            border: "2px solid #2196f3",
-                                          }}
-                                          src={
-                                            process.env.REACT_APP_FILE +
-                                            "/avatar/avatar.png"
-                                          }
-                                        ></img>
-                                      );
-                                    }
-                                  } else {
-                                    return null;
-                                  }
-                                })
+                                if (itemUser.user_id === item.author) {
+                                  return (
+                                    itemUser.last_name +
+                                    " " +
+                                    itemUser.first_name +
+                                    " "
+                                  );
+                                } else {
+                                  return null;
+                                }
+                              })
                               : null}
-                          </Grid>
-                          <Grid item xs={3} sm={5} md={9}>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontWeight: "bold",
+                            <span
+                              style={{
                                 fontSize: "12px",
+                                fontWeight: "normal",
                               }}
                             >
-                              {employees.length
-                                ? employees.map((itemUser, index) => {
-                                    if (itemUser.user_id === item.author) {
-                                      return (
-                                        itemUser.last_name +
-                                        " " +
-                                        itemUser.first_name +
-                                        " "
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  })
-                                : null}
-                              <span
-                                style={{
-                                  fontSize: "12px",
-                                  fontWeight: "normal",
-                                }}
-                              >
-                                đã khen thưởng
-                              </span>
-                              {employees.length
-                                ? employees.map((itemUser, index) => {
-                                    if (itemUser.user_id === item.recipient) {
-                                      return (
-                                        " " +
-                                        itemUser.last_name +
-                                        " " +
-                                        itemUser.first_name
-                                      );
-                                    } else {
-                                      return null;
-                                    }
-                                  })
-                                : null}
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "rgb(35, 54, 78)",
-                                fontSize: "10px",
-                              }}
-                            >
-                              {moment(item.updated_at).fromNow()}
-                            </Typography>
-                          </Grid>
-                          <Grid
-                            item
-                            xs={4}
-                            sm={8}
-                            md={12}
-                            sx={{ textAlign: "center" }}
+                              đã khen thưởng
+                            </span>
+                            {employees.length
+                              ? employees.map((itemUser, index) => {
+                                if (itemUser.user_id === item.recipient) {
+                                  return (
+                                    " " +
+                                    itemUser.last_name +
+                                    " " +
+                                    itemUser.first_name
+                                  );
+                                } else {
+                                  return null;
+                                }
+                              })
+                              : null}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "rgb(35, 54, 78)",
+                              fontSize: "10px",
+                            }}
                           >
-                            <Typography
-                              sx={{
-                                color: "#76ff03",
-                                fontSize: "18px",
-                                fontWeight: "bold",
-                              }}
+                            {moment(item.updated_at).fromNow()}
+                          </Typography>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={8}
+                          md={12}
+                          sx={{ textAlign: "center" }}
+                        >
+                          <Typography
+                            sx={{
+                              color: "#76ff03",
+                              fontSize: "18px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            + {item.score ? item.score : null} Points
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "#76ff03",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            + {item.present ? item.present : null}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Typography
+                            sx={{
+                              color: "black",
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {item.message}
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Box
+                            sx={{
+                              alignItems: "center",
+                            }}
+                          >
+                            <Grid
+                              container
+                              spacing={{ xs: 2, md: 3 }}
+                              columns={{ xs: 4, sm: 8, md: 12 }}
                             >
-                              + {item.score ? item.score : null} Points
-                            </Typography>
-                            <Typography
-                              sx={{
-                                color: "#76ff03",
-                                fontSize: "12px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              + {item.present ? item.present : null}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Typography
-                              sx={{
-                                color: "black",
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {item.message}
-                            </Typography>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Box
-                              sx={{
-                                alignItems: "center",
-                              }}
-                            >
-                              <Grid
-                                container
-                                spacing={{ xs: 2, md: 3 }}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                              >
-                                <Grid item xs={2} sm={8} md={12}>
-                                  <Box
+                              <Grid item xs={2} sm={8} md={12}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                  }}
+                                >
+                                  <img
+                                    style={{
+                                      height: "30px",
+                                      width: "40px",
+                                    }}
+                                    // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
+                                    src={
+                                      process.env.REACT_APP_FILE +
+                                      "/reward/value.png"
+                                    }
+                                  ></img>
+                                  <Typography
                                     sx={{
-                                      display: "flex",
+                                      color: "rgb(35, 54, 78)",
+                                      fontWeight: "bold",
+                                      fontSize: "12px",
                                     }}
                                   >
-                                    <img
-                                      style={{
-                                        height: "30px",
-                                        width: "40px",
-                                      }}
-                                      // src={item.avatar?process.env.REACT_APP_FILE+'/avatar/'+item.avatar:process.env.REACT_APP_FILE+'/avatar/avatar.png'}>
-                                      src={
-                                        process.env.REACT_APP_FILE +
-                                        "/reward/value.png"
-                                      }
-                                    ></img>
-                                    <Typography
-                                      sx={{
-                                        color: "rgb(35, 54, 78)",
-                                        fontWeight: "bold",
-                                        fontSize: "12px",
-                                      }}
-                                    >
-                                      {item.cheer}
-                                    </Typography>
-                                  </Box>
-                                </Grid>
+                                    {item.cheer}
+                                  </Typography>
+                                </Box>
                               </Grid>
-                            </Box>
-                          </Grid>
-                          <Grid item xs={4} sm={8} md={12}>
-                            <Stack direction="row" justifyContent="end">
-                              <Button
-                                type="submit"
-                                onClick={(event) =>
-                                  onClickBlockHistory(event, item.id)
-                                }
-                                sx={{
-                                  width: "29%",
-                                }}
-                                variant="contained"
-                                color="error"
-                                size="medium"
-                              >
-                                Block
-                              </Button>
-                            </Stack>
-                          </Grid>
+                            </Grid>
+                          </Box>
                         </Grid>
-                      </Box>
-                    );
-                  }
-                })
+                        <Grid item xs={4} sm={8} md={12}>
+                          <Stack direction="row" justifyContent="end">
+                            <Button
+                              type="submit"
+                              onClick={(event) =>
+                                onClickBlockHistory(event, item.id)
+                              }
+                              sx={{
+                                width: "29%",
+                              }}
+                              variant="contained"
+                              color="error"
+                              size="medium"
+                            >
+                              Block
+                            </Button>
+                          </Stack>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  );
+                }
+              })
               : null}
           </Grid>
         ) : null}

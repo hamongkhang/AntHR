@@ -10,7 +10,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import { Stack } from "@mui/material";
+import { Stack, Backdrop } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -28,6 +28,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Documents = (props) => {
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Documents = (props) => {
   const [folders, setFolders] = useState([]);
   const [render, setRender] = useState(false);
   const [search, setSearch] = useState(false);
-
+  const [loading, setLoading] = useState(false)
   const [searchDocuments, setSearchDocuments] = useState([]);
   const clickOpenAdd = () => {
     setOpenAdd(!openAdd);
@@ -60,6 +61,7 @@ const Documents = (props) => {
   };
 
   const onEditFolders = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("name", editFolders.name);
     _formData.append("description", editFolders.description);
@@ -76,6 +78,7 @@ const Documents = (props) => {
       .then((json) => {
         if (json.error) {
           if (json.error === "You are not admin!!!") {
+            setLoading(false)
             toast.error(`You are not admin!!!`, {
               position: "top-center",
               autoClose: 5000,
@@ -87,9 +90,11 @@ const Documents = (props) => {
             });
             setError("");
           } else {
+            setLoading(false)
             setError(json.error);
           }
         } else {
+          setLoading(false)
           toast.success(`Update new successfully !!!`, {
             position: "top-center",
             autoClose: 5000,
@@ -123,6 +128,7 @@ const Documents = (props) => {
     });
   };
   const onDelete = (id) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("id", id);
     fetch(process.env.REACT_APP_API + "/document/destroyFolder/" + id, {
@@ -133,6 +139,7 @@ const Documents = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading(false)
           toast.error("Delete Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -144,6 +151,7 @@ const Documents = (props) => {
             theme: "colored",
           });
         } else {
+          setLoading(false)
           setRender(!render);
           toast.success("Deleted successfully.", {
             position: "bottom-right",
@@ -173,6 +181,7 @@ const Documents = (props) => {
     setAddFolders({ ...addFolders, [_name]: _value });
   };
   const onAddFolders = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("name", addFolders.name);
     _formData.append("description", addFolders.description);
@@ -186,6 +195,7 @@ const Documents = (props) => {
       .then((json) => {
         if (json.error) {
           if (json.error === "You are not admin!!!") {
+            setLoading(false)
             toast.error(`You are not admin!!!`, {
               position: "top-center",
               autoClose: 5000,
@@ -197,9 +207,11 @@ const Documents = (props) => {
             });
             setError("");
           } else {
+            setLoading(false)
             setError(json.error);
           }
         } else {
+          setLoading(false)
           toast.success(`Update folder successfully !!!`, {
             position: "top-center",
             autoClose: 5000,
@@ -216,6 +228,7 @@ const Documents = (props) => {
       });
   };
   const onChangeShare = (id) => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/document/changeShare/" + id, {
       method: "POST",
       headers: { Authorization: `Bearer ` + $token },
@@ -223,6 +236,7 @@ const Documents = (props) => {
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading(false)
           toast.error("Share failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -234,6 +248,7 @@ const Documents = (props) => {
             theme: "colored",
           });
         } else {
+          setLoading(false)
           setRender(!render);
           toast.success("Share successfully.", {
             position: "bottom-right",
@@ -268,6 +283,7 @@ const Documents = (props) => {
     e.preventDefault();
   };
   const getDocuments = () => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/document/getAllFolder", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -275,6 +291,7 @@ const Documents = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setFolders(data.data.reverse());
+        setLoading(false)
       });
   };
   useEffect(() => {
@@ -294,6 +311,12 @@ const Documents = (props) => {
         backgroundColor: "white",
       }}
     >
+      <Backdrop
+        sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Modal
         open={openAdd}
         onClose={() => clickOpenAdd()}
@@ -662,10 +685,10 @@ const Documents = (props) => {
                             <TableCell align="right">
                               {item.created_at
                                 ? new Intl.DateTimeFormat("de-DE", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }).format(new Date(item.created_at))
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }).format(new Date(item.created_at))
                                 : "-"}
                             </TableCell>
                             <TableCell align="right">
@@ -751,10 +774,10 @@ const Documents = (props) => {
                           <TableCell align="right">
                             {item.created_at
                               ? new Intl.DateTimeFormat("de-DE", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }).format(new Date(item.created_at))
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }).format(new Date(item.created_at))
                               : "-"}
                           </TableCell>
                           <TableCell align="right">
@@ -843,6 +866,12 @@ const Documents = (props) => {
         backgroundColor: "white",
       }}
     >
+      <Backdrop
+        sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Grid
         container
         spacing={{ xs: 2, md: 3 }}
@@ -978,10 +1007,10 @@ const Documents = (props) => {
                               <TableCell align="right">
                                 {item.created_at
                                   ? new Intl.DateTimeFormat("de-DE", {
-                                      year: "numeric",
-                                      month: "long",
-                                      day: "numeric",
-                                    }).format(new Date(item.created_at))
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }).format(new Date(item.created_at))
                                   : "-"}
                               </TableCell>
                               <TableCell align="right">
@@ -1024,10 +1053,10 @@ const Documents = (props) => {
                             <TableCell align="right">
                               {item.created_at
                                 ? new Intl.DateTimeFormat("de-DE", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                  }).format(new Date(item.created_at))
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }).format(new Date(item.created_at))
                                 : "-"}
                             </TableCell>
                             <TableCell align="right">

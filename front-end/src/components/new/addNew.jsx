@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import { Button } from "@mui/material";
+import { Button, Backdrop } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { Editor } from "react-draft-wysiwyg";
@@ -13,10 +13,12 @@ import { EditorState, convertToRaw } from "draft-js";
 import draftToHtml from "draftjs-to-html";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const AddNew = (props) => {
   const navigate = useNavigate();
   const [checked, setChecked] = React.useState(false);
+  const [loading, setLoading] = React.useState(false)
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -46,6 +48,7 @@ const AddNew = (props) => {
     }
   };
   const onAddNews = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("title", addNews.title);
     _formData.append("file", addNews.file);
@@ -75,6 +78,7 @@ const AddNew = (props) => {
       .then((json) => {
         if (json.error) {
           if (json.error === "You are not admin!!!") {
+            setLoading(false)
             toast.error(`You are not admin!!!`, {
               position: "top-center",
               autoClose: 5000,
@@ -86,9 +90,11 @@ const AddNew = (props) => {
             });
             setError("");
           } else {
+            setLoading(false)
             setError(json.error);
           }
         } else {
+          setLoading(false)
           toast.success(`Create new successfully !!!`, {
             position: "top-center",
             autoClose: 5000,
@@ -113,6 +119,9 @@ const AddNew = (props) => {
         paddingBottom: "40px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box
         maxWidth="100%"
         style={{

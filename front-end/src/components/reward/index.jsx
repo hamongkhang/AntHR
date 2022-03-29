@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { Button, getPaginationItemUtilityClass } from "@mui/material";
+import { Button, Backdrop } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import InputLabel from "@mui/material/InputLabel";
@@ -15,6 +15,7 @@ import Select from "@mui/material/Select";
 import ImageIcon from "@mui/icons-material/Image";
 import InputBase from "@mui/material/InputBase";
 import { toast } from "react-toastify";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Commendation = (props) => {
   const $token = localStorage.getItem("access_token");
@@ -44,6 +45,10 @@ const Commendation = (props) => {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [openModalPraise, setOpenModalPraise] = useState(false);
+  const [loading, setLoading] = useState({
+    load1: true,
+    load2: true
+  })
   const clickOpenModalPraise = () => {
     setOpenModalPraise(!openModalPraise);
   };
@@ -53,6 +58,7 @@ const Commendation = (props) => {
     setOpenModalPraise(!openModalPraise);
   };
   const getEmployees = () => {
+    setLoading({ ...loading, load1: true })
     fetch(process.env.REACT_APP_API + "/employee/getAllEmployee", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -61,9 +67,12 @@ const Commendation = (props) => {
       .then((data) => {
         setUsers(data.data[0].reverse());
         setEmployees(data.data[1].reverse());
+        setLoading({ ...loading, load1: false })
+
       });
   };
   const getPoints = () => {
+    setLoading({ ...loading, load2: true })
     fetch(process.env.REACT_APP_API + "/score/getOneScore", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -71,6 +80,8 @@ const Commendation = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setMyScore(data.data);
+        setLoading({ ...loading, load2: false })
+
       });
   };
   const getImage = (event) => {
@@ -106,6 +117,7 @@ const Commendation = (props) => {
   };
   const [showCheer, setShowCheer] = useState(0);
   const onAddPraises = (e) => {
+    setLoading({load1:true, load2:true})
     const _formData = new FormData();
     _formData.append("image", praise.image);
     _formData.append("recipient", praise.recipient);
@@ -123,6 +135,7 @@ const Commendation = (props) => {
       .then((json) => {
         if (json.error) {
           if (json.error === "Score not found!!!") {
+            setLoading({load1:false, load2:false})
             toast.error(`Your score is still not enough`, {
               position: "top-center",
               autoClose: 5000,
@@ -134,6 +147,7 @@ const Commendation = (props) => {
             });
             setError("");
           } else {
+            setLoading({load1:false, load2:false})
             setError(json.error);
           }
         } else {
@@ -148,6 +162,7 @@ const Commendation = (props) => {
           });
           setError("");
           setRender(!render);
+          setLoading({load1:false, load2:false})
         }
       });
   };
@@ -158,6 +173,7 @@ const Commendation = (props) => {
     } else {
       navigate("/home");
     }
+    console.log(loading);
   }, [render]);
   return (
     <Box
@@ -170,6 +186,9 @@ const Commendation = (props) => {
         padding: "24px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={loading.load1&&loading.load2}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Modal
         open={openModalPraise}
         onClose={() => clickOpenModalPraise()}
@@ -225,55 +244,55 @@ const Commendation = (props) => {
             </Grid>
             {employees.length
               ? employees.map((item, index) => {
-                  if (item.user_id != id) {
-                    return (
-                      <>
-                        <Grid item xs={2} sm={2} md={3}>
-                          <Button
-                            type="submit"
-                            onClick={(event) =>
-                              onChangeSelectEmployee(
-                                event,
-                                item.user_id,
-                                item.first_name,
-                                item.last_name
-                              )
-                            }
-                            sx={{
-                              height: 40.5,
-                              width: "100%",
-                              border: "1px solid #ff9900",
-                              backgroundColor: "#FFFF66",
-                              color: "#ff9900",
-                            }}
-                            size="medium"
-                          >
-                            {"Select"}
-                          </Button>
-                        </Grid>
-                        <Grid item xs={2} sm={6} md={9}>
-                          <Typography
-                            sx={{
-                              color: "rgb(35, 54, 78)",
-                              fontSize: "16px",
-                            }}
-                          >
-                            {item.last_name} {item.first_name}
-                          </Typography>
-                          <Typography
-                            sx={{
-                              color: "rgb(35, 54, 78)",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {item.email ? item.email : " - "} |{" "}
-                            {item.phone ? item.phone : " - "}
-                          </Typography>
-                        </Grid>
-                      </>
-                    );
-                  }
-                })
+                if (item.user_id != id) {
+                  return (
+                    <>
+                      <Grid item xs={2} sm={2} md={3}>
+                        <Button
+                          type="submit"
+                          onClick={(event) =>
+                            onChangeSelectEmployee(
+                              event,
+                              item.user_id,
+                              item.first_name,
+                              item.last_name
+                            )
+                          }
+                          sx={{
+                            height: 40.5,
+                            width: "100%",
+                            border: "1px solid #ff9900",
+                            backgroundColor: "#FFFF66",
+                            color: "#ff9900",
+                          }}
+                          size="medium"
+                        >
+                          {"Select"}
+                        </Button>
+                      </Grid>
+                      <Grid item xs={2} sm={6} md={9}>
+                        <Typography
+                          sx={{
+                            color: "rgb(35, 54, 78)",
+                            fontSize: "16px",
+                          }}
+                        >
+                          {item.last_name} {item.first_name}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "rgb(35, 54, 78)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {item.email ? item.email : " - "} |{" "}
+                          {item.phone ? item.phone : " - "}
+                        </Typography>
+                      </Grid>
+                    </>
+                  );
+                }
+              })
               : null}
           </Grid>
         </Box>
@@ -330,8 +349,8 @@ const Commendation = (props) => {
               localStorage.getItem("avatar") === "null"
                 ? process.env.REACT_APP_FILE + "/avatar/avatar.png"
                 : localStorage.getItem("avatar").search("https://") != -1
-                ? localStorage.getItem("avatar")
-                : process.env.REACT_APP_FILE +
+                  ? localStorage.getItem("avatar")
+                  : process.env.REACT_APP_FILE +
                   "/avatar/" +
                   localStorage.getItem("avatar")
             }
@@ -590,8 +609,8 @@ const Commendation = (props) => {
                         ? process.env.REACT_APP_FILE + "/avatar/avatar.png"
                         : localStorage.getItem("avatar").search("https://") !=
                           -1
-                        ? localStorage.getItem("avatar")
-                        : process.env.REACT_APP_FILE +
+                          ? localStorage.getItem("avatar")
+                          : process.env.REACT_APP_FILE +
                           "/avatar/" +
                           localStorage.getItem("avatar")
                     }

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
-import { Paper, Box, Avatar, Typography, Button } from '@mui/material';
+import { Paper, Box, Avatar, Typography, Backdrop } from '@mui/material';
 import LeftBoxInfor from './LeftBoxInfor';
 import PersonalInfor from './PersonalInfor';
 import Address from './Address';
 import BankInfor from './BankInfor';
 import { useParams } from 'react-router-dom';
 import PlagiarismOutlinedIcon from '@mui/icons-material/PlagiarismOutlined';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -35,9 +36,11 @@ const EmployeeDetail = (props) => {
       user_number: ''
     }
   )
+  const [loading, setLoading] = useState(false)
   const params = useParams();
   const $token = localStorage.getItem('access_token');
   const getInforEmployee = () => {
+    setLoading(true)
     const requestOptions = {
       method: 'GET',
       headers: { "Authorization": `Bearer ` + $token }
@@ -46,10 +49,10 @@ const EmployeeDetail = (props) => {
       .then((res) => res.json())
       .then((json) => {
         if (json.error) {
+          setLoading(false)
         }
         else {
           if (json.user[0] != null) {
-            console.log(json.user[0]);
             let e = {
               avatar: '',
               first_name: '', last_name: '', phone: '', email: '', birthday: '', gender: '',
@@ -61,7 +64,7 @@ const EmployeeDetail = (props) => {
             e.last_name = json.user[0].last_name
             e.phone = json.user[0].phone
             e.email = json.user[0].email
-            e.birthday = new Date(json.user[0].birthday).toLocaleDateString('fr-CA')
+            e.birthday = json.user[0].birthday !=null ? new Date(json.user[0].birthday).toLocaleDateString('fr-CA') : json.user[0].birthday
             e.gender = json.user[0].gender
             if (json.user[1] != null) {
               e.postal_code = json.user[1].postal_code
@@ -70,6 +73,7 @@ const EmployeeDetail = (props) => {
               e.state = json.user[1].state
             }
             setEmployee(e)
+            setLoading(false)
           }
         }
       });
@@ -80,6 +84,12 @@ const EmployeeDetail = (props) => {
   }, [])
   return (
     <Box>
+      <Backdrop
+        sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Box sx={{ display: { xs: 'block', md: 'grid' } }} gridTemplateColumns="repeat(12, 1fr)" gap={2}>
         <Box gridColumn="span 3">
           <LeftBoxInfor
