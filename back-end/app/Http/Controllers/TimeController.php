@@ -64,4 +64,28 @@ class TimeController extends Controller
             return Response()->json(array("Create folder successfully!"=> 1,"data"=>$timeOff ));
         }
     }
+    public function getTimeOff(){
+        $data=DB::table('time_off')->get();
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
+    public function changeStatus($id){
+        $checkLogin = auth()->user();
+        if($checkLogin->role==1){
+            $time_off= TimeOff::find($id);
+            if ($time_off){
+                if($time_off->status==1){
+                    $time_off->status=0;
+                }else{
+                    $time_off->status=1;
+                }
+                $time_off->updated_at=Carbon::now('Asia/Ho_Chi_Minh'); 
+                $time_off->save(); 
+                return Response()->json(array("Update present successfully!"=> 1,"data"=>$time_off));
+            }else{
+                return response()->json(['error'=>"Invalid id !!!"], 400);
+            }
+        }else{
+            return response()->json(['error'=>"You are not admin !!!"], 401);
+        }
+    }
 }

@@ -68,8 +68,8 @@ const Header = (props) => {
                     path:'attendance/employees-attendance'
                 },
                 {
-                    value:'setting',
-                    path:'attendance/setting'
+                    value:'time-off',
+                    path:'attendance/time-off'
                 }
                 
             ]

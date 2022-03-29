@@ -22,8 +22,15 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDateRangePicker from '@mui/lab/StaticDateRangePicker';
 import StaticDateTimePicker from '@mui/lab/StaticDateTimePicker';
 import StaticTimePicker from '@mui/lab/StaticTimePicker';
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
-const Setting = (props) => {
+const TimeOff = (props) => {
   const [openAdd, setOpenAdd] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [checked, setChecked] = React.useState(0);
@@ -38,6 +45,8 @@ const Setting = (props) => {
   const [employees, setEmployees] = useState([]);
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
+  const [timeOff, setTimeOff] = useState([]);
+
   const [selectTimeFrom, setSelectTimeFrom] = React.useState(null)
   const [selectTimeTo, setSelectTimeTo] = React.useState(null)
   const [selectDate, setSelectDate] = React.useState([null,null])
@@ -71,14 +80,31 @@ const Setting = (props) => {
         setEmployees(data.data[1].reverse());
       });
   };
+  const getTimeOff = () => {
+    fetch(process.env.REACT_APP_API + "/time/getTimeOff", {
+      method: "GET",
+      headers: { Authorization: `Bearer ` + $token },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTimeOff(data.data.reverse());
+      });
+  };
   const onAddTimeOff = (e) => {
     const _formData = new FormData();
     _formData.append("user_id", userSelect);
-    _formData.append("date_from", selectDate[0]);
-    _formData.append("date_to", selectDate[1]);
-    _formData.append("time_from", selectTimeFrom);
-    _formData.append("time_to", selectTimeTo);
-    _formData.append("note", note);
+    _formData.append("date_from", selectDate[0].toDateString());
+    _formData.append("date_to", selectDate[1].toDateString());
+    if(selectTimeFrom){
+      _formData.append("time_from", selectTimeFrom.toTimeString());
+    }else{
+      _formData.append("time_from", selectTimeFrom);
+    }
+    if(selectTimeTo){
+      _formData.append("time_to", selectTimeTo.toTimeString());
+    }else{
+      _formData.append("time_to", selectTimeTo);
+    }    _formData.append("note", note);
     const requestOptions = {
       method: "POST",
       body: _formData,
@@ -113,9 +139,44 @@ const Setting = (props) => {
         }
       });
   };
-  useEffect(() => {
+  const clickChangeCommit = (id) => {
+    const _formData = new FormData();
+    _formData.append("id", id);
+    fetch(process.env.REACT_APP_API + "/time/changeStatus/" + id, {
+      method: "GET",
+      headers: { Authorization: `Bearer ` + $token },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          toast.error("Confirm Failed.", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } else {
+          setRender(!render);
+          toast.success("Confirm successfully.", {
+            position: "bottom-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        }
+      });
+  };  useEffect(() => {
     if ($token) {
       getEmployees();
+      getTimeOff();
     } else {
       navigate("/home");
     }
@@ -372,8 +433,89 @@ const Setting = (props) => {
             >
               Publish
             </Button>
+            <TableContainer component={Paper}>
+                                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Employee</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Date Start</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Date End</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Time Start</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Time Start</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Note</TableCell>
+                                            <TableCell sx={{fontWeight:"bold",fontSize:"16px",color:"rgb(101, 114, 131)"}}>Status</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {
+                                        timeOff.length?
+                                        timeOff.map((item,index)=>{
+                                                return(
+                                                    <TableRow
+                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                            >
+                                                <TableCell align="left">{
+                                                       (item.user_id!=0)?
+                                                       employees.map((itemUser,index)=>{
+                                                         if(itemUser.user_id==item.user_id){
+                                                           return itemUser.last_name+" "+itemUser.first_name+" ( "+itemUser.email+" ) " 
+                                                         }
+                                                       })
+                                                       :"All employess"
+                                                }</TableCell>
+                                                <TableCell align="left">  {item.date_from
+                                ? new Intl.DateTimeFormat("de-DE", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }).format(new Date(item.date_from))
+                                : "-"}</TableCell>
+                                <TableCell align="left">  {item.date_to
+                                ? new Intl.DateTimeFormat("de-DE", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                  }).format(new Date(item.date_to))
+                                : "-"}</TableCell>
+                                  <TableCell align="left">  {item.time_from
+                                ? item.time_from
+                                : "-"}</TableCell>
+                                <TableCell align="left">  {item.time_to
+                                ? item.time_to
+                                : "-"}</TableCell>
+                                 <TableCell align="left">  {item.note
+                                ? item.note
+                                : "-"}</TableCell>
+                                                <TableCell>
+                                                  {(item.status==0)?
+                                                <Button
+                  onClick={() => clickChangeCommit(item.id)}
+                  variant="contained"
+                  color="error"
+                  size="medium"
+                >
+                  Confirm
+                </Button>
+                :
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="error"
+                  size="medium"
+                >
+                  Confirmed
+                </Button>
+              
+                                                  }
+                                                </TableCell>
+                                                    </TableRow>
+                                        )}):null
+                }
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
     </Box>
   );
 };
 
-export default Setting;
+export default TimeOff;
