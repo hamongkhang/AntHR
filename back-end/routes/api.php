@@ -122,6 +122,7 @@ Route::get('/notify/getNotify', [App\Http\Controllers\NotifyController::class, '
 Route::post('/time/createTimeOffAdmin', [App\Http\Controllers\TimeController::class, 'createTimeOffAdmin'])->name('time.createTimeOffAdmin');
 Route::post('/time/createTimeOffEmployee', [App\Http\Controllers\TimeController::class, 'createTimeOffEmployee'])->name('time.createTimeOffEmployee');
 Route::get('/time/getTimeOff', [App\Http\Controllers\TimeController::class, 'getTimeOff'])->name('time.getTimeOff');
+Route::get('/time/changeStatus/{id}', [App\Http\Controllers\TimeController::class, 'changeStatus'])->name('time.changeStatus');
 
 
 
