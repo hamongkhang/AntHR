@@ -25,6 +25,7 @@ import Point from "../employees/point";
 import EmployeeAttend from "../attendance/employee/page2";
 import MyAttend from "../attendance/myattendance/page1";
 import Company from '../company/Company';
+import Setting from "../attendance/setting";
 
 const drawerWidth = 240;
 
@@ -107,6 +108,7 @@ const Home = (props) => {
             <Route path="documents/check/" element={<CheckGoogleDrive />} />
             <Route path="attendance" element={<MyAttend />} />
             <Route path="attendance/my-attendance" element={<MyAttend />} />
+            <Route path="attendance/setting" element={<Setting />} />
             <Route
               path="attendance/employees-attendance"
               element={<EmployeeAttend />}

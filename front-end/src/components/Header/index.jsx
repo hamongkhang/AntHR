@@ -66,6 +66,10 @@ const Header = (props) => {
                 {
                     value:'employees-attendance',
                     path:'attendance/employees-attendance'
+                },
+                {
+                    value:'setting',
+                    path:'attendance/setting'
                 }
                 
             ]

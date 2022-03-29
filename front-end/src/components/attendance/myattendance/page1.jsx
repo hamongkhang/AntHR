@@ -204,9 +204,6 @@ const MyAttend = () => {
           </Grid>
         </Box>
         <Divider />
-
-        <SelectDate />
-
         <Box style={styles.HeaderBody}>
           <Grid container spacing={2} sx={{ mt: 4 }}>
             <Grid
