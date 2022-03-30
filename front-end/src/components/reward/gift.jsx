@@ -8,7 +8,7 @@ import { Button } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
-import { Stack } from "@mui/material";
+import { Stack, Backdrop } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,6 +17,7 @@ import Select from "@mui/material/Select";
 import Switch from "@mui/material/Switch";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Gift = (props) => {
   const [openAdd, setOpenAdd] = useState(false);
@@ -30,6 +31,7 @@ const Gift = (props) => {
   const [file, setFile] = useState(null);
   const [presents, setPresents] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true)
   const [giftAdd, setGiftAdd] = useState({
     category_id: "",
     name: "",
@@ -73,7 +75,7 @@ const Gift = (props) => {
       setChecked(2);
       setSearch(true);
       for (var i = 0; i < presents.length; i++) {
-        if (presents[i].category_id == 2) {
+        if (presents[i].category_id == 3) {
           a.push(presents[i]);
         } else {
           setSearchGift([]);
@@ -83,7 +85,7 @@ const Gift = (props) => {
       setChecked(3);
       setSearch(true);
       for (var i = 0; i < presents.length; i++) {
-        if (presents[i].category_id == 3) {
+        if (presents[i].category_id == 2) {
           a.push(presents[i]);
         } else {
           setSearchGift([]);
@@ -128,6 +130,7 @@ const Gift = (props) => {
     }
   };
   const onAddGift = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("category_id", giftAdd.category_id);
     _formData.append("name", giftAdd.name);
@@ -155,8 +158,10 @@ const Gift = (props) => {
               progress: undefined,
             });
             setError("");
+            setLoading(false)
           } else {
             setError(json.error);
+            setLoading(false)
           }
         } else {
           setRender(!render);
@@ -179,10 +184,12 @@ const Gift = (props) => {
             description: "",
           });
           setOpenAdd(!openAdd);
+          setLoading(false)
         }
       });
   };
   const onEditGift = (e) => {
+    setLoading(true)
     const _formData = new FormData();
     _formData.append("category_id", giftEdit.category_id);
     _formData.append("name", giftEdit.name);
@@ -213,8 +220,10 @@ const Gift = (props) => {
               progress: undefined,
             });
             setError("");
+            setLoading(false)     
           } else {
             setError(json.error);
+            setLoading(false)
           }
         } else {
           setRender(!render);
@@ -237,10 +246,12 @@ const Gift = (props) => {
             description: "",
           });
           setOpenEdit(!openEdit);
+          setLoading(false)
         }
       });
   };
   const getPresents = () => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/present/getAllPresent", {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -248,6 +259,7 @@ const Gift = (props) => {
       .then((response) => response.json())
       .then((data) => {
         setPresents(data.data.reverse());
+        setLoading(false)
       });
   };
   const onClickDeleteGift = (event, id) => {
@@ -268,13 +280,16 @@ const Gift = (props) => {
     });
   };
   const onDeleteGift = (id) => {
-    fetch(process.env.REACT_APP_API + "/present/destroyPresent/" + id, {
+    setLoading(true)
+    
+    setLoading(false)(process.env.REACT_APP_API + "/present/destroyPresent/" + id, {
       method: "DELETE",
       headers: { Authorization: `Bearer ` + $token },
     })
       .then((response) => response.json())
       .then((data) => {
         if (data.error) {
+          setLoading(false)
           toast.error("Delete Failed.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -287,6 +302,7 @@ const Gift = (props) => {
           });
         } else {
           setRender(!render);
+          setLoading(false)
           toast.success("Delete successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -301,6 +317,7 @@ const Gift = (props) => {
       });
   };
   const onChangeStatus = (event, id) => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/present/changeStatus/" + id, {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -318,8 +335,10 @@ const Gift = (props) => {
             progress: undefined,
             theme: "colored",
           });
+          setLoading(false)
         } else {
           setRender(!render);
+          setLoading(false)
           toast.success("Change status successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -334,6 +353,7 @@ const Gift = (props) => {
       });
   };
   const clickExchangeGift = (event, id) => {
+    setLoading(true)
     fetch(process.env.REACT_APP_API + "/present/exchangePresent/" + id, {
       method: "GET",
       headers: { Authorization: `Bearer ` + $token },
@@ -352,6 +372,7 @@ const Gift = (props) => {
               progress: undefined,
               theme: "colored",
             });
+            setLoading(false)
           } else if (data.error === "Not enough score !!!") {
             toast.error("Not enough score !!!", {
               position: "bottom-right",
@@ -363,6 +384,7 @@ const Gift = (props) => {
               progress: undefined,
               theme: "colored",
             });
+            setLoading(false)
           } else {
             toast.error("Exchange failed !!!", {
               position: "bottom-right",
@@ -374,9 +396,11 @@ const Gift = (props) => {
               progress: undefined,
               theme: "colored",
             });
+            setLoading(false)
           }
         } else {
           setRender(!render);
+          setLoading(false)
           toast.success("Exchange successfully.", {
             position: "bottom-right",
             autoClose: 3000,
@@ -409,6 +433,9 @@ const Gift = (props) => {
         padding: "20px",
       }}
     >
+      <Backdrop sx={{ color: 'orange', zIndex: (theme) => theme.zIndex.drawer + 10 }} open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <Modal
         open={openAdd}
         onClose={() => clickOpenAdd()}
@@ -707,8 +734,8 @@ const Gift = (props) => {
                   file
                     ? URL.createObjectURL(file)
                     : process.env.REACT_APP_FILE +
-                      "/present/image/" +
-                      giftEdit.image
+                    "/present/image/" +
+                    giftEdit.image
                 }
               ></img>
               <span className="errorNotify">
