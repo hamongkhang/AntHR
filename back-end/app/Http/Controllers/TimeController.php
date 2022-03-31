@@ -68,6 +68,10 @@ class TimeController extends Controller
         $data=DB::table('time_off')->get();
         return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
     }
+    public function getOverTime(){
+        $data=DB::table('over_time')->get();
+        return Response()->json(array("Get folder successfully!"=> 1,"data"=>$data ));
+    }
     public function changeStatus($id){
         $checkLogin = auth()->user();
         if($checkLogin->role==1){
