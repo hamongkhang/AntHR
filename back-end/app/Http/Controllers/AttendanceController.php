@@ -22,7 +22,7 @@ class AttendanceController extends Controller
     public function getAllAttendance () {
         $admin=auth()->user();
         if($admin->role==1){
-            $attendances = Attendance::select('user_id')->distinct()->get();
+            $attendances = Attendance::select('user_id')->get();
             foreach($attendances as $a){
                 $employee = Employee::where('user_id', $a->user_id)->first();
                 $result = $this->getInforAttendance($a->user_id);
@@ -77,6 +77,14 @@ class AttendanceController extends Controller
                 'error'=>'Please login first',
             ], 401);
         }
+    }
+    public function getMobileAttendance () {
+        $admin=auth()->user();
+            $attendances = Attendance::where('user_id', $admin->id)->get();
+            return response()->json([
+                'message'=>"Get attendances successfully",
+                'attendances'=>$attendances
+            ]);
     }
     private function getInforAttendance($user_id){
         $attendances = Attendance::where('user_id', $user_id) ->orderByDesc('created_at')->get();
@@ -137,7 +145,6 @@ class AttendanceController extends Controller
         $user = User::find($id);
         $attenCheck = Attendance::where('user_id', $id)->where('created_at', '>=', now()->subDay())->first();
         if($user){
-            if(!$attenCheck){
                 $attendance = new Attendance;
                 $attendance -> user_id = $id;
                 $attendance -> date = Carbon::now('Asia/Ho_Chi_Minh');
@@ -152,10 +159,20 @@ class AttendanceController extends Controller
                 $attendance -> updated_at = Carbon::now('Asia/Ho_Chi_Minh');
                 $attendance->save();
                 return Response()->json(array("Create attendance successfully!"=> 1,"data"=>$attendance));
-            }
-            else{
-                return response()->json(["error" => "You checked today"],401);
-            }
+        }
+        else{
+            return response()->json(["error" => "Invalid user!!!"],401);
+        }
+    }
+    public function createAttendance2 ($id) {
+        
+        $user = User::find($id);
+        $dataCheck = Attendance::where('user_id', $id)->get();
+         $first=Attendance::find($dataCheck[count($dataCheck)-1]->id);
+        if($user){
+                $first -> clock_out = Carbon::now('Asia/Ho_Chi_Minh');
+                $first->save();
+                return Response()->json(array("Create attendance successfully!"=> 1,"data"=>$first));
         }
         else{
             return response()->json(["error" => "Invalid user!!!"],401);
