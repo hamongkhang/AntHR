@@ -158,7 +158,9 @@ Route::post('/attendance/getOneAttendance', [App\Http\Controllers\AttendanceCont
 Route::get('/attendance/getMyAttendance', [App\Http\Controllers\AttendanceController::class, 'getMyAttendance'])->name('attendance.getMyAttendance');
 Route::post('/attendance/createAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'createAttendance'])->name('attendance.createAttendance');
 Route::post('/attendance/updateAttendance/{id}', [App\Http\Controllers\AttendanceController::class, 'updateAttendance'])->name('attendance.updateAttendance');
+Route::post('/attendance/createAttendance2/{id}', [App\Http\Controllers\AttendanceController::class, 'createAttendance2'])->name('attendance.createAttendance2');
 
+Route::get('/attendance/getMobileAttendance', [App\Http\Controllers\AttendanceController::class, 'getMobileAttendance'])->name('attendance.getMobileAttendance');
 
 
 
